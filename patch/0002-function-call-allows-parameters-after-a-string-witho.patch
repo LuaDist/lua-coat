@@ -1,0 +1,50 @@
+From 97199cd97651a91d5e55870fdd7e5c84d04529b8 Mon Sep 17 00:00:00 2001
+From: Francois Perrad <francois.perrad@gadz.org>
+Date: Thu, 9 Jul 2009 11:46:58 +0200
+Subject: [PATCH 2/2] function call allows parameters after a string without parenthesis
+
+parameters could be separated by COMMA or FAT_COMMA
+---
+ doc/manual.html |    4 +++-
+ src/lparser.c   |   10 +++++++---
+ 2 files changed, 10 insertions(+), 4 deletions(-)
+
+diff --git a/doc/manual.html b/doc/manual.html
+index f46f17c..5a84d31 100644
+--- a/doc/manual.html
++++ b/doc/manual.html
+@@ -8756,7 +8756,9 @@ Here is the complete syntax of Lua in extended BNF.
+ 
+ 	functioncall ::=  prefixexp args | prefixexp `<b>:</b>&acute; Name args 
+ 
+-	args ::=  `<b>(</b>&acute; [explist] `<b>)</b>&acute; | tableconstructor | String 
++	args ::=  `<b>(</b>&acute; [explist] `<b>)</b>&acute; | tableconstructor | String {expsep exp}
++
++	expsep ::= `<b>,</b>&acute; | `<b>=&gt;</b>&acute;
+ 
+ 	function ::= <b>function</b> funcbody
+ 
+diff --git a/src/lparser.c b/src/lparser.c
+index 1e2a9a8..29fcd6b 100644
+--- a/src/lparser.c
++++ b/src/lparser.c
+@@ -629,9 +629,13 @@ static void funcargs (LexState *ls, expdesc *f) {
+       constructor(ls, &args);
+       break;
+     }
+-    case TK_STRING: {  /* funcargs -> STRING */
+-      codestring(ls, &args, ls->t.seminfo.ts);
+-      luaX_next(ls);  /* must use `seminfo' before `next' */
++    case TK_STRING: {  /* funcargs -> STRING { expsep expr } */
++      expr(ls, &args);
++      while (testnext(ls, ',') || testnext(ls, TK_FAT_COMMA)) {
++        luaK_exp2nextreg(ls->fs, &args);
++        expr(ls, &args);
++      }
++      luaK_setmultret(fs, &args);
+       break;
+     }
+     default: {
+-- 
+1.6.1.9.g97c34
+

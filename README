@@ -1,0 +1,40 @@
+
+# lua-Coat : Yet a Another Lua Object-Oriented Model
+
+## INTRODUCTION
+
+Perl5, like [Lua][], has no OO model, just OO mechanism.
+This allows a proliferation (or experimentation) of different model.
+
+Now with [Moose][], Perl5 find its _ultimate_ OO model.
+Moose borrows all the best features from Perl6, CLOS (LISP), Smalltalk
+and many other languages.
+Moose is built on top of a metaobject protocol, with full introspection.
+
+[Coat][] is light-weight Perl5 module which just mimics Moose.
+
+Finally, lua-Coat is the Lua port of Coat.
+
+Small lua patches allow a syntax close to Perl5 Moose. See patch/.
+
+  [Lua]: http://www.lua.org/
+  [Moose]: http://www.iinteractive.com/moose/
+  [Coat]: http://www.sukria.net/perl/coat/
+
+## DOCUMENTATION
+
+Well, there are many unit tests in test/.
+
+Moose supplies a Manual and a Cookbook available on
+its [CPAN page](http://search.cpan.org/dist/Moose/)
+
+## SEE ALSO
+
+[Loose](http://code.google.com/p/loose/) where I found some ideas.
+
+## COPYRIGHT AND LICENCE
+
+Copyright (c) 2009 Francois Perrad
+
+This library is licensed under the terms of the MIT license, like Lua itself.
+

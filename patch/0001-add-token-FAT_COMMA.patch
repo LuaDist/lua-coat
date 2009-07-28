@@ -1,0 +1,46 @@
+From d100a694f70f3305c5b9c81e1079cd9987076c33 Mon Sep 17 00:00:00 2001
+From: Francois Perrad <francois.perrad@gadz.org>
+Date: Thu, 9 Jul 2009 10:53:26 +0200
+Subject: [PATCH 1/2] add token FAT_COMMA
+
+---
+ src/llex.c |    9 +++++++--
+ src/llex.h |    2 +-
+ 2 files changed, 8 insertions(+), 3 deletions(-)
+
+diff --git a/src/llex.c b/src/llex.c
+index 6dc3193..77f72c8 100644
+--- a/src/llex.c
++++ b/src/llex.c
+@@ -368,8 +368,13 @@ static int llex (LexState *ls, SemInfo *seminfo) {
+       }
+       case '=': {
+         next(ls);
+-        if (ls->current != '=') return '=';
+-        else { next(ls); return TK_EQ; }
++        if (ls->current == '=') {
++          next(ls); return TK_EQ;
++        }
++        else if (ls->current == '>') {
++          next(ls); return TK_FAT_COMMA;
++        }
++        else  return '=';
+       }
+       case '<': {
+         next(ls);
+diff --git a/src/llex.h b/src/llex.h
+index a9201ce..42cfe4b 100644
+--- a/src/llex.h
++++ b/src/llex.h
+@@ -29,7 +29,7 @@ enum RESERVED {
+   TK_RETURN, TK_THEN, TK_TRUE, TK_UNTIL, TK_WHILE,
+   /* other terminal symbols */
+   TK_CONCAT, TK_DOTS, TK_EQ, TK_GE, TK_LE, TK_NE, TK_NUMBER,
+-  TK_NAME, TK_STRING, TK_EOS
++  TK_NAME, TK_STRING, TK_EOS, TK_FAT_COMMA
+ };
+ 
+ /* number of reserved words */
+-- 
+1.6.1.9.g97c34
+
