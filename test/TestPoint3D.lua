@@ -5,7 +5,7 @@ require 'lunity'
 module( 'TestPoint3D', lunity )
 
 function test_new ()
-    local a = Point3D.new{x = 1, y = 2, z = 3}
+    local a = Point3D{x = 1, y = 2, z = 3}
     assertType( a, 'Point3D' )
     assertTrue( a:isa 'Point3D' )
     assertTrue( a:isa 'Point' )
@@ -19,7 +19,7 @@ function test_new ()
 end
 
 function test_new_default ()
-    local a = Point3D.new()
+    local a = Point3D()
     assertType( a, 'Point3D' )
     assertType( a:x(), 'number')
     assertType( a:y(), 'number')
@@ -31,12 +31,12 @@ function test_new_default ()
 end
 
 function test_new_bad ()
-    -- local a = Point3D.new{x = "x", y = "y", z = "z"}
-    assertErrors( Point3D.new, {x = "x", y = "y", z = "z"} )
+    -- local a = Point3D{x = "x", y = "y", z = "z"}
+    assertErrors( Point3D, {x = "x", y = "y", z = "z"} )
 end
 
 function test_mutator ()
-    local a = Point3D.new()
+    local a = Point3D()
     a:x( 1 )
     a:y( 2 )
     a:z( 3 )
@@ -50,7 +50,7 @@ function test_mutator ()
 end
 
 function test_method ()
-    local a = Point3D.new{x = 1, y = 2, z = 3}
+    local a = Point3D{x = 1, y = 2, z = 3}
     assertType( a, 'Point3D' )
     assertInvokable( a.draw )
     assertType( a.draw, 'function' )

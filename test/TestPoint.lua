@@ -5,7 +5,7 @@ require 'lunity'
 module( 'TestPoint', lunity )
 
 function test_new ()
-    local a = Point.new{x = 1, y = 2}
+    local a = Point{x = 1, y = 2}
     assertType( a, 'Point' )
     assertTrue( a:isa 'Point' )
     assertInvokable( a.x )
@@ -20,7 +20,7 @@ function test_new ()
 end
 
 function test_new_default ()
-    local a = Point.new()
+    local a = Point()
     assertType( a, 'Point' )
     assertType( a:x(), 'number')
     assertType( a:y(), 'number')
@@ -30,12 +30,12 @@ function test_new_default ()
 end
 
 function test_new_bad ()
-    -- local a = Point.new{x = "x", y = "y"}
-    assertErrors( Point.new, {x = "x", y = "y"} )
+    -- local a = Point{x = "x", y = "y"}
+    assertErrors( Point, {x = "x", y = "y"} )
 end
 
 function test_mutator ()
-    local a = Point.new()
+    local a = Point()
     a:x( 1 )
     a:y( 2 )
     assertType( a:x(), 'number')
@@ -47,7 +47,7 @@ function test_mutator ()
 end
 
 function test_method ()
-    local a = Point.new{x = 1, y = 2}
+    local a = Point{x = 1, y = 2}
     assertType( a, 'Point' )
     assertInvokable( a.draw )
     assertType( a.draw, 'function' )
