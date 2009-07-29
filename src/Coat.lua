@@ -1,13 +1,7 @@
 
---[[
-
-lua-Coat: <http://github.com/fperrad/lua-Coat/>
-
-Copyright (c) 2009 Francois Perrad
-
-This library is licensed under the terms of the MIT license, like Lua itself.
-
-]]
+--
+-- lua-Coat : <http://github.com/fperrad/lua-Coat/>
+--
 
 local basic_type = type
 function type (obj)
@@ -319,5 +313,11 @@ function role (modname)
     error "Roles are not yet implemented"
 end -- role
 
-module(...)
--- it's an empty module
+module(...) -- it's an empty module
+
+_VERSION = "0.0"
+_DESCRIPTION = "lua-Coat : Yet a Another Lua Object-Oriented Model"
+_COPYRIGHT = "Copyright (c) 2009 Francois Perrad"
+--
+-- This library is licensed under the terms of the MIT license, like Lua itself.
+--
