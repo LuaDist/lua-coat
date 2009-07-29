@@ -190,44 +190,44 @@ function class (modname)
     end -- overload
 
     M.extends = function (...)
-        local bases = {}
+        local parents = {}
 
         for i, v in ipairs{...} do
-            local base
+            local p
             if basic_type(v) == 'string' then
-                base = require(v)
+                p = require(v)
             elseif v._NAME then
-                base = v
+                p = v
             else
                 argerror('extends', i, "string or Class expected")
             end
 
-            if base:isa(M) then
+            if p:isa(M) then
                 error("Circular class structure between '"
-                      .. M._NAME .."' and '" .. base._NAME .. "'")
+                      .. M._NAME .."' and '" .. p._NAME .. "'")
             end
 
-            table.insert(bases, base)
-            table.insert(M._ISA, base._ISA)
+            table.insert(parents, p)
+            table.insert(M._ISA, p._ISA)
         end
 
-        if #bases == 0 then
+        if #parents == 0 then
             error "Cannot extend without a Class name"
         end
  
-        local function search (name)
-            for i, b in ipairs(bases) do
-                local v = b[name]
-                if v then 
-                    return v
-                end
-            end
-        end -- search
-
         setmetatable(M, {
             __index = function (t, k) 
-                          local v = rawget(t, v) or search(k)
-                          t[k] = v
+                          local function search ()
+                              for i, p in ipairs(parents) do
+                                  local v = p[k]
+                                  if v then 
+                                      return v
+                                  end
+                              end
+                          end -- search
+
+                          local v = rawget(t, k) or search()
+                          t[k] = v      -- save for next access
                           return v
                       end,
             __call  = function (t, ...)
@@ -238,7 +238,7 @@ function class (modname)
         M.override = function (name, func)
             checktype('override', 1, name, 'string')
             checktype('override', 2, func, 'function')
-            local super = search(name)
+            local super = M[name]
             if not super then
                 error("Cannot override non-existent function "
                       .. name .. " in class " .. M._NAME)
@@ -254,7 +254,7 @@ function class (modname)
         M.before = function (name, func)
             checktype('before', 1, name, 'string')
             checktype('before', 2, func, 'function')
-            local super = search(name)
+            local super = M[name]
             if not super then
                 error("Cannot before non-existent function "
                       .. name .. " in class " .. M._NAME)
@@ -270,21 +270,21 @@ function class (modname)
         M.around = function (name, func)
             checktype('around', 1, name, 'string')
             checktype('around', 2, func, 'function')
-            local super = search(name)
+            local super = M[name]
             if not super then
                 error("Cannot around non-existent function "
                       .. name .. " in class " .. M._NAME)
             end
 
-            M[name] = function (...)
-                return func(super,  ...)
+            M[name] = function (obj, ...)
+                return func(obj, super,  ...)
             end
         end -- around
 
         M.after = function (name, func)
             checktype('after', 1, name, 'string')
             checktype('after', 2, func, 'function')
-            local super = search(name)
+            local super = M[name]
             if not super then
                 error("Cannot after non-existent function "
                       .. name .. " in class " .. M._NAME)
