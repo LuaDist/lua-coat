@@ -155,6 +155,9 @@ function class (modname)
         checktype('has', 1, name, 'string')
         options = options or {}
         checktype('has', 2, options, 'table')
+        if options.trigger and basic_type(options.trigger) ~= 'function' then
+            error "The trigger option must be passed a function"
+        end
         attrs[name] = options
 
         if options.is == 'ro' then
@@ -170,6 +173,9 @@ function class (modname)
                 if val ~= nil then
                     val = validate(name, options, val)
                     obj.values[name] = val
+                    if options.trigger then
+                        options.trigger(obj, val)
+                    end
                     return val
                 end
                 return obj.values[name]
