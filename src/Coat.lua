@@ -116,13 +116,13 @@ function class (modname)
 
             local function init ()
                 for k, opts in pairs(attrs) do
-                    if obj.values[k] == nil and not opts.lazy then
+                    if obj.values[k] == nil then
                         local val = args[k]
                         if val ~= nil then
                             if basic_type(val) == 'function' then
                                 val = val(obj)
                             end
-                        else
+                        elseif not opts.lazy then
                             val = attr_default(opts, obj)
                         end
 

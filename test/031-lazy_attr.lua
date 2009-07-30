@@ -33,7 +33,7 @@ end
 
 function test_Foo ()
     local foo = Foo.new{ dir = '/tmp', name = 'file' }
-    assertType( foo, 'Foo' )
+    assertTrue( foo:isa 'Foo' )
     assertEqual( foo:name() , 'file' )
     assertEqual( foo:path(), '/tmp/file' )
 end
