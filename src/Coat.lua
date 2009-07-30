@@ -103,9 +103,15 @@ function class (modname)
     end
 
     local function validate (name, options, val)
-        if val and options.isa and type(val) ~= options.isa then
-            error("Invalid type for attribute '" .. name .. "' (got "
-                  .. type(val) .. ", expected " .. options.isa ..")")
+        if val == nil then
+            if options.required and not options.lazy then
+                error("Attribute '" .. name .. "' is required")
+            end
+        else
+            if options.isa and type(val) ~= options.isa then
+                error("Invalid type for attribute '" .. name .. "' (got "
+                      .. type(val) .. ", expected " .. options.isa ..")")
+            end
         end
         return val
     end
@@ -191,6 +197,9 @@ function class (modname)
             return obj.values[name]
         end
         if options.clearer then
+            if options.required then
+                error "The clearer option is incompatible with required option"
+            end
             if basic_type(options.clearer) ~= 'string' then
                 error "The clearer option requires a string"
             end
