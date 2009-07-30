@@ -93,6 +93,15 @@ function class (modname)
         return obj
     end -- new
 
+    local function attr_default (options, obj)
+        local default = options.default
+        if basic_type(default) == 'function' then
+            return default(obj)
+        else
+            return default
+        end
+    end
+
     local function validate (name, options, val)
         if val and options.isa and type(val) ~= options.isa then
             error("Invalid type for attribute '" .. name .. "' (got "
@@ -106,23 +115,18 @@ function class (modname)
         local function walk_type (types)
 
             local function init ()
-                for k, v in pairs(attrs) do
-                    if not obj.values[k] then
+                for k, opts in pairs(attrs) do
+                    if obj.values[k] == nil and not opts.lazy then
                         local val = args[k]
                         if val ~= nil then
                             if basic_type(val) == 'function' then
                                 val = val(obj)
                             end
                         else
-                            local default = v.default
-                            if basic_type(default) == 'function' then
-                                val = default(obj)
-                            else
-                                val = default
-                            end
+                            val = attr_default(opts, obj)
                         end
 
-                        val = validate(k, v, val)
+                        val = validate(k, opts, val)
                         obj.values[k] = val
                     end
                 end
@@ -156,21 +160,20 @@ function class (modname)
         options = options or {}
         checktype('has', 2, options, 'table')
         if options.trigger and basic_type(options.trigger) ~= 'function' then
-            error "The trigger option must be passed a function"
+            error "The trigger option requires a function"
+        end
+        if options.lazy and options.default == nil then
+            error "The lazy option implies the default option"
         end
         attrs[name] = options
 
-        if options.is == 'ro' then
-            M[name] = function (obj, val)
-                if val ~= nil then
+        M[name] = function (obj, val)
+            if val ~= nil then
+                -- setter
+                if options.is == 'ro' then
                     error("Cannot set a read-only attribute ("
                           .. name .. ")")
-                end
-                return obj.values[name]
-            end
-        else
-            M[name] = function (obj, val)
-                if val ~= nil then
+                else
                     val = validate(name, options, val)
                     obj.values[name] = val
                     if options.trigger then
@@ -178,8 +181,14 @@ function class (modname)
                     end
                     return val
                 end
-                return obj.values[name]
             end
+            -- getter
+            if options.lazy and obj.values[name] == nil then
+                local val = attr_default(options, obj)
+                val = validate(name, options, val)
+                obj.values[name] = val
+            end
+            return obj.values[name]
         end
     end -- has
 
