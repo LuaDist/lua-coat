@@ -273,16 +273,11 @@ function class (modname)
         M.override = function (name, func)
             checktype('override', 1, name, 'string')
             checktype('override', 2, func, 'function')
-            local super = M[name]
-            if not super then
+            if not M[name] then
                 error("Cannot override non-existent method "
                       .. name .. " in class " .. M._NAME)
             end
 
-            local t = {}
-            setmetatable(t, {__index = _G})
-            t.super = super
-            setfenv(func, t)
             M[name] = func
         end -- override
 
