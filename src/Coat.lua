@@ -212,6 +212,9 @@ function class (modname)
     M.method = function (name, func)
         checktype('method', 1, name, 'string')
         checktype('method', 2, func, 'function')
+        if M[name] then
+            error( "Duplicate definition of method " .. name )
+        end
         M[name] = func
     end -- method
 
@@ -272,7 +275,7 @@ function class (modname)
             checktype('override', 2, func, 'function')
             local super = M[name]
             if not super then
-                error("Cannot override non-existent function "
+                error("Cannot override non-existent method "
                       .. name .. " in class " .. M._NAME)
             end
 
@@ -288,7 +291,7 @@ function class (modname)
             checktype('before', 2, func, 'function')
             local super = M[name]
             if not super then
-                error("Cannot before non-existent function "
+                error("Cannot before non-existent method "
                       .. name .. " in class " .. M._NAME)
             end
 
@@ -304,7 +307,7 @@ function class (modname)
             checktype('around', 2, func, 'function')
             local super = M[name]
             if not super then
-                error("Cannot around non-existent function "
+                error("Cannot around non-existent method "
                       .. name .. " in class " .. M._NAME)
             end
 
@@ -318,7 +321,7 @@ function class (modname)
             checktype('after', 2, func, 'function')
             local super = M[name]
             if not super then
-                error("Cannot after non-existent function "
+                error("Cannot after non-existent method "
                       .. name .. " in class " .. M._NAME)
             end
 
