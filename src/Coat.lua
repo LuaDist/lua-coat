@@ -190,6 +190,14 @@ function class (modname)
             end
             return obj.values[name]
         end
+        if options.clearer then
+            if basic_type(options.clearer) ~= 'string' then
+                error "The clearer option requires a string"
+            end
+            M[options.clearer] = function (obj)
+                obj.values[name] = nil
+            end
+        end
     end -- has
 
     M.method = function (name, func)
