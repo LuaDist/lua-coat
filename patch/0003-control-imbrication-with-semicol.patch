@@ -1,0 +1,42 @@
+From 00ba1d701d66ba10d77640486ece74212ca28ff3 Mon Sep 17 00:00:00 2001
+From: Francois Perrad <francois.perrad@gadz.org>
+Date: Fri, 31 Jul 2009 22:42:54 +0200
+Subject: [PATCH 3/3] control imbrication with semicol
+
+---
+ doc/manual.html |    2 +-
+ src/lparser.c   |    4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/doc/manual.html b/doc/manual.html
+index 5a84d31..570df53 100644
+--- a/doc/manual.html
++++ b/doc/manual.html
+@@ -8756,7 +8756,7 @@ Here is the complete syntax of Lua in extended BNF.
+ 
+ 	functioncall ::=  prefixexp args | prefixexp `<b>:</b>&acute; Name args 
+ 
+-	args ::=  `<b>(</b>&acute; [explist] `<b>)</b>&acute; | tableconstructor | String {expsep exp}
++	args ::=  `<b>(</b>&acute; [explist] `<b>)</b>&acute; | tableconstructor | String {expsep exp} [`<b>;</b>&acute;]
+ 
+ 	expsep ::= `<b>,</b>&acute; | `<b>=&gt;</b>&acute;
+ 
+diff --git a/src/lparser.c b/src/lparser.c
+index 29fcd6b..2f73fb1 100644
+--- a/src/lparser.c
++++ b/src/lparser.c
+@@ -629,9 +629,9 @@ static void funcargs (LexState *ls, expdesc *f) {
+       constructor(ls, &args);
+       break;
+     }
+-    case TK_STRING: {  /* funcargs -> STRING { expsep expr } */
++    case TK_STRING: {  /* funcargs -> STRING { expsep expr } [`;'] */
+       expr(ls, &args);
+-      while (testnext(ls, ',') || testnext(ls, TK_FAT_COMMA)) {
++      while (!testnext(ls, ';') && (testnext(ls, ',') || testnext(ls, TK_FAT_COMMA))) {
+         luaK_exp2nextreg(ls->fs, &args);
+         expr(ls, &args);
+       }
+-- 
+1.6.1.9.g97c34
+

@@ -1,7 +1,7 @@
-From 97199cd97651a91d5e55870fdd7e5c84d04529b8 Mon Sep 17 00:00:00 2001
+From 37979b06437731c79f447194ed202ff39a1c9aee Mon Sep 17 00:00:00 2001
 From: Francois Perrad <francois.perrad@gadz.org>
 Date: Thu, 9 Jul 2009 11:46:58 +0200
-Subject: [PATCH 2/2] function call allows parameters after a string without parenthesis
+Subject: [PATCH 2/3] function call allows parameters after a string without parenthesis
 
 parameters could be separated by COMMA or FAT_COMMA
 ---
