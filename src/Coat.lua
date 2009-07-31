@@ -6,7 +6,7 @@
 module(..., package.seeall)
 
 local basic_type = type
-function type (obj)
+local function object_type (obj)
     local t = basic_type(obj)
     if t == 'table' and obj._CLASS then
         return obj._CLASS
@@ -14,7 +14,7 @@ function type (obj)
         return t
     end
 end
-_G.type = type
+_G.type = object_type
 
 local function argerror (caller, narg, extramsg)
     error("bad argument #" .. tostring(narg) .. " to "
@@ -22,7 +22,7 @@ local function argerror (caller, narg, extramsg)
 end
 
 local function typerror (caller, narg, arg, tname)
-    argerror(caller, narg, tname .. " expected, got " .. type(arg))
+    argerror(caller, narg, tname .. " expected, got " .. object_type(arg))
 end
 
 local function checktype (caller, narg, arg, tname)
@@ -85,9 +85,9 @@ local function validate (name, options, val)
             error("Attribute '" .. name .. "' is required")
         end
     else
-        if options.isa and type(val) ~= options.isa then
+        if options.isa and object_type(val) ~= options.isa then
             error("Invalid type for attribute '" .. name .. "' (got "
-                  .. type(val) .. ", expected " .. options.isa ..")")
+                  .. object_type(val) .. ", expected " .. options.isa ..")")
         end
     end
     return val
