@@ -10,7 +10,7 @@ has( 'subobject', { isa = 'Bar' } )
 
 
 require 'lunity'
-module( 'TestTypeConstraints', lunity )
+module( 'TestAttrRequired', lunity )
 
 function test_Foo1 ()
     local foo = Foo.new{ bar = 10, baz = 20, boo = 100 }
