@@ -5,7 +5,8 @@
 
 module(..., package.seeall)
 
-local basic_type = type
+basic_type = type
+local basic_type = basic_type
 local function object_type (obj)
     local t = basic_type(obj)
     if t == 'table' and obj._CLASS then
@@ -25,11 +26,12 @@ local function typerror (caller, narg, arg, tname)
     argerror(caller, narg, tname .. " expected, got " .. object_type(arg))
 end
 
-local function checktype (caller, narg, arg, tname)
+function checktype (caller, narg, arg, tname)
     if basic_type(arg) ~= tname then
         typerror(caller, narg, arg, tname)
     end
 end
+local checktype = checktype
 
 function isa (obj, t)
     if basic_type(t) == 'table' and t._NAME then
@@ -85,9 +87,31 @@ local function validate (name, options, val)
             error("Attribute '" .. name .. "' is required")
         end
     else
-        if options.isa and object_type(val) ~= options.isa then
-            error("Invalid type for attribute '" .. name .. "' (got "
-                  .. object_type(val) .. ", expected " .. options.isa ..")")
+        function check (tname)
+            local tc = Types._TC[tname]
+            if tc then
+                check(tc.parent)
+                if not tc.validator(val) then
+                    local msg = tc.message
+                    if msg == nil then
+                        error("Value for attribute '" .. name
+                              .. "' does not validate type constraint '"
+                              .. tname .. "'" )
+                    else
+                        error(string.format(msg, val))
+                    end
+                end
+            else
+                local t = object_type(val)
+                if t ~= tname then
+                    error( "Invalid type for attribute '" .. name .. "' (got "
+                           .. t .. ", expected " .. tname ..")" )
+                end
+            end
+        end -- check
+
+        if options.isa then
+            check(options.isa)
         end
     end
     return val
@@ -353,6 +377,9 @@ function role (modname)
     error "Roles are not yet implemented"
 end
 _G.role = role
+
+Types = {} -- dummy sub-module
+Types._TC = {}
 
 _VERSION = "0.0"
 _DESCRIPTION = "lua-Coat : Yet a Another Lua Object-Oriented Model"
