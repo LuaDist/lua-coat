@@ -38,8 +38,11 @@ end )
 require 'lunity'
 module( 'TestHooks', lunity )
 
-function test_Simple ()
+function setup ()
     _G.list = {}
+end
+
+function test_Simple ()
     local p = Parent.new()
     assertTrue( p:isa 'Parent' )
     assertInvokable( p.pushelem )
@@ -48,7 +51,6 @@ function test_Simple ()
 end
 
 function test_Multiple ()
-    _G.list = {}
     local c = Child.new()
     assertTrue( c:isa 'Child' )
     assertTrue( c:isa 'Parent' )

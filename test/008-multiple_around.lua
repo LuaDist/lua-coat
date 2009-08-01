@@ -29,8 +29,11 @@ end )
 require 'lunity'
 module( 'TestMultipleAround', lunity )
 
-function test_Simple ()
+function setup ()
     _G.seen = {}
+end
+
+function test_Simple ()
     local p = Parent.new()
     assertTrue( p:isa 'Parent' )
     assertInvokable( p.orig )
@@ -39,7 +42,6 @@ function test_Simple ()
 end
 
 function test_MultipleAround ()
-    _G.seen = {}
     local c = Child.new()
     assertTrue( c:isa 'Child' )
     assertTrue( c:isa 'Parent' )
