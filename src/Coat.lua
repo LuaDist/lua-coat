@@ -55,7 +55,11 @@ function isa (obj, t)
         return false
     end -- walk_type
 
-    return walk_type(obj._ISA)
+    if basic_type(obj) == 'table' and obj._ISA then
+        return walk_type(obj._ISA)
+    else
+        return basic_type(obj) == t
+    end
 end
 
 function new (class, args)
@@ -87,7 +91,7 @@ local function validate (name, options, val)
             error("Attribute '" .. name .. "' is required")
         end
     else
-        function check (tname)
+        local function check (tname)
             local tc = Types._TC[tname]
             if tc then
                 check(tc.parent)
@@ -102,10 +106,9 @@ local function validate (name, options, val)
                     end
                 end
             else
-                local t = object_type(val)
-                if t ~= tname then
+                if not isa(val, tname) then
                     error( "Invalid type for attribute '" .. name .. "' (got "
-                           .. t .. ", expected " .. tname ..")" )
+                           .. object_type(val) .. ", expected " .. tname ..")" )
                 end
             end
         end -- check
