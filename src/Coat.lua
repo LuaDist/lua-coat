@@ -199,6 +199,20 @@ function has (class, name, options)
         end
         return obj.values[name]
     end
+
+    if options.handles then
+        for k, v in pairs(options.handles) do
+            class[k] = function (obj, ...)
+                local d = obj.values[name]
+                if d[v] == nil then
+                    error( "Cannot delegate " .. k .. " from "
+                           .. name .. " (" .. v .. ")" )
+                end
+                return d[v](d, ...)
+            end
+        end
+    end
+
     if options.clearer then
         if options.required then
             error "The clearer option is incompatible with required option"
