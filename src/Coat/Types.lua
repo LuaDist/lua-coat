@@ -74,7 +74,8 @@ function enum (name, ...)
 end
 _G.enum = enum
 
-_COPYRIGHT = "Copyright (c) 2009 Francois Perrad"
+--
+-- Copyright (c) 2009 Francois Perrad
 --
 -- This library is licensed under the terms of the MIT license, like Lua itself.
 --
