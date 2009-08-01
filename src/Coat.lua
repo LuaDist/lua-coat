@@ -76,6 +76,12 @@ function new (class, args)
     return obj
 end
 
+function __gc (class, obj)
+    if class.DEMOLISH then
+        class.DEMOLISH(obj)
+    end
+end
+
 local function attr_default (options, obj)
     local default = options.default
     if basic_type(default) == 'function' then
@@ -366,6 +372,7 @@ function class (modname)
     M._ATTR = {}
     M.isa = isa
     M.new = function (...) return new(M, ...) end
+    M.__gc = function (...) return __gc(M, ...) end
     M._INIT = function (...) return _INIT(M, ...) end
     M.has = function (...) return has(M, ...) end
     M.method = function (...) return method(M, ...) end
