@@ -387,6 +387,15 @@ function with (...)
     error "Roles are not yet implemented"
 end
 
+local classes = {}
+function Meta.classes ()
+    return classes
+end
+
+function Meta.class (name)
+    return classes[name]
+end
+
 function class (modname)
     checktype('class', 1, modname, 'string')
     if _G[modname] then
@@ -418,8 +427,18 @@ function class (modname)
     M.overload = function (...) return overload(M, ...) end
     M.extends = function (...) return extends(M, ...) end
     M.with = function (...) return with(M, ...) end
+    classes[modname] = M
 end
 _G.class = class
+
+local roles = {}
+function Meta.roles ()
+    return roles
+end
+
+function Meta.role (name)
+    return roles[name]
+end
 
 function role (modname)
     checktype('role', 1, modname, 'string')
@@ -437,6 +456,7 @@ function role (modname)
     M._NAME = modname
     M._M = M
 
+    roles[modname] = M
     error "Roles are not yet implemented"
 end
 _G.role = role
