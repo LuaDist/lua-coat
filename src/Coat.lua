@@ -190,6 +190,7 @@ function Meta.has (class, name)
 
     return walk_type(class._ISA)
 end
+local meta_has = Meta.has
 
 function has (class, name, options)
     checktype('has', 1, name, 'string')
@@ -198,7 +199,7 @@ function has (class, name, options)
 
     if name:sub(1, 1) == '+' then
         name = name:sub(2)
-        inherited = Meta.has(class, name)
+        inherited = meta_has(class, name)
         if inherited == nil then
             error( "Cannot overload unknown attribute " .. name )
         end
@@ -210,7 +211,7 @@ function has (class, name, options)
             t[k] = v
         end
         options = t
-    elseif Meta.has(class, name) ~= nil then
+    elseif meta_has(class, name) ~= nil then
         error( "Duplicate definition of attribute " .. name )
     end
     if options.trigger and basic_type(options.trigger) ~= 'function' then
