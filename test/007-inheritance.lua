@@ -15,7 +15,7 @@ class 'Soldier'
 
 extends 'Person'
 
-has( 'force', { isa = 'number', default = 3 } )
+has( '+force', { default = 3 } )
 
 method( 'attack', function (self)
     return self:force() + math.random( 10 )
@@ -25,7 +25,7 @@ class 'General'
 
 extends 'Soldier'
 
-has( 'force', { isa = 'number', default = 5 } )
+has( '+force', { default = 5 } )
 
 -- just to make sur we can hook something inherited
 before( 'walk', function ()

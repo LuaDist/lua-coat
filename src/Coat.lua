@@ -210,7 +210,7 @@ function has (class, name, options)
             t[k] = v
         end
         options = t
-    elseif class._ATTR[name] ~= nil then
+    elseif Meta.has(class, name) ~= nil then
         error( "Duplicate definition of attribute " .. name )
     end
     if options.trigger and basic_type(options.trigger) ~= 'function' then

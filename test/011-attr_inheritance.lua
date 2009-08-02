@@ -14,7 +14,7 @@ class 'Baz'
 extends 'Bar'
 has 'field_from_baz'
 -- we redefine an attribute of an inherited class
-has( 'field_from_foo_int', { default = 2 } )
+has( '+field_from_foo_int', { default = 2 } )
 
 class 'Biz'
 has 'field_from_biz'
