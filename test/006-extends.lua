@@ -17,14 +17,14 @@ function test_Point ()
     local point2d = Point.new{ x = 2, y = 4}
     assertType( point2d, 'Point' )
     assertTrue( point2d:isa 'Point' )
-    assertNil( point2d.z )
+    assertNil( Coat.Meta.has( Point, 'z' ) )
 end
 
 function test_Point3D ()
     local point3d = Point3D.new{ x = 1, y = 3, z = 1}
     assertType( point3d, 'Point3D' )
     assertTrue( point3d:isa 'Point3D' )
-    assertInvokable( point3d.z )
+    assertNotNil( Coat.Meta.has( Point3D, 'z' ) )
 end
 
 function test_MyItem3D ()

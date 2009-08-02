@@ -5,6 +5,8 @@
 
 module(..., package.seeall)
 
+Meta = {}
+
 basic_type = type
 local basic_type = basic_type
 local function object_type (obj)
@@ -170,6 +172,25 @@ function _INIT (class, obj, args)
     walk_type(class._ISA)
 end
 
+function Meta.has (class, name)
+    local function walk_type (types)
+        for i, v in ipairs(types) do
+            local result
+            if basic_type(v) == 'string' then
+                result = package.loaded[v]._ATTR[name]
+            else
+                result = walk_type(v)
+            end
+            if result then
+                return result
+            end
+        end
+        return nil
+    end  -- walk_type
+
+    return walk_type(class._ISA)
+end
+
 function has (class, name, options)
     checktype('has', 1, name, 'string')
     options = options or {}
@@ -177,23 +198,7 @@ function has (class, name, options)
 
     if name:sub(1, 1) == '+' then
         name = name:sub(2)
-
-        local function walk_type (types)
-            for i, v in ipairs(types) do
-                local result
-                if basic_type(v) == 'string' then
-                    result = package.loaded[v]._ATTR[name]
-                else
-                    result = walk_type(v)
-                end
-                if result then
-                    return result
-                end
-            end
-            return nil
-        end  -- walk_type
-
-        inherited = walk_type(class._ISA)
+        inherited = Meta.has(class, name)
         if inherited == nil then
             error( "Cannot overload unknown attribute " .. name )
         end
@@ -205,9 +210,7 @@ function has (class, name, options)
             t[k] = v
         end
         options = t
-    end
-
-    if class._ATTR[name] ~= nil then
+    elseif class._ATTR[name] ~= nil then
         error( "Duplicate definition of attribute " .. name )
     end
     if options.trigger and basic_type(options.trigger) ~= 'function' then
