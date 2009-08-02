@@ -1,0 +1,25 @@
+From c55edbcc5a9ceb71c6ef4f187ad32fa27a685e02 Mon Sep 17 00:00:00 2001
+From: Francois Perrad <francois.perrad@gadz.org>
+Date: Sun, 2 Aug 2009 19:09:13 +0200
+Subject: [PATCH 3/3] allow imbrication with semicol
+
+---
+ src/lparser.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/src/lparser.c b/src/lparser.c
+index 29fcd6b..5014321 100644
+--- a/src/lparser.c
++++ b/src/lparser.c
+@@ -631,7 +631,7 @@ static void funcargs (LexState *ls, expdesc *f) {
+     }
+     case TK_STRING: {  /* funcargs -> STRING { expsep expr } */
+       expr(ls, &args);
+-      while (testnext(ls, ',') || testnext(ls, TK_FAT_COMMA)) {
++      while (!testnext(ls, ';') && (testnext(ls, ',') || testnext(ls, TK_FAT_COMMA))) {
+         luaK_exp2nextreg(ls->fs, &args);
+         expr(ls, &args);
+       }
+-- 
+1.6.1.9.g97c34
+
