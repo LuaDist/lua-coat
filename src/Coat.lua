@@ -174,6 +174,42 @@ function has (class, name, options)
     checktype('has', 1, name, 'string')
     options = options or {}
     checktype('has', 2, options, 'table')
+
+    if name:sub(1, 1) == '+' then
+        name = name:sub(2)
+
+        local function walk_type (types)
+            for i, v in ipairs(types) do
+                local result
+                if basic_type(v) == 'string' then
+                    result = package.loaded[v]._ATTR[name]
+                else
+                    result = walk_type(v)
+                end
+                if result then
+                    return result
+                end
+            end
+            return nil
+        end  -- walk_type
+
+        inherited = walk_type(class._ISA)
+        if inherited == nil then
+            error( "Cannot overload unknown attribute " .. name )
+        end
+        local t = {}
+        for k, v in pairs(inherited) do
+            t[k] = v
+        end
+        for k, v in pairs(options) do
+            t[k] = v
+        end
+        options = t
+    end
+
+    if class._ATTR[name] ~= nil then
+        error( "Duplicate definition of attribute " .. name )
+    end
     if options.trigger and basic_type(options.trigger) ~= 'function' then
         error "The trigger option requires a function"
     end
