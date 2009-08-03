@@ -21,8 +21,8 @@ module( 'TestBuild', lunity )
 
 function test_A ()
     local a = A.new()
-    assertNil( a.values.x )
-    assertEqual( a.values.y, 2 )
+    assertNil( a._VALUES.x )
+    assertEqual( a._VALUES.y, 2 )
     assertEqual( a:x(), 2 )
 end
 

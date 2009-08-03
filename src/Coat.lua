@@ -68,7 +68,7 @@ function new (class, args)
     args = args or {}
     local obj = {
         _CLASS = class._NAME, 
-        values = {}
+        _VALUES = {}
     }
     setmetatable(obj, {})
     class._INIT(obj, args)
@@ -134,7 +134,7 @@ function _INIT (class, obj, args)
 
         local function init ()
             for k, opts in pairs(class._ATTR) do
-                if obj.values[k] == nil then
+                if obj._VALUES[k] == nil then
                     local val = args[k]
                     if val ~= nil then
                         if basic_type(val) == 'function' then
@@ -144,7 +144,7 @@ function _INIT (class, obj, args)
                         val = attr_default(opts, obj)
                     end
                     val = validate(k, opts, val)
-                    obj.values[k] = val
+                    obj._VALUES[k] = val
                 end
             end
 
@@ -230,7 +230,7 @@ function has (class, name, options)
                       .. name .. ")")
             else
                 val = validate(name, options, val)
-                obj.values[name] = val
+                obj._VALUES[name] = val
                 if options.trigger then
                     options.trigger(obj, val)
                 end
@@ -238,18 +238,18 @@ function has (class, name, options)
             end
         end
         -- getter
-        if options.lazy and obj.values[name] == nil then
+        if options.lazy and obj._VALUES[name] == nil then
             local val = attr_default(options, obj)
             val = validate(name, options, val)
-            obj.values[name] = val
+            obj._VALUES[name] = val
         end
-        return obj.values[name]
+        return obj._VALUES[name]
     end
 
     if options.handles then
         for k, v in pairs(options.handles) do
             class[k] = function (obj, ...)
-                local d = obj.values[name]
+                local d = obj._VALUES[name]
                 if d[v] == nil then
                     error( "Cannot delegate " .. k .. " from "
                            .. name .. " (" .. v .. ")" )
@@ -267,7 +267,7 @@ function has (class, name, options)
             error "The clearer option requires a string"
         end
         class[options.clearer] = function (obj)
-            obj.values[name] = nil
+            obj._VALUES[name] = nil
         end
     end
 end
