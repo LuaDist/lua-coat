@@ -100,7 +100,7 @@ local function validate (name, options, val)
         end
     else
         local function check (tname)
-            local tc = Types._TC[tname]
+            local tc = Types and Types._TC[tname]
             if tc then
                 check(tc.parent)
                 if not tc.validator(val) then
@@ -430,9 +430,6 @@ function _G.class (modname)
     M.with = function (...) return with(M, ...) end
     classes[modname] = M
 end
-
-Types = {} -- dummy sub-module
-Types._TC = {}
 
 _VERSION = "0.0"
 _DESCRIPTION = "lua-Coat : Yet a Another Lua Object-Oriented Model"

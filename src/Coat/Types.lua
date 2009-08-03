@@ -9,6 +9,8 @@ module(..., package.seeall)
 local basic_type = Coat.basic_type
 local checktype = Coat.checktype
 
+_TC = {}
+
 function subtype (name, parent, validator, msg)
     checktype('subtype', 1, name, 'string')
     checktype('subtype', 2, parent, 'string')
