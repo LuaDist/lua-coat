@@ -349,7 +349,8 @@ function extends(class, ...)
             p = require(v)
         elseif v._NAME then
             p = v
-        else
+        end
+        if not p or not p._INIT then
             argerror('extends', i, "string or Class expected")
         end
 
@@ -360,6 +361,7 @@ function extends(class, ...)
 
         table.insert(class._PARENT, p)
         table.insert(class._ISA, p._ISA)
+        table.insert(class._DOES, p._DOES)
     end
 
     local t = getmetatable(class)
@@ -384,10 +386,6 @@ function extends(class, ...)
     class.after = function (...) return after(class, ...) end
 end
 
-function with (...)
-    error "Roles are not yet implemented"
-end
-
 local classes = {}
 function Meta.classes ()
     return classes
@@ -397,7 +395,7 @@ function Meta.class (name)
     return classes[name]
 end
 
-function class (modname)
+function _G.class (modname)
     checktype('class', 1, modname, 'string')
     if _G[modname] then
         error("name conflict for module '" .. modname .. "'")
@@ -417,9 +415,11 @@ function class (modname)
     M._M = M
     M._ISA = { modname }
     M._PARENT = {}
+    M._DOES = {}
     M._MT = { __index = M }
     M._ATTR = {}
     M.isa = isa
+    M.does = does
     M.new = function (...) return new(M, ...) end
     M.__gc = function (...) return __gc(M, ...) end
     M._INIT = function (...) return _INIT(M, ...) end
@@ -430,37 +430,6 @@ function class (modname)
     M.with = function (...) return with(M, ...) end
     classes[modname] = M
 end
-_G.class = class
-
-local roles = {}
-function Meta.roles ()
-    return roles
-end
-
-function Meta.role (name)
-    return roles[name]
-end
-
-function role (modname)
-    checktype('role', 1, modname, 'string')
-    if _G[modname] then
-        error("name conflict for module '" .. modname .. "'")
-    end
-
-    local M = {}
-    _G[modname] = M
-    package.loaded[modname] = M
-    setmetatable(M, {
-        __index = _G,
-    })
-    setfenv(2, M)
-    M._NAME = modname
-    M._M = M
-
-    roles[modname] = M
-    error "Roles are not yet implemented"
-end
-_G.role = role
 
 Types = {} -- dummy sub-module
 Types._TC = {}
