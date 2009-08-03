@@ -10,6 +10,7 @@ local basic_type = Coat.basic_type
 local checktype = Coat.checktype
 
 _TC = {}
+_COERCE = {}
 
 function subtype (name, parent, validator, msg)
     checktype('subtype', 1, name, 'string')
@@ -75,6 +76,41 @@ function enum (name, ...)
     }
 end
 _G.enum = enum
+
+function coerce (name, ...)
+    checktype('coerce', 1, name, 'string')
+    if not _COERCE[name] then
+        _COERCE[name] = {}
+    end
+    local t = {...}
+    local i = 2
+    while #t > 0 do
+        local from = table.remove(t, 1)
+        checktype('coerce', i, from, 'string')
+        i = i + 1
+        local via = table.remove(t, 1)
+        checktype('coerce', i, via, 'function')
+        i = i + 1
+        _COERCE[name][from] = via
+    end
+end
+_G.coerce = coerce
+
+function from (name, ...) -- sugar
+    if ... then
+        error "too many arguments to from"
+    end
+    return name
+end
+_G.from = from
+
+function via (func, ...) -- sugar
+    if ... then
+        error "too many arguments to via"
+    end
+    return func
+end
+_G.via = via
 
 --
 -- Copyright (c) 2009 Francois Perrad

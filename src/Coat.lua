@@ -99,29 +99,40 @@ local function validate (name, options, val)
             error("Attribute '" .. name .. "' is required")
         end
     else
-        local function check_isa (tname)
-            local tc = Types and Types._TC[tname]
-            if tc then
-                check_isa(tc.parent)
-                if not tc.validator(val) then
-                    local msg = tc.message
-                    if msg == nil then
-                        error("Value for attribute '" .. name
-                              .. "' does not validate type constraint '"
-                              .. tname .. "'" )
-                    else
-                        error(string.format(msg, val))
-                    end
+        if options.isa then
+            if options.coerce then
+                local mapping = Types and Types._COERCE[options.isa]
+                if not mapping then
+                    error( "Coercion is not available for type " .. options.isa)
                 end
-            else
-                if not isa(val, tname) then
-                    error( "Invalid type for attribute '" .. name .. "' (got "
-                           .. object_type(val) .. ", expected " .. tname ..")" )
+                local coerce = mapping[object_type(val)]
+                if coerce then
+                    val = coerce(val)
                 end
             end
-        end -- check_isa
 
-        if options.isa then
+            local function check_isa (tname)
+                local tc = Types and Types._TC[tname]
+                if tc then
+                    check_isa(tc.parent)
+                    if not tc.validator(val) then
+                        local msg = tc.message
+                        if msg == nil then
+                            error("Value for attribute '" .. name
+                                  .. "' does not validate type constraint '"
+                                  .. tname .. "'" )
+                        else
+                            error(string.format(msg, val))
+                        end
+                    end
+                else
+                    if not isa(val, tname) then
+                        error( "Invalid type for attribute '" .. name .. "' (got "
+                               .. object_type(val) .. ", expected " .. tname ..")" )
+                    end
+                end
+            end -- check_isa
+
             check_isa(options.isa)
         end
     end
