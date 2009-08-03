@@ -43,22 +43,22 @@ function isa (obj, t)
         argerror('isa', 2, "string or Object/Class expected")
     end
 
-    local function walk_type (types)
+    local function walk (types)
         for i, v in ipairs(types) do
             if v == t then
                 return true
             elseif basic_type(v) == 'table' then
-                local result = walk_type(v)
+                local result = walk(v)
                 if result then
                     return result
                 end
             end
         end
         return false
-    end -- walk_type
+    end -- walk
 
     if basic_type(obj) == 'table' and obj._ISA then
-        return walk_type(obj._ISA)
+        return walk(obj._ISA)
     else
         return basic_type(obj) == t
     end
@@ -99,10 +99,10 @@ local function validate (name, options, val)
             error("Attribute '" .. name .. "' is required")
         end
     else
-        local function check (tname)
+        local function check_isa (tname)
             local tc = Types and Types._TC[tname]
             if tc then
-                check(tc.parent)
+                check_isa(tc.parent)
                 if not tc.validator(val) then
                     local msg = tc.message
                     if msg == nil then
@@ -119,10 +119,10 @@ local function validate (name, options, val)
                            .. object_type(val) .. ", expected " .. tname ..")" )
                 end
             end
-        end -- check
+        end -- check_isa
 
         if options.isa then
-            check(options.isa)
+            check_isa(options.isa)
         end
     end
     return val
