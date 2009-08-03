@@ -129,68 +129,36 @@ local function validate (name, options, val)
 end
 
 function _INIT (class, obj, args)
-
-    local function walk_type (types)
-
-        local function init ()
-            for k, opts in pairs(class._ATTR) do
-                if obj._VALUES[k] == nil then
-                    local val = args[k]
-                    if val ~= nil then
-                        if basic_type(val) == 'function' then
-                            val = val(obj)
-                        end
-                    elseif not opts.lazy then
-                        val = attr_default(opts, obj)
-                    end
-                    val = validate(k, opts, val)
-                    obj._VALUES[k] = val
+    for k, opts in pairs(class._ATTR) do
+        if obj._VALUES[k] == nil then
+            local val = args[k]
+            if val ~= nil then
+                if basic_type(val) == 'function' then
+                    val = val(obj)
                 end
+            elseif not opts.lazy then
+                val = attr_default(opts, obj)
             end
-
-            local m = getmetatable(obj)
-            for k, v in pairs(class._MT) do
-                if not m[k] then
-                    m[k] = v
-                end
-            end
-        end -- init
-
-        for i, v in ipairs(types) do
-            if basic_type(v) == 'string' then
-                if v == class._NAME then
-                    init()
-                else
-                    package.loaded[v]._INIT(obj, args)
-                end
-            else
-                walk_type(v)
-            end
+            val = validate(k, opts, val)
+            obj._VALUES[k] = val
         end
-    end -- walk_type
+    end
 
-    walk_type(class._ISA)
+    local m = getmetatable(obj)
+    for k, v in pairs(class._MT) do
+        if not m[k] then
+            m[k] = v
+        end
+    end
+
+    for i, p in ipairs(class._PARENT) do
+        p._INIT(obj, args)
+    end
 end
 
 function Meta.has (class, name)
-    local function walk_type (types)
-        for i, v in ipairs(types) do
-            local result
-            if basic_type(v) == 'string' then
-                result = package.loaded[v]._ATTR[name]
-            else
-                result = walk_type(v)
-            end
-            if result then
-                return result
-            end
-        end
-        return nil
-    end  -- walk_type
-
-    return walk_type(class._ISA)
+    return class._ATTR[name]
 end
-local meta_has = Meta.has
 
 function has (class, name, options)
     checktype('has', 1, name, 'string')
@@ -199,7 +167,7 @@ function has (class, name, options)
 
     if name:sub(1, 1) == '+' then
         name = name:sub(2)
-        inherited = meta_has(class, name)
+        inherited = class._ATTR[name]
         if inherited == nil then
             error( "Cannot overload unknown attribute " .. name )
         end
@@ -211,7 +179,7 @@ function has (class, name, options)
             t[k] = v
         end
         options = t
-    elseif meta_has(class, name) ~= nil then
+    elseif class._ATTR[name] ~= nil then
         error( "Duplicate definition of attribute " .. name )
     end
     if options.trigger and basic_type(options.trigger) ~= 'function' then
@@ -379,6 +347,21 @@ function extends(class, ...)
                     t[k] = v      -- save for next access
                     return v
                 end
+    local a = getmetatable(class._ATTR)
+    a.__index = function (t, k) 
+                    local function search ()
+                        for i, p in ipairs(class._PARENT) do
+                            local v = p._ATTR[k]
+                            if v then 
+                                return v
+                            end
+                        end
+                    end -- search
+
+                    local v = rawget(t, k) or search()
+                    t[k] = v      -- save for next access
+                    return v
+                end
 
     class.override = function (...) return override(class, ...) end
     class.before = function (...) return before(class, ...) end
@@ -418,6 +401,7 @@ function _G.class (modname)
     M._DOES = {}
     M._MT = { __index = M }
     M._ATTR = {}
+    setmetatable(M._ATTR, {})
     M.isa = isa
     M.does = does
     M.new = function (...) return new(M, ...) end
