@@ -43,25 +43,27 @@ function setup ()
 end
 
 function test_A ()
+    local expected = { "BUILD A" }
     a = A{ id = 1 }
     assertTrue( a:isa 'A' )
-    assertTableEquals( a:buffer(), { "BUILD A" } )
+    assertTableEquals( a:buffer(), expected )
     a:__gc()  -- manual
     a = nil
 --    collectgarbage 'collect'
-    assertTableEquals( _G.REG.A[1], { "BUILD A" } )
+    assertTableEquals( _G.REG.A[1], expected )
 end
 
 function test_B ()
+    local expected = { "BUILD A", "BUILD B" }
     b = B{ id = 2 }
     assertTrue( b:isa 'B' )
     assertTrue( b:isa 'A' )
-    assertTableEquals( b:buffer(), { "BUILD A", "BUILD B" } )
+    assertTableEquals( b:buffer(), expected )
     b:__gc()  -- manual
     b = nil
 --    collectgarbage 'collect'
-    assertTableEquals( _G.REG.B[2], { "BUILD A", "BUILD B" } )
-    assertTableEquals( _G.REG.A[2], { "BUILD A", "BUILD B" } )
+    assertTableEquals( _G.REG.B[2], expected )
+    assertTableEquals( _G.REG.A[2], expected )
 end
 
 
