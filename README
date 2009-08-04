@@ -1,6 +1,10 @@
 
 # lua-Coat : Yet a Another Lua Object-Oriented Model
 
+    Language shapes the way we think,
+    and determines what we can think about.
+        -- B.L. Whorf
+
 ## INTRODUCTION
 
 Perl5, like [Lua][], has no OO model, just OO mechanism.
