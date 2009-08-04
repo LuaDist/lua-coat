@@ -373,11 +373,6 @@ function extends(class, ...)
                     t[k] = v      -- save for next access
                     return v
                 end
-
-    class.override = function (...) return override(class, ...) end
-    class.before = function (...) return before(class, ...) end
-    class.around = function (...) return around(class, ...) end
-    class.after = function (...) return after(class, ...) end
 end
 
 local classes = {}
@@ -421,6 +416,10 @@ function _G.class (modname)
     M.has = function (...) return has(M, ...) end
     M.method = function (...) return method(M, ...) end
     M.overload = function (...) return overload(M, ...) end
+    M.override = function (...) return override(M, ...) end
+    M.before = function (...) return before(M, ...) end
+    M.around = function (...) return around(M, ...) end
+    M.after = function (...) return after(M, ...) end
     M.extends = function (...) return extends(M, ...) end
     M.with = function (...) return with(M, ...) end
     classes[modname] = M
