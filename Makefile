@@ -43,7 +43,7 @@ $(DISTFILE): MANIFEST
 dist: $(DISTFILE)
 
 rockspec: $(DISTFILE)
-	perl -e '$(rockspec_pl)' rockspec.tmpl > rockspec
+	perl -e '$(rockspec_pl)' rockspec.in > rockspec
 
 test:
 	$(MAKE) -C test
