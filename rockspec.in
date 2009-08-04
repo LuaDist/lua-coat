@@ -26,7 +26,7 @@ Small lua patches allow a syntax close to Perl5 Moose. See patch/.
     ]],
     homepage = 'http://github.com/fperrad/lua-Coat',
     maintainer = 'Francois Perrad',
-    license = 'MIT'
+    license = 'MIT/X11'
 }
 dependencies = {
     'lua >= 5.1',

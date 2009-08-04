@@ -429,5 +429,5 @@ _VERSION = "0.0"
 _DESCRIPTION = "lua-Coat : Yet a Another Lua Object-Oriented Model"
 _COPYRIGHT = "Copyright (c) 2009 Francois Perrad"
 --
--- This library is licensed under the terms of the MIT license, like Lua itself.
+-- This library is licensed under the terms of the MIT/X11 license, like Lua itself.
 --
