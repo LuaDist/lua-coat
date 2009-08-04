@@ -1,2 +1,7 @@
 
+MANIFEST
+rockspec
+*.tar
+*.tar.gz
+
 lunity.lua
