@@ -1,6 +1,6 @@
 
 PROJECT = lua-Coat
-VERSION = $(shell cd src && lua -e "require 'Coat'; print(Coat._VERSION)")
+VERSION = $(shell cd src && lua -e "require [[Coat]]; print(Coat._VERSION)")
 DISTFILE= $(PROJECT)-$(VERSION).tar.gz
 
 manifest_pl = \
