@@ -1,8 +1,8 @@
 
-VERSION = $(shell cd src && lua -e "require [[Coat]]; print(Coat._VERSION)")
-DISTFILE= lua-Coat-$(VERSION).tar.gz
+VERSION := $(shell cd src && lua -e "require [[Coat]]; print(Coat._VERSION)")
+TARBALL := lua-Coat-$(VERSION).tar.gz
 
-manifest_pl = \
+manifest_pl := \
 use strict; \
 use warnings; \
 my @files = qw(MANIFEST); \
@@ -13,11 +13,11 @@ while (<>) { \
 } \
 print join qq{\n}, sort @files;
 
-rockspec_pl = \
+rockspec_pl := \
 use strict; \
 use warnings; \
 use Digest::MD5; \
-my $$file = q{$(DISTFILE)}; \
+my $$file = q{$(TARBALL)}; \
 open my $$FH, $$file or die qq{$$!}; \
 binmode $$FH; \
 my %%config = ( \
@@ -39,12 +39,12 @@ tag:
 MANIFEST:
 	git ls-files | perl -e '$(manifest_pl)' > MANIFEST
 
-$(DISTFILE): MANIFEST
-	cat MANIFEST | tar -zc -T - -f $(DISTFILE)
+$(TARBALL): MANIFEST
+	cat MANIFEST | tar -zc -T - -f $(TARBALL)
 
-dist: $(DISTFILE)
+dist: $(TARBALL)
 
-rockspec: $(DISTFILE)
+rockspec: $(TARBALL)
 	perl -e '$(rockspec_pl)' rockspec.in > rockspec
 
 test:
