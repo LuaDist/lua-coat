@@ -31,16 +31,19 @@ while (<>) { \
 version:
 	@echo $(VERSION)
 
+tag:
+	git tag -a -m 'tag release $(VERSION)' $(VERSION)
+
 MANIFEST:
-	git ls-files | perl -e "$(manifest_pl)" > MANIFEST
+	git ls-files | perl -e '$(manifest_pl)' > MANIFEST
 
 $(DISTFILE): MANIFEST
-	cat MANIFEST | tar -cvz $(DISTFILE)
+	cat MANIFEST | tar -zc -T - -f $(DISTFILE)
 
 dist: $(DISTFILE)
 
 rockspec: $(DISTFILE)
-	perl -e "$(rockspec_pl)" rockspec.tmpl > rockspec
+	perl -e '$(rockspec_pl)' rockspec.tmpl > rockspec
 
 test:
 	$(MAKE) -C test
@@ -48,5 +51,5 @@ test:
 clean:
 	rm -f MANIFEST rockspec
 
-.PHONY: test MANIFEST rockspec
+.PHONY: test
 
