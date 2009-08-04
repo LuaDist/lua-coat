@@ -1,8 +1,8 @@
 package = 'lua-Coat'
-version = 'VERSION-1'
+version = '@version@-1'
 source = {
-    url = 'http://github.com/fperrad/lua-Coat/download/lua-Coat-VERSION.tar.gz',
-    md5 = 'MD5',
+    url = 'http://github.com/fperrad/lua-Coat/download/lua-Coat-@version@.tar.gz',
+    md5 = '@md5@',
 }
 description = {
     summary = "Yet a Another Lua Object-Oriented Model",

@@ -1,7 +1,6 @@
 
-PROJECT = lua-Coat
 VERSION = $(shell cd src && lua -e "require [[Coat]]; print(Coat._VERSION)")
-DISTFILE= $(PROJECT)-$(VERSION).tar.gz
+DISTFILE= lua-Coat-$(VERSION).tar.gz
 
 manifest_pl = \
 use strict; \
@@ -21,10 +20,13 @@ use Digest::MD5; \
 my $$file = q{$(DISTFILE)}; \
 open my $$FH, $$file or die qq{$$!}; \
 binmode $$FH; \
-my $$md5 = Digest::MD5->new->addfile($$FH)->hexdigest(); \
+my %%config = ( \
+    version => q{$(VERSION)}, \
+    md5     => Digest::MD5->new->addfile($$FH)->hexdigest(), \
+); \
+close $$FH; \
 while (<>) { \
-    s/VERSION/$(VERSION)/; \
-    s/MD5/$$md5/; \
+    s/@(\w+)@/$$config{$$1}/g; \
     print; \
 }
 
