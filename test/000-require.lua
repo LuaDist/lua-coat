@@ -11,7 +11,7 @@ function test_require ()
     assertNotNil( m._COPYRIGHT:match 'Perrad' )
     assertNotNil( Coat._DESCRIPTION:match 'Lua' )
     assertType( m._VERSION, 'string' )
-    assertNotNil( m._VERSION:match '^%d%.%d$' )
+    assertNotNil( m._VERSION:match '^%d%.%d%.%d$' )
 end
 
 
