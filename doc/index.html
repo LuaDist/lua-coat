@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>lua-Coat</title>
+    <link rel="stylesheet" href="http://www.keplerproject.org/doc.css" type="text/css"/>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+
+<body>
+
+<div id="container">
+
+<div id="product">
+  <div id="product_logo">
+    <a href="http://www.lua.org">
+      <img alt="Lua" src="http://www.andreas-rozek.de/Lua/Lua-Logo_128x128.png"/>
+    </a>
+  </div>
+  <div id="product_name"><big><strong>lua-Coat</strong></big></div>
+  <div id="product_description">Yet a Another Lua Object-Oriented Model</div>
+</div> <!-- id="product" -->
+
+<div id="main">
+  
+<div id="navigation">
+<h1>lua-Coat</h1>
+  <ul>
+    <li><strong>Home</strong>
+      <ul> 
+        <li><a href="index.html#overview">Overview</a></li>
+        <li><a href="index.html#status">Status</a></li>
+        <li><a href="index.html#download">Download</a></li>
+        <li><a href="index.html#installation">Installation</a></li>
+        <li><a href="index.html#license">License</a></li>
+      </ul>
+    </li>
+    <li><a href="coat.html">The module <code>Coat</code></a>
+      <ul>
+        <li><a href="coat.html#reference">Reference</a></li>
+        <li><a href="coat.html#examples">Examples</a></li>
+      </ul>
+    </li>
+    <li><a href="types.html">The module <code>Types</code></a>
+      <ul>
+        <li><a href="types.html#reference">Reference</a></li>
+        <li><a href="types.html#examples">Examples</a></li>
+      </ul>
+    </li>
+    <li><a href="http://luaforge.net/projects/luafilesystem/">Project</a>
+      <ul>
+        <li><a href="http://github.com/fperrad/lua-Coat/">Git</a></li>
+      </ul>
+    </li>
+  </ul>
+</div> <!-- id="navigation" -->
+
+<div id="content">
+
+<h2><a name="overview"></a>Overview</h2>
+
+<p>Perl5, like <a href="http://www.lua.org/">Lua</a>,
+has no OO model, just OO mechanism.
+This allows a proliferation (or experimentation) of different model.<p>
+
+<p>Now with <a href="http://www.iinteractive.com/moose/">Moose</a>,
+Perl5 find its <em>ultimate</em> OO model.
+Moose borrows all the best features from Perl6, CLOS (LISP), Smalltalk
+and many other languages.
+Moose is built on top of a metaobject protocol, with full introspection.</p>
+
+<p><a href="http://www.sukria.net/perl/coat/">Coat</a>
+is light-weight Perl5 module which just mimics Moose.</p>
+
+<p>Finally, lua-Coat is the Lua port of Coat.</p>
+
+<p>Small lua patches allow a syntax close to Perl5 Moose. See patch/.</p>
+
+<h2><a name="documentation"></a>Documentation</h2>
+
+<p>After these HTML files, there are many unit tests in test/.</p>
+
+<p>Moose supplies a Manual and a Cookbook available on
+its <a href="http://search.cpan.org/dist/Moose/">CPAN page</a>.
+It's the best ressource to understand this module.</p>
+
+<p>And finally, there are the code in src/
+where you could check the availability of a feature.</p>
+
+<h2><a name="status"></a>Status</h2>
+
+<p>lua-Coat is in beta stage.</p>
+
+<p>It was developed for Lua 5.1.</p>
+
+<h2><a name="download"></a>Download</h2>
+
+<p>lua-Coat source can be downloaded from
+<a href="http://github.com/fperrad/lua-Coat/download/">GitHub<a/> or its
+<a href="http://luaforge.net/projects/lua-coat/files/">Lua Forge</a>
+page.</p>
+
+<h2><a name="installation"></a>Installation</h2>
+
+<p>The easiest way to install lua-Coat is to use LuaRocks:</p>
+
+<pre class="example">
+luarocks install lua-Coat
+</pre>
+
+<p>If you prefer to install manually, just copy the files from /src.
+There are no building stage, lua-Coat is a pure Lua module.</p>
+
+<h2><a name="license"></a>Copyright and License</h2>
+
+<p>Copyright &copy; 2009 Francois Perrad</p>
+
+<p>This library is licensed under the terms of the MIT/X11 license, like Lua itself.</p>
+
+</div> <!-- id="content" -->
+
+</div> <!-- id="main" -->
+
+<div id="about">
+</div> <!-- id="about" -->
+
+</div> <!-- id="container" -->
+
+</body>
+</html>
