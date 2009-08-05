@@ -1,6 +1,6 @@
 
 VERSION := $(shell cd src && lua -e "require [[Coat]]; print(Coat._VERSION)")
-TARBALL := lua-Coat-$(VERSION).tar.gz
+TARBALL := lua-coat-$(VERSION).tar.gz
 
 manifest_pl := \
 use strict; \
