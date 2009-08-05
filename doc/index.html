@@ -32,6 +32,7 @@
         <li><a href="index.html#status">Status</a></li>
         <li><a href="index.html#download">Download</a></li>
         <li><a href="index.html#installation">Installation</a></li>
+        <li><a href="index.html#test">Test</a></li>
         <li><a href="index.html#license">License</a></li>
       </ul>
     </li>
@@ -56,6 +57,12 @@
 </div> <!-- id="navigation" -->
 
 <div id="content">
+
+<blockquote><em>
+    Language shapes the way we think,<br />
+    and determines what we can think about.<br />
+        &mdash; B.L. Whorf
+</em></blockquote>
 
 <h2><a name="overview"></a>Overview</h2>
 
@@ -110,6 +117,18 @@ luarocks install lua-Coat
 
 <p>If you prefer to install manually, just copy the files from /src.
 There are no building stage, lua-Coat is a pure Lua module.</p>
+
+<h2><a name="test"></a>Test</h2>
+
+<p>The test suite requires the module
+<a href="http://luaforge.net/projects/luafilesystem/">LuaFileSystem<a/>.
+Each test uses the module <a href="http://phrogz.net/lua/lunity.lua">lunity</a>
+which is automatically downloaded.
+</p>
+
+<pre class="example">
+cd test && make test
+</pre>
 
 <h2><a name="license"></a>Copyright and License</h2>
 
