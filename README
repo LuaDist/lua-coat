@@ -35,6 +35,12 @@ Well, there are many unit tests in test/.
 Moose supplies a Manual and a Cookbook available on
 its [CPAN page](http://search.cpan.org/dist/Moose/)
 
+Development
+-----------
+
+lua-Coat uses Git as Version Control System
+and is hosted at <http://github.com/fperrad/lua-Coat/>.
+
 See Also
 --------
 
