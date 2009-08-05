@@ -1,5 +1,5 @@
 package = 'lua-Coat'
-version = '@version@-1'
+version = '@version@-@rev@'
 source = {
     url = 'http://github.com/fperrad/lua-Coat/download/lua-coat-@version@.tar.gz',
     md5 = '@md5@',

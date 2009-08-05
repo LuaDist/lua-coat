@@ -1,6 +1,9 @@
 
 VERSION := $(shell cd src && lua -e "require [[Coat]]; print(Coat._VERSION)")
 TARBALL := lua-coat-$(VERSION).tar.gz
+ifndef REV
+  REV   := 1
+endif
 
 manifest_pl := \
 use strict; \
@@ -9,6 +12,7 @@ my @files = qw(MANIFEST); \
 while (<>) { \
     chomp; \
     next if m{^\.}; \
+    next if m{^rockspec/}; \
     push @files, $$_; \
 } \
 print join qq{\n}, sort @files;
@@ -22,6 +26,7 @@ open my $$FH, $$file or die qq{$$!}; \
 binmode $$FH; \
 my %%config = ( \
     version => q{$(VERSION)}, \
+    rev     => q{$(REV)}, \
     md5     => Digest::MD5->new->addfile($$FH)->hexdigest(), \
 ); \
 close $$FH; \
@@ -45,13 +50,13 @@ $(TARBALL): MANIFEST
 dist: $(TARBALL)
 
 rockspec: $(TARBALL)
-	perl -e '$(rockspec_pl)' rockspec.in > rockspec
+	perl -e '$(rockspec_pl)' rockspec.in > rockspec/lua-coat-$(VERSION)-$(REV).rockspec
 
 test:
 	$(MAKE) -C test
 
 clean:
-	rm -f MANIFEST rockspec
+	rm -f MANIFEST
 
-.PHONY: test
+.PHONY: test rockspec
 
