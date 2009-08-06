@@ -21,8 +21,8 @@ rockspec_pl := \
 use strict; \
 use warnings; \
 use Digest::MD5; \
-my $$file = q{$(TARBALL)}; \
-open my $$FH, $$file or die qq{$$!}; \
+open my $$FH, q{<}, q{$(TARBALL)} \
+    or die qq{Cannot open $(TARBALL) ($$!)}; \
 binmode $$FH; \
 my %%config = ( \
     version => q{$(VERSION)}, \
