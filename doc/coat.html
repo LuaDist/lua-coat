@@ -74,31 +74,75 @@
 
 <h4><code>after( name, func )</code></h4>
 
+<p>Method modifier.</p>
+
 <h4><code>around( name, func )</code></h4>
+
+<p>Method modifier. The new method receives the old one as first parameter.</p>
 
 <h4><code>before( name, func )</code></h4>
 
+<p>Method modifier.</p>
+
 <h4><code>extends( class [, ...] )</code></h4>
+
+<p>Extends the current class with the list of class in parameter.</p>
 
 <h4><code>has( name, options )</code></h4>
 
+<p>Adds a attribute <code>name</code> in the current class.
+The prefix <code>+</code> in <code>name</code> allows overriding.</p>
+
+<p>The following options are available :
+  <ul>
+    <li><code>clearer</code> : function name </li>
+    <li><code>coerce</code> : boolean </li>
+    <li><code>default</code> : value or function </li>
+    <li><code>handles</code> : table </li>
+    <li><code>is</code> : string <code>ro|rw</code></li>
+    <li><code>isa</code> : type name</li>
+    <li><code>lazy</code> : boolean </li>
+    <li><code>required</code> : boolean </li>
+    <li><code>trigger</code> : function </li>
+  </ul>
+</p>
+
 <h4><code>isa( obj, t )</code></h4>
+
+<p>Checks if a object is an instance of <code>t<code> which is a class or classname.</p>
 
 <h4><code>overload( name, func )</code></h4>
 
+<p>Registers a metamethod.</p>
+
 <h4><code>override( name, func )</code></h4>
+
+<p>Method modifier.</p>
 
 <h4><code>method( name, func )</code></h4>
 
+<p>Registers a method.</p>
+
 <h4><code>new( args )</code></h4>
+
+<p>Instanciates a object.</p>
+
+<p>If exist, the user method <code>BUILD</code> is called at the end.<p>
 
 <h3>Functions in <code>Coat.Meta</code></h3>
 
 <h4><code>Coat.Meta.class( modname )</code></h4>
 
+<p>Returns the Coat class <code>modname</code> or nil.</p>
+
 <h4><code>Coat.Meta.classes()</code></h4>
 
+<p>Returns a table with all Coat classes.</p>
+
 <h4><code>Coat.Meta.has( class, name )</code></h4>
+
+<p>Returns the table of options of the attribute <code>name</code>
+in the class <code>class</code> or nil.</p>
 
 <h2><a name="examples"></a>Examples</h2>
 

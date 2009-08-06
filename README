@@ -35,7 +35,8 @@ There are few HTML files in doc/.
 There are many unit tests in test/.
 
 Moose supplies a Manual and a Cookbook available on
-its [CPAN page](http://search.cpan.org/dist/Moose/)
+its [CPAN page](http://search.cpan.org/dist/Moose/).
+It's the best ressource to understand this module.
 
 Development
 -----------
