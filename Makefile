@@ -24,7 +24,7 @@ use Digest::MD5; \
 open my $$FH, q{<}, q{$(TARBALL)} \
     or die qq{Cannot open $(TARBALL) ($$!)}; \
 binmode $$FH; \
-my %%config = ( \
+my %config = ( \
     version => q{$(VERSION)}, \
     rev     => q{$(REV)}, \
     md5     => Digest::MD5->new->addfile($$FH)->hexdigest(), \
