@@ -1,7 +1,7 @@
 package = 'lua-Coat'
 version = '@version@-@rev@'
 source = {
-    url = 'http://github.com/fperrad/lua-Coat/download/lua-coat-@version@.tar.gz',
+    url = 'http://cloud.github.com/downloads/fperrad/lua-Coat/lua-coat-@version@.tar.gz',
     md5 = '@md5@',
 }
 description = {
@@ -24,7 +24,7 @@ Small lua patches allow a syntax close to Perl5 Moose. See patch/.
   [Moose]: http://www.iinteractive.com/moose/
   [Coat]: http://www.sukria.net/perl/coat/
     ]],
-    homepage = 'http://github.com/fperrad/lua-Coat',
+    homepage = 'http://luaforge.net/projects/lua-coat/',
     maintainer = 'Francois Perrad',
     license = 'MIT/X11'
 }
