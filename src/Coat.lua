@@ -426,7 +426,7 @@ function _G.class (modname)
 end
 
 _VERSION = "0.1.0"
-_DESCRIPTION = "lua-Coat : Yet a Another Lua Object-Oriented Model"
+_DESCRIPTION = "lua-Coat : Yet Another Lua Object-Oriented Model"
 _COPYRIGHT = "Copyright (c) 2009 Francois Perrad"
 --
 -- This library is licensed under the terms of the MIT/X11 license, like Lua itself.
