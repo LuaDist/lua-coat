@@ -45,7 +45,10 @@ MANIFEST:
 	git ls-files | perl -e '$(manifest_pl)' > MANIFEST
 
 $(TARBALL): MANIFEST
-	cat MANIFEST | tar -zc -T - -f $(TARBALL)
+	[ -d lua-Coat-$(VERSION) ] || ln -s . lua-Coat-$(VERSION)
+	perl -ne 'print qq{lua-Coat-$(VERSION)/$$_};' MANIFEST | \
+	    tar -zc -T - -f $(TARBALL)
+	rm lua-Coat-$(VERSION)
 
 dist: $(TARBALL)
 
