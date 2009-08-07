@@ -64,6 +64,35 @@ function isa (obj, t)
     end
 end
 
+function Coat.does (obj, r)
+    if basic_type(r) == 'table' and r._NAME then
+        r = r._NAME
+    end
+    if basic_type(r) ~= 'string' then
+        argerror('does', 2, "string or Role expected")
+    end
+
+    local function walk (roles)
+        for i, v in ipairs(roles) do
+            if v == r then
+                return true
+            elseif basic_type(v) == 'table' then
+                local result = walk(v)
+                if result then
+                    return result
+                end
+            end
+        end
+        return false
+    end -- walk
+
+    if basic_type(obj) == 'table' and obj._DOES then
+        return walk(obj._DOES)
+    else
+        return false
+    end
+end
+
 function new (class, args)
     args = args or {}
     local obj = {
@@ -373,6 +402,26 @@ function extends(class, ...)
                     t[k] = v      -- save for next access
                     return v
                 end
+end
+
+function Coat.with (class, ...)
+    for i, v in ipairs{...} do
+        local r
+        if basic_type(v) == 'string' then
+            r = require(v)
+        elseif v._NAME then
+            r = v
+        end
+        if not r or r._INIT then
+            argerror('with', i, "string or Role expected")
+        end
+
+        table.insert(class._DOES, r._NAME)
+        for i, v in ipairs(r._STORE) do
+            local k = table.remove(v, 1)
+            Coat[k](class, unpack(v))
+        end
+    end
 end
 
 local classes = {}

@@ -1,4 +1,7 @@
 Revision history for lua-Coat
 
+0.2.0
+	+ add Roles
+
 0.1.0  Thu Aug  6 10:30:00 2009
 	First release (only Perl5 Coat features)
