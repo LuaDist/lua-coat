@@ -29,7 +29,7 @@ function test_Parent ()
     local foo = Parent.new()
     assertTrue( foo:isa 'Parent' )
     assertNil( foo:name() )
-    assertEqual( foo:name 'John', 'John' )
+    assertEqual( foo:name( 'John' ), 'John' )
     assertEqual( foo:lazy_classname(), 'Parent' )
     assertErrors( foo.lazy_classname, foo, 'Object' ) -- foo:lazy_classname 'Object'
     assertEqual( foo:type_constrained(), 5.5 )
@@ -42,11 +42,11 @@ function test_Child ()
     assertTrue( foo:isa 'Child' )
     assertTrue( foo:isa 'Parent' )
     assertEqual( foo:name(), 'Junior' )
-    assertEqual( foo:name 'John', 'John' )
+    assertEqual( foo:name( 'John' ), 'John' )
     assertEqual( foo:lazy_classname(), 'Child' )
     assertErrors( foo.lazy_classname, foo, 'Object' ) -- foo:lazy_classname 'Object'
     assertEqual( foo:type_constrained(), 'empty' )
-    assertEqual( foo:type_constrained 'text', 'text' )
+    assertEqual( foo:type_constrained( 'text' ), 'text' )
     assertErrors( foo.type_constrained, foo, -0.5 ) -- foo:type_constrained(-0.5)
 end
 

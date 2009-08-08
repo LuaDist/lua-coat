@@ -30,7 +30,7 @@ function test_Spanish ()
     assertInvokable( foo.dos )
     assertEqual( foo:dos(), 2 )
     assertInvokable( foo.nombre )
-    assertEqual( foo:nombre 'Juan', 'Juan' )
+    assertEqual( foo:nombre( 'Juan' ), 'Juan' )
 end
 
 function test_English ()
@@ -41,7 +41,7 @@ function test_English ()
     assertInvokable( foo.two )
     assertEqual( foo:two(), 2 )
     assertInvokable( foo.name )
-    assertEqual( foo:name 'John', 'John' )
+    assertEqual( foo:name( 'John' ), 'John' )
     assertInvokable( foo.bad )
     assertErrors( foo.bad, foo ) -- foo:bad()
 end
