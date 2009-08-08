@@ -100,6 +100,20 @@ function new (class, args)
         _VALUES = {}
     }
     setmetatable(obj, {})
+
+    for i, r in ipairs(class._ROLE) do -- check roles
+        for i, v in ipairs(r._EXCL) do
+            if class:does(v) then
+                error( "Role " .. r._NAME .. " excludes role " .. v )
+            end
+        end
+        for i, v in ipairs(r._REQ) do
+            if not class[v] then
+                error( "Role " .. r._NAME .. " requires method " .. v )
+            end
+        end
+    end
+
     class._INIT(obj, args)
     if class.BUILD then
         class.BUILD(obj, args)
@@ -417,6 +431,7 @@ function Coat.with (class, ...)
         end
 
         table.insert(class._DOES, r._NAME)
+        table.insert(class._ROLE, r)
         for i, v in ipairs(r._STORE) do
             local k = table.remove(v, 1)
             Coat[k](class, unpack(v))
@@ -454,6 +469,7 @@ function _G.class (modname)
     M._ISA = { modname }
     M._PARENT = {}
     M._DOES = {}
+    M._ROLE = {}
     M._MT = { __index = M }
     M._ATTR = {}
     setmetatable(M._ATTR, {})
