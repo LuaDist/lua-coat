@@ -1,0 +1,265 @@
+From 0573f7c19deb6cdb4f72a7ed8f3eec4cd862bab5 Mon Sep 17 00:00:00 2001
+From: Francois Perrad <francois.perrad@gadz.org>
+Date: Sat, 8 Aug 2009 09:44:13 +0200
+Subject: [PATCH] function call allows multiple arguments without parenthesis
+
+    funcargs -> expr { expsep expr }
+    expsep -> `,' | `=>'
+
+This patch is experimental.
+---
+ doc/manual.html |    4 +++-
+ src/llex.c      |   36 ++++++++++++++++++++++++++++++++++--
+ src/llex.h      |    6 +++++-
+ src/lparser.c   |   42 ++++++++++++++++++++++++++++++++++--------
+ 4 files changed, 76 insertions(+), 12 deletions(-)
+
+diff --git a/doc/manual.html b/doc/manual.html
+index f46f17c..a081ad3 100644
+--- a/doc/manual.html
++++ b/doc/manual.html
+@@ -8756,7 +8756,9 @@ Here is the complete syntax of Lua in extended BNF.
+ 
+ 	functioncall ::=  prefixexp args | prefixexp `<b>:</b>&acute; Name args 
+ 
+-	args ::=  `<b>(</b>&acute; [explist] `<b>)</b>&acute; | tableconstructor | String 
++	args ::=  `<b>(</b>&acute; [explist] `<b>)</b>&acute; | exp {expsep exp}
++
++	expsep ::= `<b>,</b>&acute; | `<b>=&gt;</b>&acute;
+ 
+ 	function ::= <b>function</b> funcbody
+ 
+diff --git a/src/llex.c b/src/llex.c
+index 6dc3193..a01a324 100644
+--- a/src/llex.c
++++ b/src/llex.c
+@@ -144,6 +144,10 @@ void luaX_setinput (lua_State *L, LexState *ls, ZIO *z, TString *source) {
+   ls->linenumber = 1;
+   ls->lastline = 1;
+   ls->source = source;
++  ls->indent_not_found = 1;
++  ls->last_indent = 0;
++  ls->indent = 0;
++  ls->need_semicol = 1;
+   luaZ_resizebuffer(ls->L, ls->buff, LUA_MINBUFFER);  /* initialize buffer */
+   next(ls);  /* read first char */
+ }
+@@ -328,6 +332,26 @@ static void read_string (LexState *ls, int del, SemInfo *seminfo) {
+                                    luaZ_bufflen(ls->buff) - 2);
+ }
+ 
++#undef next
++#define next(ls) { \
++  if (ls->indent_not_found) { \
++    int c = luaZ_lookahead(ls->z); \
++    if (c == ' ') { \
++      ls->indent++; \
++    } else if (c == '\t') { \
++      ls->indent+= 4; \
++    } else { \
++      ls->indent_not_found = 0; \
++      if (ls->need_semicol && (ls->indent <= ls->last_indent)) { \
++        return ';'; \
++      } \
++    } \
++  } \
++  ls->current = zgetc(ls->z); \
++}
++
++#undef save_and_next
++#define save_and_next(ls) save(ls, ls->current); next(ls)
+ 
+ static int llex (LexState *ls, SemInfo *seminfo) {
+   luaZ_resetbuffer(ls->buff);
+@@ -336,6 +360,9 @@ static int llex (LexState *ls, SemInfo *seminfo) {
+       case '\n':
+       case '\r': {
+         inclinenumber(ls);
++        ls->last_indent = ls->indent;
++        ls->indent_not_found = 1;
++        ls->indent = 0;
+         continue;
+       }
+       case '-': {
+@@ -368,8 +395,13 @@ static int llex (LexState *ls, SemInfo *seminfo) {
+       }
+       case '=': {
+         next(ls);
+-        if (ls->current != '=') return '=';
+-        else { next(ls); return TK_EQ; }
++        if (ls->current == '=') {
++          next(ls); return TK_EQ;
++        }
++        else if (ls->current == '>') {
++          next(ls); return TK_FAT_COMMA;
++        }
++        else  return '=';
+       }
+       case '<': {
+         next(ls);
+diff --git a/src/llex.h b/src/llex.h
+index a9201ce..a0a3ecd 100644
+--- a/src/llex.h
++++ b/src/llex.h
+@@ -29,7 +29,7 @@ enum RESERVED {
+   TK_RETURN, TK_THEN, TK_TRUE, TK_UNTIL, TK_WHILE,
+   /* other terminal symbols */
+   TK_CONCAT, TK_DOTS, TK_EQ, TK_GE, TK_LE, TK_NE, TK_NUMBER,
+-  TK_NAME, TK_STRING, TK_EOS
++  TK_NAME, TK_STRING, TK_EOS, TK_FAT_COMMA
+ };
+ 
+ /* number of reserved words */
+@@ -64,6 +64,10 @@ typedef struct LexState {
+   Mbuffer *buff;  /* buffer for tokens */
+   TString *source;  /* current source name */
+   char decpoint;  /* locale decimal point */
++  int indent_not_found;
++  int indent;
++  int last_indent;
++  int need_semicol;
+ } LexState;
+ 
+ 
+diff --git a/src/lparser.c b/src/lparser.c
+index 1e2a9a8..bf6d8a8 100644
+--- a/src/lparser.c
++++ b/src/lparser.c
+@@ -501,6 +501,8 @@ static void constructor (LexState *ls, expdesc *t) {
+   int line = ls->linenumber;
+   int pc = luaK_codeABC(fs, OP_NEWTABLE, 0, 0, 0);
+   struct ConsControl cc;
++  int save = ls->need_semicol;
++  ls->need_semicol = 0;
+   cc.na = cc.nh = cc.tostore = 0;
+   cc.t = t;
+   init_exp(t, VRELOCABLE, pc);
+@@ -534,6 +536,7 @@ static void constructor (LexState *ls, expdesc *t) {
+   lastlistfield(fs, &cc);
+   SETARG_B(fs->f->code[pc], luaO_int2fb(cc.na)); /* set initial array size */
+   SETARG_C(fs->f->code[pc], luaO_int2fb(cc.nh));  /* set initial table size */
++  ls->need_semicol = save;
+ }
+ 
+ /* }====================================================================== */
+@@ -545,6 +548,8 @@ static void parlist (LexState *ls) {
+   FuncState *fs = ls->fs;
+   Proto *f = fs->f;
+   int nparams = 0;
++  int save = ls->need_semicol;
++  ls->need_semicol = 0;
+   f->is_vararg = 0;
+   if (ls->t.token != ')') {  /* is `parlist' not empty? */
+     do {
+@@ -570,6 +575,7 @@ static void parlist (LexState *ls) {
+   adjustlocalvars(ls, nparams);
+   f->numparams = cast_byte(fs->nactvar - (f->is_vararg & VARARG_HASARG));
+   luaK_reserveregs(fs, fs->nactvar);  /* reserve register for parameters */
++  ls->need_semicol = save;
+ }
+ 
+ 
+@@ -619,19 +625,26 @@ static void funcargs (LexState *ls, expdesc *f) {
+       if (ls->t.token == ')')  /* arg list is empty? */
+         args.k = VVOID;
+       else {
++        int save = ls->need_semicol;
++        ls->need_semicol = 0;
+         explist1(ls, &args);
+         luaK_setmultret(fs, &args);
++        ls->need_semicol = save;
+       }
+       check_match(ls, ')', '(', line);
+       break;
+     }
+-    case '{': {  /* funcargs -> constructor */
+-      constructor(ls, &args);
+-      break;
+-    }
+-    case TK_STRING: {  /* funcargs -> STRING */
+-      codestring(ls, &args, ls->t.seminfo.ts);
+-      luaX_next(ls);  /* must use `seminfo' before `next' */
++    case '{': case TK_STRING: case TK_NUMBER: case TK_NIL: case TK_TRUE: case TK_FALSE:
++    case TK_DOTS: case TK_FUNCTION: {  /* funcargs -> expr { expsep expr } */
++      int save = ls->need_semicol;
++      ls->need_semicol = 0;
++      expr(ls, &args);
++      while (!testnext(ls, ';') && (testnext(ls, ',') || testnext(ls, TK_FAT_COMMA))) {
++        luaK_exp2nextreg(ls->fs, &args);
++        expr(ls, &args);
++      }
++      luaK_setmultret(fs, &args);
++      ls->need_semicol = save;
+       break;
+     }
+     default: {
+@@ -713,7 +726,8 @@ static void primaryexp (LexState *ls, expdesc *v) {
+         funcargs(ls, v);
+         break;
+       }
+-      case '(': case TK_STRING: case '{': {  /* funcargs */
++      case '(': case '{': case TK_STRING: case TK_NUMBER: case TK_NIL: case TK_TRUE:
++      case TK_FALSE: case TK_DOTS: case TK_FUNCTION: {  /* funcargs */
+         luaK_exp2nextreg(fs, v);
+         funcargs(ls, v);
+         break;
+@@ -965,9 +979,12 @@ static void assignment (LexState *ls, struct LHS_assign *lh, int nvars) {
+ static int cond (LexState *ls) {
+   /* cond -> exp */
+   expdesc v;
++  int save = ls->need_semicol;
++  ls->need_semicol = 0;
+   expr(ls, &v);  /* read condition */
+   if (v.k == VNIL) v.k = VFALSE;  /* `falses' are all equal here */
+   luaK_goiftrue(ls->fs, &v);
++  ls->need_semicol = save;
+   return v.f;
+ }
+ 
+@@ -1114,6 +1131,8 @@ static void forstat (LexState *ls, int line) {
+   FuncState *fs = ls->fs;
+   TString *varname;
+   BlockCnt bl;
++  int save = ls->need_semicol;
++  ls->need_semicol = 0;
+   enterblock(fs, &bl, 1);  /* scope for loop and control variables */
+   luaX_next(ls);  /* skip `for' */
+   varname = str_checkname(ls);  /* first variable name */
+@@ -1124,6 +1143,7 @@ static void forstat (LexState *ls, int line) {
+   }
+   check_match(ls, TK_END, TK_FOR, line);
+   leaveblock(fs);  /* loop scope (`break' jumps to this point) */
++  ls->need_semicol = save;
+ }
+ 
+ 
+@@ -1314,6 +1334,9 @@ static int statement (LexState *ls) {
+       breakstat(ls);
+       return 1;  /* must be last statement */
+     }
++    case ';': {
++      return 0;
++    }
+     default: {
+       exprstat(ls);
+       return 0;  /* to avoid warnings */
+@@ -1325,6 +1348,8 @@ static int statement (LexState *ls) {
+ static void chunk (LexState *ls) {
+   /* chunk -> { stat [`;'] } */
+   int islast = 0;
++  int save = ls->need_semicol;
++  ls->need_semicol = 1;
+   enterlevel(ls);
+   while (!islast && !block_follow(ls->t.token)) {
+     islast = statement(ls);
+@@ -1334,6 +1359,7 @@ static void chunk (LexState *ls) {
+     ls->fs->freereg = ls->fs->nactvar;  /* free registers */
+   }
+   leavelevel(ls);
++  ls->need_semicol = save;
+ }
+ 
+ /* }====================================================================== */
+-- 
+1.6.1.9.g97c34
+
