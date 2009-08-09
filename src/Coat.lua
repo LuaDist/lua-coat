@@ -429,22 +429,52 @@ function extends(class, ...)
 end
 
 function with (class, ...)
+    local r
     for i, v in ipairs{...} do
-        local r
-        if basic_type(v) == 'string' then
-            r = require(v)
-        elseif v._NAME then
-            r = v
-        end
-        if not r or r._INIT then
-            argerror('with', i, "string or Role expected")
-        end
+        if r and basic_type(v) == 'table' then
+            if v.alias then
+                local alias = v.alias
+                if basic_type(alias) ~= 'table' then
+                    argerror('with-alias', i, "table expected")
+                end
+                for old, new in pairs(alias) do
+                    if basic_type(old) ~= 'string' then
+                        argerror('with-alias', i, "string expected")
+                    end
+                    if basic_type(new) ~= 'string' then
+                        argerror('with-alias', i, "string expected")
+                    end
+                    class[new] = class[old]
+                end
+            end
+            if v.excludes then
+                local excludes = v.excludes
+                if basic_type(excludes) == 'string' then
+                    excludes = { excludes }
+                end
+                for i, name in ipairs(excludes) do
+                    if basic_type(name) ~= 'string' then
+                        argerror('with-excludes', i, "string expected")
+                    end
+                    class[name] = nil
+                end
+            end
+            r = nil
+        else
+            if basic_type(v) == 'string' then
+                r = require(v)
+            elseif v._NAME then
+                r = v
+            end
+            if not r or r._INIT then
+                argerror('with', i, "string or Role expected")
+            end
 
-        table.insert(class._DOES, r._NAME)
-        table.insert(class._ROLE, r)
-        for i, v in ipairs(r._STORE) do
-            local k = table.remove(v, 1)
-            Coat[k](class, unpack(v))
+            table.insert(class._DOES, r._NAME)
+            table.insert(class._ROLE, r)
+            for i, v in ipairs(r._STORE) do
+                Coat[v[1]](class, v[2], v[3])
+            end
         end
     end
 end
