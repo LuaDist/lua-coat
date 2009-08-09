@@ -5,14 +5,13 @@ require 'Coat.Role'
 role 'Foo'
 
 local function m1 (self)
-    print "m1"
+    return "m1"
 end
 
 method( 'm1' , m1 )
 
 method( 'm2' , function (self)
-    m1(self)
-    print "m2"
+    return m1(self) .. "m2"
 end )
 
 class 'A'
@@ -35,8 +34,8 @@ function test_A ()
     assertTrue( a:isa 'A' )
     assertInvokable( a.m1 )
     assertInvokable( a.m2 )
-    a:m1()
-    a:m2()
+    assertEqual( a:m1(), 'm1' )
+    assertEqual( a:m2(), 'm1m2' )
 end
 
 function test_B ()
@@ -46,8 +45,8 @@ function test_B ()
     assertInvokable( b.m2 )
     assertInvokable( b.foo_m1 )
     assertInvokable( b.foo_m2 )
-    b:foo_m1()
-    b:foo_m2()
+    assertEqual( b:m1(), 'm1' )
+    assertEqual( b:m2(), 'm1m2' )
 end
 
 function test_C ()
@@ -57,8 +56,8 @@ function test_C ()
     assertNil( c.m2 )
     assertInvokable( c.foo_m1 )
     assertInvokable( c.foo_m2 )
-    c:foo_m1()
-    c:foo_m2()
+    assertEqual( c:foo_m1(), 'm1' )
+    assertEqual( c:foo_m2(), 'm1m2' )
 end
 
 

@@ -15,8 +15,8 @@ with 'Breakable'
 
 has( 'engine', { is = 'ro', isa = 'Engine' } )
 
-before( '_break' , function (self)
-    print "I broke"
+after( '_break' , function (self)
+    return "I broke"
 end )
 
 
@@ -28,7 +28,7 @@ function test_Car ()
     assertTrue( car:isa 'Car' )
     assertTrue( car:does 'Breakable' )
     assertNil( car:is_broken() )
-    car:_break()
+    assertEqual( car:_break(), "I broke" )
     assertTrue( car:is_broken() )
 end
 

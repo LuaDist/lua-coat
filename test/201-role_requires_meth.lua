@@ -12,7 +12,7 @@ class 'Car'
 with 'Breakable'
 
 method( '_break' , function (self)
-    print "I broke"
+    return "I broke"
 end )
 
 class 'SpecialCar'
@@ -29,14 +29,14 @@ function test_Car ()
     local car = Car.new()
     assertTrue( car:isa 'Car' )
     assertTrue( car:does 'Breakable' )
-    car:_break()
+    assertEqual( car:_break(), "I broke" )
 end
 
 function test_SpecialCar ()
     local car = SpecialCar.new()
     assertTrue( car:isa 'SpecialCar' )
     assertTrue( car:does 'Breakable' )
-    car:_break()
+    assertEqual( car:_break(), "I broke" )
 end
 
 function test_BadCar ()

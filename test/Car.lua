@@ -6,8 +6,8 @@ role 'Breakable'
 has( 'is_broken', { is = 'rw', isa = 'boolean' } )
 
 method( '_break' , function (self)
-    print "I broke"
     self:is_broken(true)
+    return "I broke"
 end )
 
 class 'Car'
