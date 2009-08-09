@@ -16,10 +16,10 @@ function has (role, name, options)
     table.insert(role._STORE, { 'has', name, options })
 end
 
-function method (role, meth, name, func)
-    checktype(meth, 1, name, 'string')
-    checktype(meth, 2, func, 'function')
-    table.insert(role._STORE, { meth, name, func })
+function method (role, name, func)
+    checktype('method', 1, name, 'string')
+    checktype('method', 2, func, 'function')
+    table.insert(role._STORE, { 'method', name, func })
 end
 
 function requires (role, ...)
@@ -62,11 +62,7 @@ function _G.role (modname)
     M._REQ = {}
     M._EXCL = {}
     M.has = function (...) return has(M, ...) end
-    M.method = function (...) return method(M, 'method', ...) end
-    M.override = function (...) return method(M, 'override', ...) end
-    M.before = function (...) return method(M, 'before', ...) end
-    M.around = function (...) return method(M, 'around', ...) end
-    M.after = function (...) return method(M, 'after', ...) end
+    M.method = function (...) return method(M, ...) end
     M.requires = function (...) return requires(M, ...) end
     M.excludes = function (...) return excludes(M, ...) end
     roles[modname] = M

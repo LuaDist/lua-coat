@@ -64,7 +64,7 @@ function isa (obj, t)
     end
 end
 
-function Coat.does (obj, r)
+function does (obj, r)
     if basic_type(r) == 'table' and r._NAME then
         r = r._NAME
     end
@@ -177,6 +177,13 @@ local function validate (name, options, val)
             end -- check_isa
 
             check_isa(options.isa)
+        end
+        if options.does then
+            local role = options.does
+            if not does(val, role) then
+                error( "Value for attribute '" .. name
+                       .. "' does not consume role '" .. role .. "'" )
+            end
         end
     end
     return val
@@ -384,6 +391,9 @@ function extends(class, ...)
         table.insert(class._PARENT, p)
         table.insert(class._ISA, p._ISA)
         table.insert(class._DOES, p._DOES)
+        for i, r in ipairs(p._ROLE) do
+            table.insert(class._ROLE, r)
+        end
     end
 
     local t = getmetatable(class)
@@ -418,7 +428,7 @@ function extends(class, ...)
                 end
 end
 
-function Coat.with (class, ...)
+function with (class, ...)
     for i, v in ipairs{...} do
         local r
         if basic_type(v) == 'string' then
