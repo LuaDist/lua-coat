@@ -42,6 +42,12 @@
         <li><a href="coat.html#examples">Examples</a></li>
       </ul>
     </li>
+    <li><a href="role.html">The module <code>Role</code></a>
+      <ul>
+        <li><a href="role.html#reference">Reference</a></li>
+        <li><a href="role.html#examples">Examples</a></li>
+      </ul>
+    </li>
     <li><a href="types.html">The module <code>Types</code></a>
       <ul>
         <li><a href="types.html#reference">Reference</a></li>
@@ -84,6 +90,10 @@
 
 <p>Method modifier.</p>
 
+<h4><code>does( obj, r )</code></h4>
+
+<p>Checks if a object consumes <code>r<code> which is a role or rolename.</p>
+
 <h4><code>extends( class [, ...] )</code></h4>
 
 <p>Extends the current class with the list of class in parameter.</p>
@@ -98,6 +108,7 @@ The prefix <code>+</code> in <code>name</code> allows overriding.</p>
     <li><code>clearer</code> : function name </li>
     <li><code>coerce</code> : boolean </li>
     <li><code>default</code> : value or function </li>
+    <li><code>does</code> : role name</li>
     <li><code>handles</code> : table </li>
     <li><code>is</code> : string <code>ro|rw</code></li>
     <li><code>isa</code> : type name</li>
@@ -128,6 +139,12 @@ The prefix <code>+</code> in <code>name</code> allows overriding.</p>
 <p>Instanciates a object.</p>
 
 <p>If exist, the user method <code>BUILD</code> is called at the end.<p>
+
+<h4><code>with( role [, alias-excludes ] [, role, ... ] )</code></h4>
+
+<p>Composes one or more <code>role</code>,
+a optional table <code>alias-excludes</code>
+allows to prevent name collision.</p>
 
 <h3>Functions in <code>Coat.Meta</code></h3>
 
