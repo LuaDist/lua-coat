@@ -4,7 +4,7 @@ require 'Coat'
 
 class 'MyItem'
 
-has( 'name', { isa = 'string' } )
+has( 'name', { is = 'rw', isa = 'string' } )
 
 class 'MyItem3D'
 

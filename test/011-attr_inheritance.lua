@@ -3,21 +3,21 @@
 require 'Coat'
 
 class 'Foo'
-has( 'field_from_foo_string', { isa = 'string' } )
-has( 'field_from_foo_int', { isa = 'number', default = 1 } )
+has( 'field_from_foo_string', { is = 'rw', isa = 'string' } )
+has( 'field_from_foo_int', { is = 'rw', isa = 'number', default = 1 } )
 
 class 'Bar'
 extends 'Foo'
-has 'field_from_bar'
+has( 'field_from_bar', { is = 'rw' } )
 
 class 'Baz'
 extends 'Bar'
-has 'field_from_baz'
+has( 'field_from_baz', { is = 'rw' } )
 -- we redefine an attribute of an inherited class
 has( '+field_from_foo_int', { default = 2 } )
 
 class 'Biz'
-has 'field_from_biz'
+has( 'field_from_biz', { is = 'rw' } )
 
 class 'BalBaz'
 extends( 'Bar', 'Biz' )

@@ -4,7 +4,7 @@ require 'Coat'
 
 class 'Foo'
 
-has( 'var', { isa = 'number', default = 1 } )
+has( 'var', { is = 'rw', isa = 'number', default = 1 } )
 
 function BUILD (self)
     self:var(2)

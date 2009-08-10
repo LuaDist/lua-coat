@@ -4,8 +4,8 @@ require 'Coat'
 
 class 'Person'
 
-has( 'name', { isa = 'string' } )
-has( 'force', { isa = 'number', default = 1 } )
+has( 'name', { is = 'rw', isa = 'string' } )
+has( 'force', { is = 'rw', isa = 'number', default = 1 } )
 
 method( 'walk', function (self)
     return self:name() .. " walks\n"

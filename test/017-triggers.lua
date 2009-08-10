@@ -4,7 +4,7 @@ require 'Coat'
 
 class 'Foo'
 
-has 'baz'
+has( 'baz', { is = 'rw' } )
 has( 'bar', { 
     is = 'rw',
     trigger = function (self, value)

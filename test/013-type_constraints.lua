@@ -3,13 +3,13 @@
 require 'Coat'
 
 class 'Foo'
-has( 'x', { isa = 'number' } )
-has( 's', { isa = 'string' } )
-has( 'c', { isa = 'function' } )
-has( 'subobject', { isa = 'Bar' } )
+has( 'x', { is = 'rw', isa = 'number' } )
+has( 's', { is = 'rw', isa = 'string' } )
+has( 'c', { is = 'rw', isa = 'function' } )
+has( 'subobject', { is = 'rw', isa = 'Bar' } )
 
 class 'Bar'
-has 'x'
+has( 'x', { is = 'rw' } )
 
 class 'Baz'
 
