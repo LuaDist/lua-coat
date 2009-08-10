@@ -1,6 +1,6 @@
 
 --
--- lua-Coat : <http://github.com/fperrad/lua-Coat/>
+-- lua-Coat : <http://lua-coat.luaforge.net/>
 --
 
 module(..., package.seeall)
