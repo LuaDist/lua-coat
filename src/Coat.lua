@@ -128,11 +128,16 @@ function __gc (class, obj)
 end
 
 local function attr_default (options, obj)
-    local default = options.default
-    if basic_type(default) == 'function' then
-        return default(obj)
+    local builder = options.builder
+    if builder then
+        return obj[builder](obj)
     else
-        return default
+        local default = options.default
+        if basic_type(default) == 'function' then
+            return default(obj)
+        else
+            return default
+        end
     end
 end
 
@@ -246,8 +251,14 @@ function has (class, name, options)
     if options.trigger and basic_type(options.trigger) ~= 'function' then
         error "The trigger option requires a function"
     end
-    if options.lazy and options.default == nil then
-        error "The lazy option implies the default option"
+    if options.default and options.builder then
+        error "The options default and builder are not compatible"
+    end
+    if options.lazy and options.default == nil and options.builder == nil then
+        error "The lazy option implies the builder or default option"
+    end
+    if options.builder and basic_type(options.builder) ~= 'string' then
+        error "The builder option requires a string (method name)"
     end
     class._ATTR[name] = options
 
