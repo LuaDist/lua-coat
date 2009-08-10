@@ -2,7 +2,7 @@ Revision history for lua-Coat
 
 0.2.0
 	+ add Roles
-	+ add attributes : builder, lazy_build
+	+ add attributes : builder, lazy_build, reader & writer
 
 
 0.1.0  Thu Aug  6 10:30:00 2009

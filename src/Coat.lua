@@ -252,6 +252,7 @@ function has (class, name, options)
     elseif class._ATTR[name] ~= nil then
         error( "Duplicate definition of attribute " .. name )
     end
+
     if options.lazy_build then
         options.lazy = true
         options.builder = '_build_' .. name
@@ -275,28 +276,52 @@ function has (class, name, options)
     end
     class._ATTR[name] = options
 
-    class[name] = function (obj, val)
-        if val ~= nil then
-            -- setter
-            if options.is == 'ro' then
-                error("Cannot set a read-only attribute ("
-                      .. name .. ")")
-            else
+    if options.is then
+        class[name] = function (obj, val)
+            if val ~= nil then
+                -- setter
+                if options.is == 'ro' then
+                    error("Cannot set a read-only attribute ("
+                          .. name .. ")")
+                else
+                    val = validate(name, options, val)
+                    obj._VALUES[name] = val
+                    if options.trigger then
+                        options.trigger(obj, val)
+                    end
+                    return val
+                end
+            end
+            -- getter
+            if options.lazy and obj._VALUES[name] == nil then
+                local val = attr_default(options, obj)
                 val = validate(name, options, val)
                 obj._VALUES[name] = val
-                if options.trigger then
-                    options.trigger(obj, val)
-                end
-                return val
             end
+            return obj._VALUES[name]
         end
-        -- getter
-        if options.lazy and obj._VALUES[name] == nil then
-            local val = attr_default(options, obj)
+    end
+
+    if options.reader then
+        class[options.reader] = function (obj)
+            if options.lazy and obj._VALUES[name] == nil then
+                local val = attr_default(options, obj)
+                val = validate(name, options, val)
+                obj._VALUES[name] = val
+                end
+            return obj._VALUES[name]
+        end
+    end
+
+    if options.writer then
+        class[options.writer] = function (obj, val)
             val = validate(name, options, val)
             obj._VALUES[name] = val
+            if options.trigger then
+                options.trigger(obj, val)
+            end
+            return val
         end
-        return obj._VALUES[name]
     end
 
     if options.handles then
