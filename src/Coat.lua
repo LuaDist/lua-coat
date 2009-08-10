@@ -130,7 +130,11 @@ end
 local function attr_default (options, obj)
     local builder = options.builder
     if builder then
-        return obj[builder](obj)
+        local func = obj[builder]
+        if not func then
+            error( "method " .. builder .. " not found" )
+        end
+        return func(obj)
     else
         local default = options.default
         if basic_type(default) == 'function' then
@@ -247,6 +251,15 @@ function has (class, name, options)
         options = t
     elseif class._ATTR[name] ~= nil then
         error( "Duplicate definition of attribute " .. name )
+    end
+    if options.lazy_build then
+        options.lazy = true
+        options.builder = '_build_' .. name
+        if name:sub(1, 1) == '_' then
+            options.clearer = '_clear' .. name
+        else
+            options.clearer = 'clear_' .. name
+        end
     end
     if options.trigger and basic_type(options.trigger) ~= 'function' then
         error "The trigger option requires a function"
