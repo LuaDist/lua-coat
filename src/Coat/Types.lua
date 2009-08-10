@@ -12,7 +12,7 @@ local checktype = Coat.checktype
 _TC = {}
 _COERCE = {}
 
-function subtype (name, parent, validator, msg)
+function _G.subtype (name, parent, validator, msg)
     checktype('subtype', 1, name, 'string')
     checktype('subtype', 2, parent, 'string')
     checktype('subtype', 3, validator, 'function')
@@ -26,33 +26,29 @@ function subtype (name, parent, validator, msg)
         message = msg,
     }
 end
-_G.subtype = subtype
 
-function as (parent, ...) -- sugar
+function _G.as (parent, ...) -- sugar
     if ... then
         error "too many arguments to as"
     end
     return parent
 end
-_G.as = as
 
-function where (validator, ...) -- sugar
+function _G.where (validator, ...) -- sugar
     if ... then
         error "too many arguments to where"
     end
     return validator
 end
-_G.where = where
 
-function message (msg, ...) -- sugar
+function _G.message (msg, ...) -- sugar
     if ... then
         error "too many arguments to message"
     end
     return msg
 end
-_G.message = message
 
-function enum (name, ...)
+function _G.enum (name, ...)
     checktype('enum', 1, name, 'string')
     local t = ...
     if basic_type(t) ~= 'table' then
@@ -75,9 +71,8 @@ function enum (name, ...)
                     end,
     }
 end
-_G.enum = enum
 
-function coerce (name, ...)
+function _G.coerce (name, ...)
     checktype('coerce', 1, name, 'string')
     if not _COERCE[name] then
         _COERCE[name] = {}
@@ -94,23 +89,20 @@ function coerce (name, ...)
         _COERCE[name][from] = via
     end
 end
-_G.coerce = coerce
 
-function from (name, ...) -- sugar
+function _G.from (name, ...) -- sugar
     if ... then
         error "too many arguments to from"
     end
     return name
 end
-_G.from = from
 
-function via (func, ...) -- sugar
+function _G.via (func, ...) -- sugar
     if ... then
         error "too many arguments to via"
     end
     return func
 end
-_G.via = via
 
 --
 -- Copyright (c) 2009 Francois Perrad
