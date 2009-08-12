@@ -104,12 +104,12 @@ function new (class, args)
     for i, r in ipairs(class._ROLE) do -- check roles
         for i, v in ipairs(r._EXCL) do
             if class:does(v) then
-                error( "Role " .. r._NAME .. " excludes role " .. v )
+                error("Role " .. r._NAME .. " excludes role " .. v)
             end
         end
         for i, v in ipairs(r._REQ) do
             if not class[v] then
-                error( "Role " .. r._NAME .. " requires method " .. v )
+                error("Role " .. r._NAME .. " requires method " .. v)
             end
         end
     end
@@ -132,7 +132,7 @@ local function attr_default (options, obj)
     if builder then
         local func = obj[builder]
         if not func then
-            error( "method " .. builder .. " not found" )
+            error("method " .. builder .. " not found")
         end
         return func(obj)
     else
@@ -155,7 +155,7 @@ local function validate (name, options, val)
             if options.coerce then
                 local mapping = Types and Types._COERCE[options.isa]
                 if not mapping then
-                    error( "Coercion is not available for type " .. options.isa)
+                    error("Coercion is not available for type " .. options.isa)
                 end
                 local coerce = mapping[object_type(val)]
                 if coerce then
@@ -172,15 +172,16 @@ local function validate (name, options, val)
                         if msg == nil then
                             error("Value for attribute '" .. name
                                   .. "' does not validate type constraint '"
-                                  .. tname .. "'" )
+                                  .. tname .. "'")
                         else
                             error(string.format(msg, val))
                         end
                     end
                 else
                     if not isa(val, tname) then
-                        error( "Invalid type for attribute '" .. name .. "' (got "
-                               .. object_type(val) .. ", expected " .. tname ..")" )
+                        error("Invalid type for attribute '" .. name
+                              .. "' (got " .. object_type(val)
+                              .. ", expected " .. tname ..")")
                     end
                 end
             end -- check_isa
@@ -190,8 +191,8 @@ local function validate (name, options, val)
         if options.does then
             local role = options.does
             if not does(val, role) then
-                error( "Value for attribute '" .. name
-                       .. "' does not consume role '" .. role .. "'" )
+                error("Value for attribute '" .. name
+                      .. "' does not consume role '" .. role .. "'")
             end
         end
     end
@@ -239,7 +240,7 @@ function has (class, name, options)
         name = name:sub(2)
         inherited = class._ATTR[name]
         if inherited == nil then
-            error( "Cannot overload unknown attribute " .. name )
+            error("Cannot overload unknown attribute " .. name)
         end
         local t = {}
         for k, v in pairs(inherited) do
@@ -250,7 +251,7 @@ function has (class, name, options)
         end
         options = t
     elseif class._ATTR[name] ~= nil then
-        error( "Duplicate definition of attribute " .. name )
+        error("Duplicate definition of attribute " .. name)
     end
 
     if options.lazy_build then
@@ -329,8 +330,8 @@ function has (class, name, options)
             class[k] = function (obj, ...)
                 local d = obj._VALUES[name]
                 if d[v] == nil then
-                    error( "Cannot delegate " .. k .. " from "
-                           .. name .. " (" .. v .. ")" )
+                    error("Cannot delegate " .. k .. " from "
+                          .. name .. " (" .. v .. ")")
                 end
                 return d[v](d, ...)
             end
@@ -354,7 +355,7 @@ function method (class, name, func)
     checktype('method', 1, name, 'string')
     checktype('method', 2, func, 'function')
     if class[name] then
-        error( "Duplicate definition of method " .. name )
+        error("Duplicate definition of method " .. name)
     end
     class[name] = func
 end
@@ -583,5 +584,6 @@ _VERSION = "0.1.0"
 _DESCRIPTION = "lua-Coat : Yet Another Lua Object-Oriented Model"
 _COPYRIGHT = "Copyright (c) 2009 Francois Perrad"
 --
--- This library is licensed under the terms of the MIT/X11 license, like Lua itself.
+-- This library is licensed under the terms of the MIT/X11 license,
+-- like Lua itself.
 --

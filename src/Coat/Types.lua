@@ -18,7 +18,7 @@ function _G.subtype (name, parent, validator, msg)
     checktype('subtype', 3, validator, 'function')
     checktype('subtype', 4, msg or '', 'string')
     if _TC[name] then
-        error( "Duplicate definition of type " .. name )
+        error("Duplicate definition of type " .. name)
     end
     _TC[name] = {
         parent = parent,
@@ -61,7 +61,7 @@ function _G.enum (name, ...)
         checktype('enum', 1+i, v, 'string')
     end
     if _TC[name] then
-        error( "Duplicate definition of type " .. name )
+        error("Duplicate definition of type " .. name)
     end
     local u = table.concat(t, '|')
     _TC[name] = {
@@ -107,5 +107,6 @@ end
 --
 -- Copyright (c) 2009 Francois Perrad
 --
--- This library is licensed under the terms of the MIT/X11 license, like Lua itself.
+-- This library is licensed under the terms of the MIT/X11 license,
+-- like Lua itself.
 --
