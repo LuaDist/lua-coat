@@ -66,6 +66,7 @@ function test_Colour ()
     assertEqual( factory:col( 'Green' ), 'Green' )
     assertEqual( factory:col( 'Blue' ), 'Blue' )
     assertErrors( factory.col, factory, 'Yellow' ) -- factory:col( 'Yellow' )
+    assertErrors( factory.col, factory, 'Blu' ) -- factory:col( 'Blu' )
 end
 
 

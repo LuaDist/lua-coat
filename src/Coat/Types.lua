@@ -50,6 +50,9 @@ end
 
 function _G.enum (name, ...)
     checktype('enum', 1, name, 'string')
+    if _TC[name] then
+        error("Duplicate definition of type " .. name)
+    end
     local t = ...
     if basic_type(t) ~= 'table' then
         t = {...}
@@ -57,17 +60,15 @@ function _G.enum (name, ...)
     if #t < 1 then
         error "You must have at least two values to enumerate through"
     end
+    local hash = {}
     for i, v in ipairs(t) do
         checktype('enum', 1+i, v, 'string')
+        hash[v] = true
     end
-    if _TC[name] then
-        error("Duplicate definition of type " .. name)
-    end
-    local u = table.concat(t, '|')
     _TC[name] = {
         parent = 'string',
         validator = function (val)
-                        return u:find(val)
+                        return hash[val]
                     end,
     }
 end
