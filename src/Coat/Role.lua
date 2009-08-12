@@ -11,8 +11,7 @@ local checktype = Coat.checktype
 
 function has (role, name, options)
     checktype('has', 1, name, 'string')
-    options = options or {}
-    checktype('has', 2, options, 'table')
+    checktype('has', 2, options or {}, 'table')
     table.insert(role._STORE, { 'has', name, options })
 end
 

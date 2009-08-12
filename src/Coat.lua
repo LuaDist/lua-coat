@@ -44,7 +44,7 @@ function isa (obj, t)
     end
 
     local function walk (types)
-        for i, v in ipairs(types) do
+        for _, v in ipairs(types) do
             if v == t then
                 return true
             elseif basic_type(v) == 'table' then
@@ -73,7 +73,7 @@ function does (obj, r)
     end
 
     local function walk (roles)
-        for i, v in ipairs(roles) do
+        for _, v in ipairs(roles) do
             if v == r then
                 return true
             elseif basic_type(v) == 'table' then
@@ -101,13 +101,13 @@ function new (class, args)
     }
     setmetatable(obj, {})
 
-    for i, r in ipairs(class._ROLE) do -- check roles
-        for i, v in ipairs(r._EXCL) do
+    for _, r in ipairs(class._ROLE) do -- check roles
+        for _, v in ipairs(r._EXCL) do
             if class:does(v) then
                 error("Role " .. r._NAME .. " excludes role " .. v)
             end
         end
-        for i, v in ipairs(r._REQ) do
+        for _, v in ipairs(r._REQ) do
             if not class[v] then
                 error("Role " .. r._NAME .. " requires method " .. v)
             end
@@ -188,6 +188,7 @@ local function validate (name, options, val)
 
             check_isa(options.isa)
         end
+
         if options.does then
             local role = options.does
             if not does(val, role) then
@@ -222,7 +223,7 @@ function _INIT (class, obj, args)
         end
     end
 
-    for i, p in ipairs(class._PARENT) do
+    for _, p in ipairs(class._PARENT) do
         p._INIT(obj, args)
     end
 end
@@ -287,8 +288,9 @@ function has (class, name, options)
                 else
                     val = validate(name, options, val)
                     obj._VALUES[name] = val
-                    if options.trigger then
-                        options.trigger(obj, val)
+                    local trigger = options.trigger
+                    if trigger then
+                        trigger(obj, val)
                     end
                     return val
                 end
@@ -318,8 +320,9 @@ function has (class, name, options)
         class[options.writer] = function (obj, val)
             val = validate(name, options, val)
             obj._VALUES[name] = val
-            if options.trigger then
-                options.trigger(obj, val)
+            local trigger = options.trigger
+            if trigger then
+                trigger(obj, val)
             end
             return val
         end
@@ -328,12 +331,13 @@ function has (class, name, options)
     if options.handles then
         for k, v in pairs(options.handles) do
             class[k] = function (obj, ...)
-                local d = obj._VALUES[name]
-                if d[v] == nil then
+                local attr = obj._VALUES[name]
+                local func = attr[v]
+                if func == nil then
                     error("Cannot delegate " .. k .. " from "
                           .. name .. " (" .. v .. ")")
                 end
-                return d[v](d, ...)
+                return func(attr, ...)
             end
         end
     end
@@ -347,6 +351,10 @@ function has (class, name, options)
         end
         class[options.clearer] = function (obj)
             obj._VALUES[name] = nil
+            local trigger = options.trigger
+            if trigger then
+                trigger(obj, nil)
+            end
         end
     end
 end
@@ -441,7 +449,7 @@ function extends(class, ...)
         table.insert(class._PARENT, p)
         table.insert(class._ISA, p._ISA)
         table.insert(class._DOES, p._DOES)
-        for i, r in ipairs(p._ROLE) do
+        for _, r in ipairs(p._ROLE) do
             table.insert(class._ROLE, r)
         end
     end
@@ -449,7 +457,7 @@ function extends(class, ...)
     local t = getmetatable(class)
     t.__index = function (t, k) 
                     local function search ()
-                        for i, p in ipairs(class._PARENT) do
+                        for _, p in ipairs(class._PARENT) do
                             local v = p[k]
                             if v then 
                                 return v
@@ -464,7 +472,7 @@ function extends(class, ...)
     local a = getmetatable(class._ATTR)
     a.__index = function (t, k) 
                     local function search ()
-                        for i, p in ipairs(class._PARENT) do
+                        for _, p in ipairs(class._PARENT) do
                             local v = p._ATTR[k]
                             if v then 
                                 return v
@@ -522,7 +530,7 @@ function with (class, ...)
 
             table.insert(class._DOES, r._NAME)
             table.insert(class._ROLE, r)
-            for i, v in ipairs(r._STORE) do
+            for _, v in ipairs(r._STORE) do
                 Coat[v[1]](class, v[2], v[3])
             end
         end
