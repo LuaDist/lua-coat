@@ -8,7 +8,7 @@ endif
 manifest_pl := \
 use strict; \
 use warnings; \
-my @files = qw(MANIFEST); \
+my @files = qw{MANIFEST}; \
 while (<>) { \
     chomp; \
     next if m{^\.}; \
@@ -31,7 +31,7 @@ my %config = ( \
 ); \
 close $$FH; \
 while (<>) { \
-    s/@(\w+)@/$$config{$$1}/g; \
+    s{@(\w+)@}{$$config{$$1}}g; \
     print; \
 }
 
