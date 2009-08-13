@@ -96,7 +96,7 @@ end
 function new (class, args)
     args = args or {}
     local obj = {
-        _CLASS = class._NAME, 
+        _CLASS = class._NAME,
         _VALUES = {}
     }
     setmetatable(obj, {})
@@ -431,35 +431,35 @@ end
 
 function extends(class, ...)
     for i, v in ipairs{...} do
-        local p
+        local parent
         if basic_type(v) == 'string' then
-            p = require(v)
+            parent = require(v)
         elseif v._NAME then
-            p = v
+            parent = v
         end
-        if not p or not p._INIT then
+        if not parent or not parent._INIT then
             argerror('extends', i, "string or Class expected")
         end
 
-        if p:isa(class) then
+        if parent:isa(class) then
             error("Circular class structure between '"
-                  .. class._NAME .."' and '" .. p._NAME .. "'")
+                  .. class._NAME .."' and '" .. parent._NAME .. "'")
         end
 
-        table.insert(class._PARENT, p)
-        table.insert(class._ISA, p._ISA)
-        table.insert(class._DOES, p._DOES)
-        for _, r in ipairs(p._ROLE) do
+        table.insert(class._PARENT, parent)
+        table.insert(class._ISA, parent._ISA)
+        table.insert(class._DOES, parent._DOES)
+        for _, r in ipairs(parent._ROLE) do
             table.insert(class._ROLE, r)
         end
     end
 
     local t = getmetatable(class)
-    t.__index = function (t, k) 
+    t.__index = function (t, k)
                     local function search ()
                         for _, p in ipairs(class._PARENT) do
                             local v = p[k]
-                            if v then 
+                            if v then
                                 return v
                             end
                         end
@@ -470,11 +470,11 @@ function extends(class, ...)
                     return v
                 end
     local a = getmetatable(class._ATTR)
-    a.__index = function (t, k) 
+    a.__index = function (t, k)
                     local function search ()
                         for _, p in ipairs(class._PARENT) do
                             local v = p._ATTR[k]
-                            if v then 
+                            if v then
                                 return v
                             end
                         end
@@ -487,9 +487,9 @@ function extends(class, ...)
 end
 
 function with (class, ...)
-    local r
+    local role
     for i, v in ipairs{...} do
-        if r and basic_type(v) == 'table' then
+        if role and basic_type(v) == 'table' then
             if v.alias then
                 local alias = v.alias
                 if basic_type(alias) ~= 'table' then
@@ -517,20 +517,20 @@ function with (class, ...)
                     class[name] = nil
                 end
             end
-            r = nil
+            role = nil
         else
             if basic_type(v) == 'string' then
-                r = require(v)
+                role = require(v)
             elseif v._NAME then
-                r = v
+                role = v
             end
-            if not r or r._INIT then
+            if not role or role._INIT then
                 argerror('with', i, "string or Role expected")
             end
 
-            table.insert(class._DOES, r._NAME)
-            table.insert(class._ROLE, r)
-            for _, v in ipairs(r._STORE) do
+            table.insert(class._DOES, role._NAME)
+            table.insert(class._ROLE, role)
+            for _, v in ipairs(role._STORE) do
                 Coat[v[1]](class, v[2], v[3])
             end
         end
