@@ -62,7 +62,7 @@ test:
 	$(MAKE) -C test
 
 clean:
-	rm -f MANIFEST
+	rm -f MANIFEST *.bak
 
 .PHONY: test rockspec CHANGES
 
