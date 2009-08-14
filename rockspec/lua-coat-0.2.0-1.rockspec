@@ -2,7 +2,7 @@ package = 'lua-Coat'
 version = '0.2.0-1'
 source = {
     url = 'http://cloud.github.com/downloads/fperrad/lua-Coat/lua-coat-0.2.0.tar.gz',
-    md5 = '4cdf4deb72bf9cae1d9a925a18027554',
+    md5 = '74b5a7f5ce94e55f08bfcd7cf4a3bf4e',
 }
 description = {
     summary = "Yet Another Lua Object-Oriented Model",
