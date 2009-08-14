@@ -38,6 +38,9 @@ while (<>) { \
 version:
 	@echo $(VERSION)
 
+CHANGES:
+	perl -i.bak -pe "s{^$(VERSION).*}{q{$(VERSION)  }.localtime()}e" CHANGES
+
 tag:
 	git tag -a -m 'tag release $(VERSION)' $(VERSION)
 
@@ -61,5 +64,5 @@ test:
 clean:
 	rm -f MANIFEST
 
-.PHONY: test rockspec
+.PHONY: test rockspec CHANGES
 
