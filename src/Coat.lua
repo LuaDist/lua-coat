@@ -7,6 +7,7 @@ local error = error
 local getmetatable = getmetatable
 local ipairs = ipairs
 local pairs = pairs
+local pcall = pcall
 local rawget = rawget
 local require = require
 local setfenv = setfenv
@@ -24,11 +25,10 @@ basic_type = type
 local basic_type = basic_type
 local function object_type (obj)
     local t = basic_type(obj)
-    if t == 'table' and obj._CLASS then
-        return obj._CLASS
-    else
-        return t
+    if t == 'table' then
+        pcall(function () t = obj._CLASS or t end)
     end
+    return t
 end
 _G.type = object_type
 
