@@ -14,5 +14,10 @@ function test_require ()
     assertNotNil( m._VERSION:match '^%d%.%d%.%d$' )
 end
 
+function test_ns_pollution ()
+    require 'Coat'
+    assertNil( Coat.math )
+end
+
 
 runTests{ useANSI = false }

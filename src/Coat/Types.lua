@@ -4,10 +4,14 @@
 
 require 'Coat'
 
-module(..., package.seeall)
+local ipairs = ipairs
+local _G = _G
+local table = table
 
 local basic_type = Coat.basic_type
 local checktype = Coat.checktype
+
+module(...)
 
 _TC = {}
 _COERCE = {}

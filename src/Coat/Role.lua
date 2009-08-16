@@ -5,9 +5,16 @@
 
 require 'Coat'
 
-module(..., package.seeall)
+local ipairs = ipairs
+local setfenv = setfenv
+local setmetatable = setmetatable
+local _G = _G
+local package = package
+local table = table
 
 local checktype = Coat.checktype
+
+module(...)
 
 function has (role, name, options)
     checktype('has', 1, name, 'string')

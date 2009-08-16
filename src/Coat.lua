@@ -3,7 +3,20 @@
 -- lua-Coat : <http://lua-coat.luaforge.net/>
 --
 
-module(..., package.seeall)
+local error = error
+local getmetatable = getmetatable
+local ipairs = ipairs
+local pairs = pairs
+local rawget = rawget
+local require = require
+local setfenv = setfenv
+local setmetatable = setmetatable
+local type = type
+local _G = _G
+local package = package
+local table = table
+
+module(...)
 
 Meta = {}
 
@@ -531,7 +544,7 @@ function with (class, ...)
             table.insert(class._DOES, role._NAME)
             table.insert(class._ROLE, role)
             for _, v in ipairs(role._STORE) do
-                Coat[v[1]](class, v[2], v[3])
+                _G.Coat[v[1]](class, v[2], v[3])
             end
         end
     end
