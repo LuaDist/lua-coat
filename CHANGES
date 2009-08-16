@@ -1,6 +1,6 @@
 Revision history for lua-Coat
 
-0.2.1
+0.2.1  Sun Aug 16 14:30:00 2009
 	+ remove package.seeall (avoid namespace pollution),
 		thanks to David Manura
 	+ fix type for readonly table and other not Coat table,
