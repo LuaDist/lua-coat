@@ -16,7 +16,7 @@ local _G = _G
 local package = package
 local table = table
 
-module(...)
+module 'Coat'
 
 Meta = {}
 

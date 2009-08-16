@@ -14,7 +14,7 @@ local table = table
 
 local checktype = Coat.checktype
 
-module(...)
+module 'Coat.Role'
 
 function has (role, name, options)
     checktype('has', 1, name, 'string')

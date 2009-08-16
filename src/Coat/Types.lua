@@ -11,7 +11,7 @@ local table = table
 local basic_type = Coat.basic_type
 local checktype = Coat.checktype
 
-module(...)
+module 'Coat.Types'
 
 _TC = {}
 _COERCE = {}
