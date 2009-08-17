@@ -6,6 +6,7 @@
 require 'Coat'
 
 local ipairs = ipairs
+local require = require
 local setfenv = setfenv
 local setmetatable = setmetatable
 local _G = _G
@@ -15,6 +16,8 @@ local table = table
 local checktype = Coat.checktype
 
 module 'Coat.Role'
+
+local Meta = require 'Coat.Meta'
 
 function has (role, name, options)
     checktype('has', 1, name, 'string')
@@ -42,15 +45,6 @@ function excludes (role, ...)
     end
 end
 
-local roles = {}
-function _G.Coat.Meta.roles ()
-    return roles
-end
-
-function _G.Coat.Meta.role (name)
-    return roles[name]
-end
-
 function _G.role (modname)
     checktype('role', 1, modname, 'string')
     if _G[modname] then
@@ -71,6 +65,7 @@ function _G.role (modname)
     M.method = function (...) return method(M, ...) end
     M.requires = function (...) return requires(M, ...) end
     M.excludes = function (...) return excludes(M, ...) end
+    local roles = Meta.roles()
     roles[modname] = M
 end
 

@@ -23,6 +23,7 @@ build = {
     type = 'module',
     modules = {
         ['Coat']                = 'src/Coat.lua',
+        ['Coat.Meta']           = 'src/Coat/Meta.lua',
         ['Coat.Role']           = 'src/Coat/Role.lua',
         ['Coat.Types']          = 'src/Coat/Types.lua',
     },

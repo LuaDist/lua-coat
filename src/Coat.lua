@@ -19,7 +19,7 @@ local table = table
 
 module 'Coat'
 
-Meta = {}
+local Meta = require 'Coat.Meta'
 
 basic_type = type
 local basic_type = basic_type
@@ -239,10 +239,6 @@ function _INIT (class, obj, args)
     for _, p in ipairs(class._PARENT) do
         p._INIT(obj, args)
     end
-end
-
-function Meta.has (class, name)
-    return class._ATTR[name]
 end
 
 function has (class, name, options)
@@ -550,15 +546,6 @@ function with (class, ...)
     end
 end
 
-local classes = {}
-function Meta.classes ()
-    return classes
-end
-
-function Meta.class (name)
-    return classes[name]
-end
-
 function _G.class (modname)
     checktype('class', 1, modname, 'string')
     if _G[modname] then
@@ -598,6 +585,7 @@ function _G.class (modname)
     M.after = function (...) return after(M, ...) end
     M.extends = function (...) return extends(M, ...) end
     M.with = function (...) return with(M, ...) end
+    local classes = Meta.classes()
     classes[modname] = M
 end
 
