@@ -24,7 +24,7 @@
 <div id="main">
 
 <div id="navigation">
-<h1>Coat</h1>
+<h1>Meta</h1>
   <ul>
     <li><a href="index.html">Home</a>
       <ul>
@@ -43,12 +43,12 @@
         <li><a href="coat.html#examples">Examples</a></li>
       </ul>
     </li>
-    <li><a href="meta.html">The module <code>Meta</code></a>
+    <li><strong>The module <code>Meta</code></strong>
       <ul>
         <li><a href="meta.html#reference">Reference</a></li>
       </ul>
     </li>
-    <li><strong>The module <code>Role</code></strong>
+    <li><a href="role.html">The module <code>Role</code></a>
       <ul>
         <li><a href="role.html#reference">Reference</a></li>
         <li><a href="role.html#examples">Examples</a></li>
@@ -72,52 +72,28 @@
 
 <h2><a name="reference"></a>References</h2>
 
-<h3>Global Functions</h3>
+<h3>Functions</h3>
 
-<h4><code>role( modname )</code></h4>
+<h4><code>Coat.Meta.class( modname )</code></h4>
 
-<p>Create a Coat role as a standard Lua module.</p>
+<p>Returns the Coat class <code>modname</code> or nil.</p>
 
-<h3>Functions in the <em>built Role</em></h3>
+<h4><code>Coat.Meta.classes()</code></h4>
 
-<h4><code>excludes( role [, ...] )</code></h4>
+<p>Returns a table with all Coat classes.</p>
 
-<p>A role could exclude a list of other roles.</p>
+<h4><code>Coat.Meta.has( class, name )</code></h4>
 
-<h4><code>has( name, options )</code></h4>
+<p>Returns the table of options of the attribute <code>name</code>
+in the class <code>class</code> or nil.</p>
 
-<p>Adds a attribute <code>name</code> in the current role,
-like in a class.</p>
+<h4><code>Coat.Meta.role( modname )</code></h4>
 
-<h4><code>method( name, func )</code></h4>
+<p>Returns the Coat role <code>modname</code> or nil.</p>
 
-<p>Registers a method,
-like in a class.</p>
+<h4><code>Coat.Meta.roles()</code></h4>
 
-<h4><code>requires( method [, ...] )</code></h4>
-
-<p>A role could require a list of method in the class which consumes it.</p>
-
-<h2><a name="examples"></a>Examples</h2>
-
-<h3>Like an Interface</h3>
-
-<pre class="example">
-require 'Coat.Role'
-
-role 'Breakable'
-requires '_break'
-</pre>
-<pre class="example">
-require 'Coat'
-
-class 'Car'
-with 'Breakable'
-
-method( '_break' , function (self)
-    print "I broke"
-end )
-</pre>
+<p>Returns a table with all Coat roles.</p>
 
 </div> <!-- id="content" -->
 
