@@ -1,5 +1,8 @@
 Revision history for lua-Coat
 
+0.3.0
+	+ handle submodule hierarchy
+
 0.2.1  Sun Aug 16 14:30:00 2009
 	+ remove package.seeall (avoid namespace pollution),
 		thanks to David Manura

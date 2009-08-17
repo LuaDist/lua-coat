@@ -13,6 +13,7 @@ local _G = _G
 local package = package
 local table = table
 
+local basic_type = Coat.basic_type
 local checktype = Coat.checktype
 
 module 'Coat.Role'
@@ -47,12 +48,16 @@ end
 
 function _G.role (modname)
     checktype('role', 1, modname, 'string')
-    if _G[modname] then
+    if basic_type(package.loaded[modname]) == 'table' then
         error("name conflict for module '" .. modname .. "'")
     end
 
     local M = {}
-    _G[modname] = M
+    local i, t = 1, _G
+    for w in modname:gmatch "(%w+)%." do
+        i = i + w:len() + 1; t = t[w]
+    end
+    t[modname:sub(i)] = M
     package.loaded[modname] = M
     setmetatable(M, { __index = _G })
     setfenv(2, M)
