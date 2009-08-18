@@ -61,6 +61,11 @@ function findtable (fname)
     return t[name]
 end
 
+function can (obj, name)
+    checktype('can', 2, name, 'string')
+    return basic_type(obj[name]) == 'function'
+end
+
 function isa (obj, t)
     if basic_type(t) == 'table' and t._NAME then
         t = t._NAME
@@ -582,6 +587,7 @@ function _G.class (modname)
     M._MT = { __index = M }
     M._ATTR = {}
     setmetatable(M._ATTR, {})
+    M.can = can
     M.isa = isa
     M.does = does
     M.new = function (...) return new(M, ...) end

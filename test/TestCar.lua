@@ -9,6 +9,7 @@ function test_Car ()
     assertTrue( car:isa 'Car' )
     assertTrue( car:does 'Breakable' )
     assertNil( car:is_broken() )
+    assertTrue( car:can '_break' )
     assertEqual( car:_break(), "I broke" )
     assertTrue( car:is_broken() )
 end

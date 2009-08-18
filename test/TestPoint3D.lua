@@ -53,6 +53,8 @@ function test_method ()
     local a = Point3D{x = 1, y = 2, z = 3}
     assertType( a, 'Point3D' )
     assertInvokable( a.draw )
+    assertTrue( a:can 'draw' )
+    assertTrue( Point:can 'draw' )
     assertType( a.draw, 'function' )
     assertEqual( a:draw(), "drawing Point3D(1, 2, 3)" )
 end
