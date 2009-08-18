@@ -48,6 +48,19 @@ function checktype (caller, narg, arg, tname)
 end
 local checktype = checktype
 
+function findtable (fname)
+    local i = 1
+    local t = _G
+    for w in fname:gmatch "(%w+)%." do
+        i = i + w:len() + 1
+        t[w] = t[w] or {}
+        t = t[w]
+    end
+    local name = fname:sub(i)
+    t[name] = t[name] or {}
+    return t[name]
+end
+
 function isa (obj, t)
     if basic_type(t) == 'table' and t._NAME then
         t = t._NAME
@@ -552,12 +565,7 @@ function _G.class (modname)
         error("name conflict for module '" .. modname .. "'")
     end
 
-    local M = {}
-    local i, t = 1, _G
-    for w in modname:gmatch "(%w+)%." do
-        i = i + w:len() + 1; t = t[w]
-    end
-    t[modname:sub(i)] = M
+    local M = findtable(modname)
     package.loaded[modname] = M
     setmetatable(M, {
         __index = _G,
