@@ -4,18 +4,18 @@ require 'Coat'
 
 class 'Car'
 
-has( 'engine', { is = 'ro', isa = 'string', lazy = true, builder = '_build_engine' } )
+has.engine = { is = 'ro', isa = 'string', lazy = true, builder = '_build_engine' }
 
-method( '_build_engine', function ()
+method._build_engine = function ()
     return "Engine"
-end )
+end
 
 class 'SpecialCar'
 extends 'Car'
 
-override( '_build_engine', function ()
+override._build_engine = function ()
     return "SpecialEngine"
-end )
+end
 
 
 require 'lunity'

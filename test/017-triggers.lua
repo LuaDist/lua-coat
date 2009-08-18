@@ -4,13 +4,13 @@ require 'Coat'
 
 class 'Foo'
 
-has( 'baz', { is = 'rw' } )
-has( 'bar', { 
+has.baz = { is = 'rw' }
+has.bar = {
     is = 'rw',
     trigger = function (self, value)
                   self:baz(value)
               end,
-} )
+}
 
 require 'lunity'
 module( 'TestTriggers', lunity )
@@ -25,8 +25,9 @@ function test_Foo ()
 end
 
 function test_BadTrigger ()
---    Foo.has( 'badtrig', { isa = 'number', trigger = 2 } )
-    assertErrors( Foo.has, 'badtrig', { isa = 'number', trigger = 2 } )
+    assertErrors( function ()
+        Foo.has.badtrig = { isa = 'number', trigger = 2 }
+    end )
 end
 
 runTests{ useANSI = false }

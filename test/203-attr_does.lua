@@ -4,11 +4,11 @@ require 'Coat.Role'
 
 role 'Breakable'
 
-has( 'is_broken', { is = 'rw', isa = 'boolean' } )
+has.is_broken = { is = 'rw', isa = 'boolean' }
 
-method( '_break' , function (self)
+method._break = function (self)
     self:is_broken(true)
-end )
+end
 
 class 'Engine'
 with 'Breakable'
@@ -17,7 +17,7 @@ class 'SpecialEngine'
 extends 'Engine'
 
 class 'Car'
-has( 'engine', { is = 'rw', does = 'Breakable' } )
+has.engine = { is = 'rw', does = 'Breakable' }
 
 
 require 'lunity'

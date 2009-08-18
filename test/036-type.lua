@@ -3,15 +3,15 @@
 require 'Coat'
 
 class 'A'
-has( 'a', { is = 'rw', isa = 'A' } )
+has.a = { is = 'rw', isa = 'A' }
 
 class 'B'
 extends 'A'
-has( 'b', { is = 'rw', isa = 'B' } )
+has.b = { is = 'rw', isa = 'B' }
 
 class 'C'
 extends 'B'
-has( 'c', { is = 'rw', isa = 'C' } )
+has.c = { is = 'rw', isa = 'C' }
 
 
 require 'lunity'

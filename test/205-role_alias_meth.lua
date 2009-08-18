@@ -8,11 +8,11 @@ local function m1 (self)
     return "m1"
 end
 
-method( 'm1' , m1 )
+method.m1 = m1
 
-method( 'm2' , function (self)
+method.m2 = function (self)
     return m1(self) .. "m2"
-end )
+end
 
 class 'A'
 with 'Foo'
@@ -27,7 +27,6 @@ with( 'Foo', { alias = { m1 = 'foo_m1', m2 = 'foo_m2' },
 
 require 'lunity'
 module( 'TestRoleAliasMeth', lunity )
-
 
 function test_A ()
     local a = A.new()

@@ -4,20 +4,20 @@ require 'Coat.Role'
 
 role 'Breakable'
 
-has( 'is_broken', { is = 'rw', isa = 'boolean' } )
+has.is_broken = { is = 'rw', isa = 'boolean' }
 
-method( '_break' , function (self)
+method._break = function (self)
     self:is_broken(true)
-end )
+end
 
 class 'Car'
 with 'Breakable'
 
-has( 'engine', { is = 'ro', isa = 'Engine' } )
+has.engine = { is = 'ro', isa = 'Engine' }
 
-after( '_break' , function (self)
+after._break = function (self)
     return "I broke"
-end )
+end
 
 
 require 'lunity'

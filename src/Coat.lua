@@ -259,8 +259,7 @@ function has (class, name, options)
     options = options or {}
     checktype('has', 2, options, 'table')
 
-    if name:sub(1, 1) == '+' then
-        name = name:sub(2)
+    if options[1] == '+' then
         inherited = class._ATTR[name]
         if inherited == nil then
             error("Cannot overload unknown attribute " .. name)
@@ -588,13 +587,13 @@ function _G.class (modname)
     M.new = function (...) return new(M, ...) end
     M.__gc = function (...) return __gc(M, ...) end
     M._INIT = function (...) return _INIT(M, ...) end
-    M.has = function (...) return has(M, ...) end
-    M.method = function (...) return method(M, ...) end
-    M.overload = function (...) return overload(M, ...) end
-    M.override = function (...) return override(M, ...) end
-    M.before = function (...) return before(M, ...) end
-    M.around = function (...) return around(M, ...) end
-    M.after = function (...) return after(M, ...) end
+    M.has = setmetatable({}, { __newindex = function (t, k, v) has(M, k, v) end })
+    M.method = setmetatable({}, { __newindex = function (t, k, v) method(M, k, v) end })
+    M.overload = setmetatable({}, { __newindex = function (t, k, v) overload(M, k, v) end })
+    M.override = setmetatable({}, { __newindex = function (t, k, v) override(M, k, v) end })
+    M.before = setmetatable({}, { __newindex = function (t, k, v) before(M, k, v) end })
+    M.around = setmetatable({}, { __newindex = function (t, k, v) around(M, k, v) end })
+    M.after = setmetatable({}, { __newindex = function (t, k, v) after(M, k, v) end })
     M.extends = function (...) return extends(M, ...) end
     M.with = function (...) return with(M, ...) end
     local classes = Meta.classes()

@@ -4,8 +4,8 @@ require 'Coat'
 
 class 'Foo'
 
-has( 'read', { is = 'ro', default = 2, isa = 'number' } )
-has( 'write', { is = 'rw', default = 3, isa = 'number' } )
+has.read = { is = 'ro', default = 2, isa = 'number' }
+has.write = { is = 'rw', default = 3, isa = 'number' }
 
 require 'lunity'
 module( 'TestAttrPermission', lunity )

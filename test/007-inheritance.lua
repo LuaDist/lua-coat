@@ -4,33 +4,33 @@ require 'Coat'
 
 class 'Person'
 
-has( 'name', { is = 'rw', isa = 'string' } )
-has( 'force', { is = 'rw', isa = 'number', default = 1 } )
+has.name = { is = 'rw', isa = 'string' }
+has.force = { is = 'rw', isa = 'number', default = 1 }
 
-method( 'walk', function (self)
+method.walk = function (self)
     return self:name() .. " walks\n"
-end )
+end
 
 class 'Soldier'
 
 extends 'Person'
 
-has( '+force', { default = 3 } )
+has.force = { '+', default = 3 }
 
-method( 'attack', function (self)
+method.attack = function (self)
     return self:force() + math.random( 10 )
-end )
+end
 
 class 'General'
 
 extends 'Soldier'
 
-has( '+force', { default = 5 } )
+has.force = { '+', default = 5 }
 
 -- just to make sur we can hook something inherited
-before( 'walk', function ()
+before.walk = function ()
     return 1
-end )
+end
 
 require 'lunity'
 module( 'TestInheritance', lunity )

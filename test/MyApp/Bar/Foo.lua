@@ -3,5 +3,5 @@ require 'Coat'
 
 class 'MyApp.Bar.Foo'
 
-has( 'bar', { is = 'rw' } )
+has.bar = { is = 'rw' }
 

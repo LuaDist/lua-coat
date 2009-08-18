@@ -3,21 +3,21 @@
 require 'Coat'
 
 class 'Spanish'
-has( 'uno', { is = 'ro', default = 1 } )
-has( 'dos', { is = 'ro', default = 2 } )
-has( 'nombre', { is = 'rw', isa = 'string' } )
+has.uno = { is = 'ro', default = 1 }
+has.dos = { is = 'ro', default = 2 }
+has.nombre = { is = 'rw', isa = 'string' }
 
 class 'English'
-has( 'translate', {
+has.translate = {
     is = 'ro',
     default = function () return Spanish.new() end,
-    handles = { 
+    handles = {
         one = 'uno',
         two = 'dos',
         name = 'nombre',
         bad = '_bad_',
     },
-} )
+}
 
 
 require 'lunity'

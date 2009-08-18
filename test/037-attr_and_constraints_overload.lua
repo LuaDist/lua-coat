@@ -7,19 +7,19 @@ subtype( 'Positive',
          function (n) return n > 0 end )
 
 class 'Parent'
-has( 'name', { is = 'rw', isa = 'string' } )
-has( 'lazy_classname', { is = 'ro', lazy = true, 
+has.name = { is = 'rw', isa = 'string' }
+has.lazy_classname = { is = 'ro', lazy = true,
     default = function () return "Parent" end,
-} )
-has( 'type_constrained', { is = 'rw', isa = 'Positive',
+}
+has.type_constrained = { is = 'rw', isa = 'Positive',
     default = 5.5
-} )
+}
 
 class 'Child'
 extends 'Parent'
-has( '+name', { default = "Junior" } )
-has( '+lazy_classname', { default = function () return "Child" end } )
-has( '+type_constrained', { isa = 'string', default = 'empty' } )
+has.name = { '+', default = "Junior" }
+has.lazy_classname = { '+', default = function () return "Child" end }
+has.type_constrained = { '+', isa = 'string', default = 'empty' }
 
 
 require 'lunity'

@@ -4,36 +4,36 @@ require 'Coat'
 
 class 'Parent'
 
-method( 'pushelem', function (self, elem)
+method.pushelem = function (self, elem)
     table.insert( _G.list, elem )
-end )
+end
 
 class 'Child'
 extends 'Parent'
 
-before( 'pushelem', function (self, elem)
+before.pushelem = function (self, elem)
     table.insert( _G.list, 'before1:' .. elem )
-end )
+end
 
-before( 'pushelem', function (self, elem)
+before.pushelem = function (self, elem)
     table.insert( _G.list, 'before2:' .. elem )
-end )
+end
 
-after( 'pushelem', function (self, elem)
+after.pushelem = function (self, elem)
     table.insert( _G.list, 'after1:' .. elem )
-end )
+end
 
-before( 'pushelem', function (self, elem)
+before.pushelem = function (self, elem)
     table.insert( _G.list, 'before3:' .. elem )
-end )
+end
 
-after( 'pushelem', function (self, elem)
+after.pushelem = function (self, elem)
     table.insert( _G.list, 'after2:' .. elem )
-end )
+end
 
-after( 'pushelem', function (self, elem)
+after.pushelem = function (self, elem)
     table.insert( _G.list, 'after3:' .. elem )
-end )
+end
 
 require 'lunity'
 module( 'TestHooks', lunity )

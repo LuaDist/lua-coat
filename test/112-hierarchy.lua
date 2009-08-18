@@ -10,13 +10,13 @@ class 'MyApp.Bar'
 
 class 'MyApp.Bar.Foo'
 with 'MyApp.Biz'
-has( 'bar', { is = 'rw' } )
+has.bar = { is = 'rw' }
 
 class 'MyApp.Baz'
 
 class 'MyApp.Baz.Foo'
 with 'MyApp.Biz'
-has( 'baz', { is = 'rw' } )
+has.baz = { is = 'rw' }
 
 require 'lunity'
 module( 'TestHierarchy', lunity )

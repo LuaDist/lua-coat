@@ -5,21 +5,21 @@ require 'Coat.Role'
 role 'HasColor'
 requires '_build_color'
 
-has( 'color', { is = 'ro', isa = 'string', lazy = true, builder = '_build_color' } )
+has.color = { is = 'ro', isa = 'string', lazy = true, builder = '_build_color' }
 
 class 'Red'
 with 'HasColor'
 
-method( '_build_color', function ()
+method._build_color = function ()
     return 'red'
-end )
+end
 
 class 'Blue'
 with 'HasColor'
 
-method( '_build_color', function ()
+method._build_color = function ()
     return 'blue'
-end )
+end
 
 
 require 'lunity'

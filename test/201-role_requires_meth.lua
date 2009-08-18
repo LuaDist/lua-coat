@@ -11,9 +11,9 @@ role 'Repairable'
 class 'Car'
 with 'Breakable'
 
-method( '_break' , function (self)
+method._break = function (self)
     return "I broke"
-end )
+end
 
 class 'SpecialCar'
 extends 'Car'
@@ -21,6 +21,7 @@ extends 'Car'
 class 'BadCar'
 extends 'Car'
 with 'Repairable'
+
 
 require 'lunity'
 module( 'TestRoleRequiresMeth', lunity )

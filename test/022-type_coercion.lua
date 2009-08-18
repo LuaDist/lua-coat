@@ -13,7 +13,7 @@ coerce( 'DateTime',
 
 class 'Record'
 
-has( 'timestamp', { is = 'ro', isa = 'DateTime', required = true, coerce = true } )
+has.timestamp = { is = 'ro', isa = 'DateTime', required = true, coerce = true }
 
 require 'lunity'
 module( 'TestTypeCoercion', lunity )

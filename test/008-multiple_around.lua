@@ -4,27 +4,27 @@ require 'Coat'
 
 class 'Parent'
 
-method( 'orig', function (self, ...)
+method.orig = function (self, ...)
     local val = ...
     table.insert( _G.seen, 'orig : ' .. val )
-end )
+end
 
 class 'Child'
 extends 'Parent'
 
-around( 'orig', function (self, func, ...)
+around.orig = function (self, func, ...)
     local val = ...
     table.insert( _G.seen, 'around 1 before : ' .. val)
     func(self, ...)
     table.insert( _G.seen, 'around 1 after' )
-end )
+end
 
-around( 'orig', function (self, func, ...)
+around.orig = function (self, func, ...)
     local val = ...
     table.insert( _G.seen, 'around 2 before : ' .. val)
     func(self, ...)
     table.insert( _G.seen, 'around 2 after' )
-end )
+end
 
 require 'lunity'
 module( 'TestMultipleAround', lunity )

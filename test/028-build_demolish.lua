@@ -4,32 +4,32 @@ require 'Coat'
 
 class 'A'
 
-has( 'id', {
+has.id = {
     is = 'ro',
     required = true,
     isa = 'number',
-} )
-has( 'buffer', {
+}
+has.buffer = {
     is = 'ro',
     default = function () return {} end,
-} )
+}
 
-method( 'BUILD', function (self)
+method.BUILD = function (self)
     table.insert( self:buffer(), "BUILD A" )
-end )
-method( 'DEMOLISH', function (self)
+end
+method.DEMOLISH = function (self)
     _G.REG.A[self:id()] = self:buffer()
-end )
+end
 
 class 'B'
 extends 'A'
 
-after( 'BUILD', function (self)
+after.BUILD = function (self)
     table.insert( self:buffer(), "BUILD B" )
-end )
-before( 'DEMOLISH', function (self)
+end
+before.DEMOLISH = function (self)
     _G.REG.B[self:id()] = self:buffer()
-end )
+end
 
 
 require 'lunity'

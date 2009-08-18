@@ -3,12 +3,12 @@
 require 'Coat'
 
 class 'Parent'
-method( 'bar', function (self) return 'bar' end )
-method( 'baz', function (self) return 'baz' end )
+method.bar = function (self) return 'bar' end
+method.baz = function (self) return 'baz' end
 
 class 'Child'
 extends 'Parent'
-override( 'bar', function (self) return 'BAR' end )
+override.bar = function (self) return 'BAR' end
 
 
 require 'lunity'
@@ -34,18 +34,21 @@ function test_Child ()
 end
 
 function test_Bad1 ()
-    -- Child.override( 'biz', function (self) return 'BIZ' end )
-    assertErrors( Child.override, 'biz', function (self) return 'BIZ' end )
+    assertErrors( function ()
+        Child.override.biz = function (self) return 'BIZ' end
+    end )
 end
 
 function test_Bad2 ()
-    -- Child.method( 'baz', function (self) return 'baz' end )
-    assertErrors( Child.method, 'baz', function (self) return 'baz' end )
+    assertErrors( function ()
+        Child.method.baz = function (self) return 'baz' end
+    end )
 end
 
 function test_Bad3 ()
-    -- Parent.method( 'baz', function (self) return 'baz' end )
-    assertErrors( Parent.method, 'baz', function (self) return 'baz' end )
+    assertErrors( function ()
+        Parent.method.baz = function (self) return 'baz' end
+    end )
 end
 
 

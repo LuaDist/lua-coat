@@ -4,7 +4,7 @@ require 'Coat'
 
 class 'Foo'
 
-has( 'bar', { is = 'ro', writer = '_set_bar', reader = '_get_bar' } )
+has.bar = { is = 'ro', writer = '_set_bar', reader = '_get_bar' }
 
 require 'lunity'
 module( 'TestAttrWriter', lunity )

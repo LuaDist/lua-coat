@@ -4,7 +4,7 @@ require 'Coat'
 
 class 'Foo'
 
-has( 'attr', { is = 'rw', clearer = 'clear_attr' } )
+has.attr = { is = 'rw', clearer = 'clear_attr' }
 
 require 'lunity'
 module( 'TestAttrValue', lunity )

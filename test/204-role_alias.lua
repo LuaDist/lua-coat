@@ -4,18 +4,18 @@ require 'Coat.Role'
 
 role 'Breakable'
 
-has( 'is_broken', { is = 'rw', isa = 'boolean' } )
+has.is_broken = { is = 'rw', isa = 'boolean' }
 
-method( '_break' , function (self)
+method._break = function (self)
     self:is_broken(true)
-end )
+end
 
 role 'Breakdancer'
 
-method( '_break' , function (self)
+method._break = function (self)
     self:is_broken(true)
     print "break dance"
-end )
+end
 
 class 'FragileDancer'
 with( 'Breakable', {
@@ -27,9 +27,10 @@ with( 'Breakable', {
                 excludes = '_break',
       } )
 
-method( '_break' , function (self)
+method._break = function (self)
     print "I broke"
-end )
+end
+
 
 require 'lunity'
 module( 'TestRoleAlias', lunity )

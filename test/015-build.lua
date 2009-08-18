@@ -4,9 +4,9 @@ require 'Coat'
 
 class 'Foo'
 
-has( 'var', { is = 'rw', isa = 'number', default = 1 } )
+has.var = { is = 'rw', isa = 'number', default = 1 }
 
-function BUILD (self)
+method.BUILD = function (self)
     self:var(2)
 end
 

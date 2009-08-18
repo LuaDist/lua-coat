@@ -3,7 +3,7 @@
 require 'Coat.Role'
 
 class 'MyApp.Foo.Bar'
-has( 'baz', { is = 'rw' } )
+has.baz = { is = 'rw' }
 
 require 'lunity'
 module( 'TestCreateHierarchy', lunity )

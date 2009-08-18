@@ -3,10 +3,10 @@
 require 'Coat'
 
 class 'Foo'
-has( 'bar', { is = 'ro', required = true } )
-has( 'baz', { is = 'rw', default = 100, required = true } )
-has( 'boo', { is = 'rw', lazy = true, default = 50, required = true } )
-has( 'subobject', { isa = 'Bar' } )
+has.bar = { is = 'ro', required = true }
+has.baz = { is = 'rw', default = 100, required = true }
+has.boo = { is = 'rw', lazy = true, default = 50, required = true }
+has.subobject = { isa = 'Bar' }
 
 
 require 'lunity'

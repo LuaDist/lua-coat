@@ -22,11 +22,12 @@ subtype( 'WinterMonth',
 
 enum( 'Colour', 'Red', 'Green', 'Blue' )
 
-has( 'n', { is = 'rw', isa = 'Natural' } )
-has( 'f', { is = 'rw', isa = 'number' } )
-has( 'month', { is = 'rw', isa = 'Month' } )
-has( 'winter', { is = 'rw', isa = 'WinterMonth' } )
-has( 'col', { is = 'rw', isa = 'Colour' } )
+has.n = { is = 'rw', isa = 'Natural' }
+has.f = { is = 'rw', isa = 'number' }
+has.month = { is = 'rw', isa = 'Month' }
+has.winter = { is = 'rw', isa = 'WinterMonth' }
+has.col = { is = 'rw', isa = 'Colour' }
+
 
 require 'lunity'
 module( 'TestTypeConstraints', lunity )

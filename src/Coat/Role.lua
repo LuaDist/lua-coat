@@ -62,8 +62,8 @@ function _G.role (modname)
     M._STORE = {}
     M._REQ = {}
     M._EXCL = {}
-    M.has = function (...) return has(M, ...) end
-    M.method = function (...) return method(M, ...) end
+    M.has = setmetatable({}, { __newindex = function (t, k, v) has(M, k, v) end })
+    M.method = setmetatable({}, { __newindex = function (t, k, v) method(M, k, v) end })
     M.requires = function (...) return requires(M, ...) end
     M.excludes = function (...) return excludes(M, ...) end
     local roles = Meta.roles()

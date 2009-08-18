@@ -7,15 +7,15 @@ coerce( 'B',
         function (val) return B{ x = 3 } end )
 
 class 'A'
-has( 'x', { is = 'rw', isa = 'number' } )
-has( 'b', { is = 'rw', isa = 'B', coerce = true } )
-has( 'c', { is = 'rw', isa = 'C' } )
+has.x = { is = 'rw', isa = 'number' }
+has.b = { is = 'rw', isa = 'B', coerce = true }
+has.c = { is = 'rw', isa = 'C' }
 
 class 'B'
-has( 'x', { is = 'rw', isa = 'number' } )
+has.x = { is = 'rw', isa = 'number' }
 
 class 'C'
-has( 'x', { is = 'rw', isa = 'number' } )
+has.x = { is = 'rw', isa = 'number' }
 
 
 require 'lunity'

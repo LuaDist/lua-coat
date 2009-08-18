@@ -3,17 +3,17 @@
 require 'Coat'
 
 class 'A'
-has( 'x', { isa = 'number', is = 'rw', lazy = true, default = 2 } )
-has( 'y', { isa = 'number', is = 'rw', default = 2 } )
+has.x = { isa = 'number', is = 'rw', lazy = true, default = 2 }
+has.y = { isa = 'number', is = 'rw', default = 2 }
 
 class 'Foo'
-has( 'dir', { is = 'rw', isa = 'string' } )
-has( 'name', { is = 'rw', isa = 'string' } )
-has( 'path', { is = 'rw', isa = 'string', lazy = true, 
+has.dir = { is = 'rw', isa = 'string' }
+has.name = { is = 'rw', isa = 'string' }
+has.path = { is = 'rw', isa = 'string', lazy = true,
     default = function (self)
         return self:dir() .. '/' .. self:name()
-    end, 
-} )
+    end,
+}
 
 
 require 'lunity'
@@ -27,8 +27,9 @@ function test_A ()
 end
 
 function test_Bad ()
-    -- A.has( 'z', { isa = 'number', is = 'rw', lazy = true } )
-    assertErrors( A.has, 'z', { isa = 'number', is = 'rw', lazy = true } )
+    assertErrors( function ()
+        A.has.z = { isa = 'number', is = 'rw', lazy = true }
+    end )
 end
 
 function test_Foo ()

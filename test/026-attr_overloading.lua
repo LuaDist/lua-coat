@@ -3,11 +3,11 @@
 require 'Coat'
 
 class 'A'
-has( 'x', { is = 'rw', isa = 'number', default = 42 } )
+has.x = { is = 'rw', isa = 'number', default = 42 }
 
 class 'B'
 extends 'A'
-has( '+x', { default = 43 } )
+has.x = { '+', default = 43 }
 
 
 require 'lunity'

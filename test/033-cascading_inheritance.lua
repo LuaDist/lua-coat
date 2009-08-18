@@ -3,19 +3,19 @@
 require 'Coat'
 
 class 'One'
-has( 'one', { isa = 'number', is = 'rw', default = 1 } )
+has.one = { isa = 'number', is = 'rw', default = 1 }
 
 class 'Two'
 extends 'One'
-has( 'two', { isa = 'number', is = 'rw', default = 2 } )
+has.two = { isa = 'number', is = 'rw', default = 2 }
 
 class 'Three'
 extends 'Two'
-has( 'three', { isa = 'number', is = 'rw', default = 3 } )
+has.three = { isa = 'number', is = 'rw', default = 3 }
 
 class 'Four'
 extends 'Three'
-has( 'four', { isa = 'number', is = 'rw', default = 4 } )
+has.four = { isa = 'number', is = 'rw', default = 4 }
 
 
 require 'lunity'

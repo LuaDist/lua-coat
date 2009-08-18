@@ -4,7 +4,7 @@ require 'Coat'
 
 class 'Foo'
 
-has( 't', { is = 'rw', default = function () return 2 + 2 end } )
+has.t = { is = 'rw', default = function () return 2 + 2 end }
 
 require 'lunity'
 module( 'TestAttrDefautFunction', lunity )
