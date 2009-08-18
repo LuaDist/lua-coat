@@ -27,5 +27,5 @@ build = {
         ['Coat.Role']           = 'src/Coat/Role.lua',
         ['Coat.Types']          = 'src/Coat/Types.lua',
     },
-    copy_directories = { 'doc', 'patch', 'test' },
+    copy_directories = { 'doc', 'test' },
 }

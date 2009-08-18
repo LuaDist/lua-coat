@@ -119,30 +119,54 @@ the optional <code>msg</code> is used as error message.</p>
 
 <h3>With Sugars</h3>
 
-<p>Sugars are useful only with a <em>patched</em> lua.</p>
+<pre class="example">
+require 'Coat.Types'
+
+subtype( 'Natural',
+         as 'number',
+         where( function (val) return val > 0 end ) )
+
+subtype( 'NaturalLessThanTen',
+         as 'Natural',
+         where( function (val) return val &lt; 10 end ),
+         message "This number (%d) is not less than ten!" )
+
+enum( 'Colour',
+      { 'Red', 'Green', 'Blue' } )
+
+subtype( 'DateTime',
+         as 'string',
+         where( function (val) return true end ) )
+
+coerce( 'DateTime',
+        from 'number',
+        via( function (val) return os.date("!%d/%m/%Y %H:%M:%S", val) end ) )
+</pre>
+
+<h3>Without Sugars</h3>
 
 <pre class="example">
 require 'Coat.Types'
 
-subtype 'Natural'
-    => as 'number';
-    => where( function (val) return val > 0 end )
+subtype( 'Natural',
+         'number',
+         function (val) return val > 0 end )
 
-subtype 'NaturalLessThanTen'
-    => as 'Natural';
-    => where( function (val) return val &lt; 10 end )
-    => message "This number (%d) is not less than ten!";
+subtype( 'NaturalLessThanTen',
+         'Natural',
+         function (val) return val &lt; 10 end ),
+         "This number (%d) is not less than ten!" )
 
-enum 'Colour'
-    => { 'Red', 'Green', 'Blue' }
+enum( 'Colour',
+      { 'Red', 'Green', 'Blue' } )
 
-subtype 'DateTime'
-    => as 'string';
-    => where( function (val) return true end )
+subtype( 'DateTime',
+         'string',
+         function (val) return true end )
 
-coerce 'DateTime'
-    => from 'number';
-    => via( function (val) return os.date("!%d/%m/%Y %H:%M:%S", val) end )
+coerce( 'DateTime',
+        'number',
+        function (val) return os.date("!%d/%m/%Y %H:%M:%S", val) end )
 </pre>
 
 </div> <!-- id="content" -->

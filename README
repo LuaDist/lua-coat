@@ -14,8 +14,6 @@ The main features are : Classes, Roles & type constraints.
 The attribute declaration with many properties is the most
 powerful and flexible part of lua-Coat.
 
-Small lua patches allow a syntax close to Perl5 Moose. See patch/.
-
 Links
 -----
 
