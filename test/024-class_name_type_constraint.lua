@@ -2,9 +2,7 @@
 
 require 'Coat.Types'
 
-coerce( 'B',
-        'A',
-        function (val) return B{ x = 3 } end )
+coerce.B = { A = function (val) return B{ x = 3 } end }
 
 class 'A'
 has.x = { is = 'rw', isa = 'number' }

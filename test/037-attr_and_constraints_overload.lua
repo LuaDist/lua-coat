@@ -2,9 +2,10 @@
 
 require 'Coat.Types'
 
-subtype( 'Positive',
-         'number',
-         function (n) return n > 0 end )
+subtype.Positive = {
+    as = 'number',
+    where = function (n) return n > 0 end
+}
 
 class 'Parent'
 has.name = { is = 'rw', isa = 'string' }

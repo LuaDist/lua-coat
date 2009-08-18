@@ -3,13 +3,14 @@
 require 'Coat'
 require 'Coat.Types'
 
-subtype( 'DateTime',
-         'string',
-         function (val) return true end )
+subtype.DateTime = {
+    as = 'string',
+    where = function (val) return true end
+}
 
-coerce( 'DateTime',
-        'number',
-        function (val) return os.date("!%d/%m/%Y %H:%M:%S", val) end )
+coerce.DateTime = {
+    number = function (val) return os.date("!%d/%m/%Y %H:%M:%S", val) end
+}
 
 class 'Record'
 

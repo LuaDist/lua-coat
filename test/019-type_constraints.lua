@@ -5,22 +5,25 @@ require 'Coat.Types'
 
 class 'NumberFactory'
 
-subtype( 'Natural',
-         'number',
-         function (n) return n > 0 end,
-         "%d is not a Natural number" )
+subtype.Natural = {
+    as = 'number',
+    where = function (n) return n > 0 end,
+    message = "%d is not a Natural number",
+}
 
-subtype( 'Month',
-         'Natural',
-         function (n) return n <= 12 end,
-         "%d is not a month" )
+subtype.Month = {
+    as = 'Natural',
+    where = function (n) return n <= 12 end,
+    message = "%d is not a month"
+}
 
-subtype( 'WinterMonth',
-         'Month',
-         function (n) return n >= 10 end,
-         "%d is not a month of winter" )
+subtype.WinterMonth = {
+    as = 'Month',
+    where = function (n) return n >= 10 end,
+    message = "%d is not a month of winter"
+}
 
-enum( 'Colour', 'Red', 'Green', 'Blue' )
+enum.Colour = { 'Red', 'Green', 'Blue' }
 
 has.n = { is = 'rw', isa = 'Natural' }
 has.f = { is = 'rw', isa = 'number' }
