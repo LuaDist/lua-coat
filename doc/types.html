@@ -80,16 +80,16 @@ which are used in attribute definition.</p>
 
 <h3>Global Functions</h3>
 
-<h4><code>coerce( type, from, via [, from, via, ...] )</code></h4>
+<h4><code>coerce.type = { from = via [, from = via, ...] }</code></h4>
 
 <p>Declares the <code>type</code> coerce from the type named <code>from</code>
 via a function <code>via</code>.
 
-<h4><code>enum( name, string1, string2 [, ...] )</code></h4>
+<h4><code>enum.name = { string1, string2 [, ...] }</code></h4>
 
 <p>Creates a subtype <code>name</code> for a given set of strings.</p>
 
-<h4><code>subtype( name, parent, validator [, msg ] )</code></h4>
+<h4><code>subtype.name = { as = parent, where = validator [, message = msg ] }</code></h4>
 
 <p>Creates a subtype <code>name</code> from the type <code>parent</code>
 which passes the constraint specified in the function <code>validator</code>,

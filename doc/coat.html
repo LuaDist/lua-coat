@@ -85,15 +85,15 @@
 
 <h3>Functions in the <em>built Class</em></h3>
 
-<h4><code>after( name, func )</code></h4>
+<h4><code>after.name = func</code></h4>
 
 <p>Method modifier.</p>
 
-<h4><code>around( name, func )</code></h4>
+<h4><code>around.name = func</code></h4>
 
 <p>Method modifier. The new method receives the old one as first parameter.</p>
 
-<h4><code>before( name, func )</code></h4>
+<h4><code>before.name = func</code></h4>
 
 <p>Method modifier.</p>
 
@@ -105,10 +105,10 @@
 
 <p>Extends the current class with the list of class in parameter.</p>
 
-<h4><code>has( name, options )</code></h4>
+<h4><code>has.name = { ['+', ] option1 = value1, option2 = value2, ... }</code></h4>
 
 <p>Adds a attribute <code>name</code> in the current class.
-A item <code>+</code> in <code>options</code> allows overriding.</p>
+A item <code>'+'</code> allows overriding.</p>
 
 <p>The following options are available :
   <ul>
@@ -133,15 +133,15 @@ A item <code>+</code> in <code>options</code> allows overriding.</p>
 
 <p>Checks if a object is an instance of <code>t<code> which is a class or classname.</p>
 
-<h4><code>overload( name, func )</code></h4>
+<h4><code>overload.name = func</code></h4>
 
 <p>Registers a metamethod.</p>
 
-<h4><code>override( name, func )</code></h4>
+<h4><code>override.name = func</code></h4>
 
 <p>Method modifier.</p>
 
-<h4><code>method( name, func )</code></h4>
+<h4><code>method.name = func</code></h4>
 
 <p>Registers a method.</p>
 
