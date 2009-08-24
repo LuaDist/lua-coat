@@ -606,7 +606,7 @@ function _G.class (modname)
     classes[modname] = M
 end
 
-_VERSION = "0.3.0"
+_VERSION = "0.5.0"
 _DESCRIPTION = "lua-Coat : Yet Another Lua Object-Oriented Model"
 _COPYRIGHT = "Copyright (c) 2009 Francois Perrad"
 --
