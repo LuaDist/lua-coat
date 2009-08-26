@@ -3,6 +3,7 @@ version = '@version@-@rev@'
 source = {
     url = 'http://cloud.github.com/downloads/fperrad/lua-Coat/lua-coat-@version@.tar.gz',
     md5 = '@md5@',
+    dir = 'lua-Coat-@version@',
 }
 description = {
     summary = "Yet Another Lua Object-Oriented Model",
@@ -20,7 +21,7 @@ dependencies = {
     'lua >= 5.1',
 }
 build = {
-    type = 'module',
+    type = 'builtin',
     modules = {
         ['Coat']                = 'src/Coat.lua',
         ['Coat.Meta']           = 'src/Coat/Meta.lua',
