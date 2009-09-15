@@ -19,23 +19,4 @@ function test_ns_pollution ()
     assertNil( Coat.math )
 end
 
-function test_type ()
-    require 'Coat'
-    assertType( nil, 'nil' )
-    assertType( 3.14, 'number' )
-    assertType( "text", 'string' )
-    assertType( false, 'boolean' )
-    assertType( {}, 'table' )
-    assertType( function () return true end, 'function' )
-end
-
-function test_type_ro_table ()
-    require 'Coat'
-    local t = { x=1 }
-    assertType( t, 'table')
-    setmetatable( t, { __index = function() error "read only" end } )
-    assertType( t, 'table')
-end
-
-
 runTests{ useANSI = false }

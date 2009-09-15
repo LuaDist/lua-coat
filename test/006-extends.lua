@@ -15,21 +15,21 @@ module( 'TestExtends', lunity )
 
 function test_Point ()
     local point2d = Point.new{ x = 2, y = 4}
-    assertType( point2d, 'Point' )
+    assertEqual( point2d:type(), 'Point' )
     assertTrue( point2d:isa 'Point' )
     assertNil( Coat.Meta.has( Point, 'z' ) )
 end
 
 function test_Point3D ()
     local point3d = Point3D.new{ x = 1, y = 3, z = 1}
-    assertType( point3d, 'Point3D' )
+    assertEqual( point3d:type(), 'Point3D' )
     assertTrue( point3d:isa 'Point3D' )
     assertNotNil( Coat.Meta.has( Point3D, 'z' ) )
 end
 
 function test_MyItem3D ()
     local item = MyItem3D.new{ name = 'foo', x = 4, z = 3 }
-    assertType( item, 'MyItem3D' )
+    assertEqual( item:type(), 'MyItem3D' )
     assertTrue( item:isa 'MyItem3D' )
     assertTrue( item:isa 'Point3D' )
     assertTrue( item:isa 'MyItem' )

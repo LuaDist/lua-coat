@@ -79,10 +79,6 @@
 
 <p>Create a Coat class as a standard Lua module.</p>
 
-<h4><code>type( obj )</code></h4>
-
-<p>This standard function is overloaded.</p>
-
 <h3>Functions in the <em>built Class</em></h3>
 
 <h4><code>after.name = func</code></h4>
@@ -112,7 +108,7 @@
 <h4><code>has.name = { ['+', ] option1 = value1, option2 = value2, ... }</code></h4>
 
 <p>Adds a attribute <code>name</code> in the current class.
-A item <code>'+'</code> allows overriding.</p>
+An item <code>'+'</code> allows overriding.</p>
 
 <p>The following options are available :
   <ul>
@@ -133,7 +129,7 @@ A item <code>'+'</code> allows overriding.</p>
   </ul>
 </p>
 
-<h4><code>isa( obj, t )</code> or obj:isa( t )</code></h4>
+<h4><code>isa( obj, t )</code> or <code>obj:isa( t )</code></h4>
 
 <p>Checks if a object is an instance of <code>t<code> which is a class or classname.</p>
 
@@ -154,6 +150,10 @@ A item <code>'+'</code> allows overriding.</p>
 <p>Instanciates a object.</p>
 
 <p>If exist, the user method <code>BUILD</code> is called at the end.<p>
+
+<h4><code>type( obj )</code> or <code>obj:type()</code></h4>
+
+<p>Returns the type of <code>obj</code>.</p>
 
 <h4><code>with( role [, alias-excludes ] [, role, ... ] )</code></h4>
 

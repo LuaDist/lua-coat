@@ -6,7 +6,7 @@ module( 'TestPoint', lunity )
 
 function test_new ()
     local a = Point{x = 1, y = 2}
-    assertType( a, 'Point' )
+    assertEqual( a:type(), 'Point' )
     assertTrue( a:isa 'Point' )
     assertInvokable( a.x )
     assertInvokable( a.y )
@@ -21,7 +21,7 @@ end
 
 function test_new_default ()
     local a = Point()
-    assertType( a, 'Point' )
+    assertEqual( a:type(), 'Point' )
     assertType( a:x(), 'number')
     assertType( a:y(), 'number')
     assertEqual( a:x(), 0 )
@@ -48,7 +48,7 @@ end
 
 function test_method ()
     local a = Point{x = 1, y = 2}
-    assertType( a, 'Point' )
+    assertEqual( a:type(), 'Point' )
     assertInvokable( a.draw )
     assertTrue( a:can 'draw' )
     assertTrue( Point:can 'draw' )

@@ -25,7 +25,7 @@ function test_Foo ()
     foo:c( function () return 3 end )
     assertEqual( foo:c()(), 3 )
     foo:subobject(Bar.new())
-    assertType( foo:subobject(), 'Bar' )
+    assertTrue( foo:subobject():isa 'Bar' )
     -- invalid call
     assertErrors( foo.x, foo, "text" ) -- foo:x "text"
     assertErrors( foo.s, foo, 2 ) -- foo:s(2)

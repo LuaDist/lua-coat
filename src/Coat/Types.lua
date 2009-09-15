@@ -10,7 +10,6 @@ local pairs = pairs
 local _G = _G
 local table = table
 
-local basic_type = Coat.basic_type
 local checktype = Coat.checktype
 
 module 'Coat.Types'

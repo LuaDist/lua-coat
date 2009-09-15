@@ -35,7 +35,7 @@ end
 
 function test_English ()
     local foo = English.new()
-    assertType( foo:translate(), 'Spanish' )
+    assertTrue( foo:translate():isa 'Spanish' )
     assertInvokable( foo.one )
     assertEqual( foo:one(), 1 )
     assertInvokable( foo.two )
