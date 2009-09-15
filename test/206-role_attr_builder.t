@@ -22,20 +22,15 @@ method._build_color = function ()
 end
 
 
-require 'lunity'
-module( 'TestRoleAttrBuilder', lunity )
+require 'Test.More'
 
-function test_Red ()
-    local c = Red.new()
-    assertTrue( c:isa 'Red' )
-    assertEqual( c:color(), 'red' )
-end
+plan(4)
 
-function test_Blue ()
-    local c = Blue.new()
-    assertTrue( c:isa 'Blue' )
-    assertEqual( c:color(), 'blue' )
-end
+c = Red.new()
+ok( c:isa 'Red', "Red" )
+is( c:color(), 'red' )
 
+c = Blue.new()
+ok( c:isa 'Blue', "Blue" )
+is( c:color(), 'blue' )
 
-runTests{ useANSI = false }

@@ -32,18 +32,15 @@ method._break = function (self)
 end
 
 
-require 'lunity'
-module( 'TestRoleAlias', lunity )
+require 'Test.More'
 
-function test_FragileDancer ()
-    local man = FragileDancer.new()
-    assertTrue( man:isa 'FragileDancer' )
-    assertTrue( man:does 'Breakable' )
-    assertTrue( man:does 'Breakdancer' )
-    assertInvokable( man.break_bone )
-    assertInvokable( man.break_dance )
-    assertInvokable( man._break )
-end
+plan(6)
 
+man = FragileDancer.new()
+ok( man:isa 'FragileDancer', "FragileDancer" )
+ok( man:does 'Breakable' )
+ok( man:does 'Breakdancer' )
+ok( man.break_bone )
+ok( man.break_dance )
+ok( man._break )
 
-runTests{ useANSI = false }
