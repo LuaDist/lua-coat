@@ -35,37 +35,37 @@ require 'Test.More'
 
 plan(18)
 
-_G.factory = NumberFactory()
+factory = NumberFactory()
 is( factory:n(24), 24, "Natural" )
-error_like([[factory:n( "text" )]],
+error_like([[local factory = NumberFactory(); factory:n( "text" )]],
            "^[^:]+:%d+: Invalid type for attribute 'n' %(got string, expected number%)")
-error_like([[factory:n(0)]],
+error_like([[local factory = NumberFactory(); factory:n(0)]],
            "^[^:]+:%d+: 0 is not a Natural number")
 
 is( factory:f(2.0), 2.0, "Float" )
-error_like([[factory:f( "text" )]],
+error_like([[local factory = NumberFactory(); factory:f( "text" )]],
            "^[^:]+:%d+: Invalid type for attribute 'f' %(got string, expected number%)")
 
 is( factory:month(1), 1, "Month" )
 is( factory:month(12), 12 )
-error_like([[factory:month(0)]],
+error_like([[local factory = NumberFactory(); factory:month(0)]],
            "^[^:]+:%d+: 0 is not a Natural number")
-error_like([[factory:month(14)]],
+error_like([[local factory = NumberFactory(); factory:month(14)]],
            "^[^:]+:%d+: 14 is not a month")
 
 is( factory:winter(12), 12, "WinterMonth" )
-error_like([[factory:winter(0)]],
+error_like([[local factory = NumberFactory(); factory:winter(0)]],
            "^[^:]+:%d+: 0 is not a Natural number")
-error_like([[factory:winter(14)]],
+error_like([[local factory = NumberFactory(); factory:winter(14)]],
            "^[^:]+:%d+: 14 is not a month")
-error_like([[factory:winter(8)]],
+error_like([[local factory = NumberFactory(); factory:winter(8)]],
            "^[^:]+:%d+: 8 is not a month of winter")
 
 is( factory:col( 'Red' ), 'Red', "Colour" )
 is( factory:col( 'Green' ), 'Green' )
 is( factory:col( 'Blue' ), 'Blue' )
-error_like([[factory:col( 'Yellow' )]],
+error_like([[local factory = NumberFactory(); factory:col( 'Yellow' )]],
            "^[^:]+:%d+: Value for attribute 'col' does not validate type constraint 'Colour'")
-error_like([[factory:col( 'Blu' )]],
+error_like([[local factory = NumberFactory(); factory:col( 'Blu' )]],
            "^[^:]+:%d+: Value for attribute 'col' does not validate type constraint 'Colour'")
 

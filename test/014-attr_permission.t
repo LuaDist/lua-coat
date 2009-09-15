@@ -11,21 +11,21 @@ require 'Test.More'
 
 plan(8)
 
-_G.foo = Foo.new{ read = 4, write = 5 }
+foo = Foo.new{ read = 4, write = 5 }
 is( foo:read(), 4, "Foo" )
 is( foo:write(), 5 )
 foo:write(7)
 is( foo:write(), 7 )
 
-error_like([[foo:read(5)]],
+error_like([[local foo = Foo.new{ read = 4, write = 5 }; foo:read(5)]],
            "^[^:]+:%d+: Cannot set a read%-only attribute %(read%)")
 
-_G. foo = Foo.new()
+foo = Foo.new()
 is( foo:read(), 2, "Foo (default)" )
 is( foo:write(), 3 )
 foo:write(7)
 is( foo:write(), 7 )
 
-error_like([[foo:read(5)]],
+error_like([[local foo = Foo.new(); foo:read(5)]],
            "^[^:]+:%d+: Cannot set a read%-only attribute %(read%)")
 

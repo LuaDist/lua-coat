@@ -17,7 +17,7 @@ require 'Test.More'
 
 plan(8)
 
-_G.foo = Foo.new()
+foo = Foo.new()
 foo:x(43)
 is( foo:x(), 43 )
 foo:s "text"
@@ -27,15 +27,15 @@ is( foo:c()(), 3 )
 foo:subobject(Bar.new())
 ok( foo:subobject():isa 'Bar' )
 
-error_like([[foo:x "text"]],
+error_like([[local foo = Foo.new(); foo:x "text"]],
            "^[^:]+:%d+: Invalid type for attribute 'x' %(got string, expected number%)")
 
-error_like([[foo:s(2)]],
+error_like([[local foo = Foo.new(); foo:s(2)]],
            "^[^:]+:%d+: Invalid type for attribute 's' %(got number, expected string%)")
 
-error_like([[foo:c(2)]],
+error_like([[local foo = Foo.new(); foo:c(2)]],
            "^[^:]+:%d+: Invalid type for attribute 'c' %(got number, expected function%)")
 
-error_like([[foo:subobject(Baz.new())]],
+error_like([[local foo = Foo.new(); foo:subobject(Baz.new())]],
            "^[^:]+:%d+: Invalid type for attribute 'subobject' %(got Baz, expected Bar%)")
 
