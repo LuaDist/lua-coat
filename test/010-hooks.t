@@ -35,28 +35,24 @@ after.pushelem = function (self, elem)
     table.insert( _G.list, 'after3:' .. elem )
 end
 
-require 'lunity'
-module( 'TestHooks', lunity )
+require 'Test.More'
 
-function setup ()
-    _G.list = {}
-end
+plan(7)
 
-function test_Simple ()
-    local p = Parent.new()
-    assertTrue( p:isa 'Parent' )
-    assertInvokable( p.pushelem )
-    p:pushelem 'Coat'
-    assertTableEquals( _G.list, { 'Coat' } )
-end
+p = Parent.new()
+ok( p:isa 'Parent', "Simple" )
+ok( p.pushelem )
+_G.list = {}
+p:pushelem 'Coat'
+eq_array( _G.list, { 'Coat' } )
 
-function test_Multiple ()
-    local c = Child.new()
-    assertTrue( c:isa 'Child' )
-    assertTrue( c:isa 'Parent' )
-    assertInvokable( c.pushelem )
-    c:pushelem 'Coat'
-    assertTableEquals( _G.list, {
+c = Child.new()
+ok( c:isa 'Child', "Multiple" )
+ok( c:isa 'Parent' )
+ok( c.pushelem )
+_G.list = {}
+c:pushelem 'Coat'
+eq_array( _G.list, {
         'before3:Coat',
         'before2:Coat',
         'before1:Coat',
@@ -64,8 +60,5 @@ function test_Multiple ()
         'after1:Coat',
         'after2:Coat',
         'after3:Coat',
-    } )
-end
+} )
 
-
-runTests{ useANSI = false }
