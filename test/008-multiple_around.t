@@ -26,35 +26,28 @@ around.orig = function (self, func, ...)
     table.insert( _G.seen, 'around 2 after' )
 end
 
-require 'lunity'
-module( 'TestMultipleAround', lunity )
+require 'Test.More'
 
-function setup ()
-    _G.seen = {}
-end
+plan(7)
 
-function test_Simple ()
-    local p = Parent.new()
-    assertTrue( p:isa 'Parent' )
-    assertInvokable( p.orig )
-    p:orig 'val'
-    assertTableEquals( _G.seen, { 'orig : val' } )
-end
+p = Parent.new()
+ok( p:isa 'Parent', "Simple" )
+ok( p.orig )
+_G.seen = {}
+p:orig 'val'
+eq_array( _G.seen, { 'orig : val' } )
 
-function test_MultipleAround ()
-    local c = Child.new()
-    assertTrue( c:isa 'Child' )
-    assertTrue( c:isa 'Parent' )
-    assertInvokable( c.orig )
-    c:orig 'val'
-    assertTableEquals( _G.seen, {
+c = Child.new()
+ok( c:isa 'Child', "MultipleAround" )
+ok( c:isa 'Parent' )
+ok( c.orig )
+_G.seen = {}
+c:orig 'val'
+eq_array( _G.seen, {
         'around 2 before : val',
                 'around 1 before : val',
                         'orig : val',
                 'around 1 after',
         'around 2 after',
-    } )
-end
+} )
 
-
-runTests{ useANSI = false }
