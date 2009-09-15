@@ -15,6 +15,7 @@ local setmetatable = setmetatable
 local basic_type = type
 local _G = _G
 local package = package
+local string = string
 local table = table
 
 module 'Coat'

@@ -24,8 +24,8 @@ function subtype (name, t)
     checktype('subtype', 2, parent, 'string')
     local validator = t.where
     checktype('subtype', 3, validator, 'function')
-    local message = t.message or ''
-    checktype('subtype', 4, message, 'string')
+    local message = t.message
+    checktype('subtype', 4, message or '', 'string')
     if _TC[name] then
         error("Duplicate definition of type " .. name)
     end
