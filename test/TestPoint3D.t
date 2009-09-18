@@ -1,9 +1,13 @@
 #!/usr/bin/env lua
 
-require 'Point3D'
 require 'Test.More'
 
-plan(30)
+plan(31)
+
+if not require_ok 'Point3D' then
+    skip_rest "no lib"
+    os.exit()
+end
 
 a = Point3D{x = 1, y = 2, z = 3}
 is( a:type(), 'Point3D', "new" )

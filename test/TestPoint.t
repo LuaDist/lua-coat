@@ -1,9 +1,13 @@
 #!/usr/bin/env lua
 
-require 'Point'
 require 'Test.More'
 
-plan(26)
+plan(27)
+
+if not require_ok 'Point' then
+    skip_rest "no lib"
+    os.exit()
+end
 
 a = Point{x = 1, y = 2}
 is( a:type(), 'Point', "new" )

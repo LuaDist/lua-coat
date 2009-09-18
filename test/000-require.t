@@ -4,7 +4,11 @@ require 'Test.More'
 
 plan(9)
 
-require_ok 'Coat'
+if not require_ok 'Coat' then
+    skip_rest "no lib"
+    os.exit()
+end
+
 local m = require 'Coat'
 type_ok( m, 'table' )
 is( m, Coat )

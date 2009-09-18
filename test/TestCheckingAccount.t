@@ -3,7 +3,12 @@
 require 'CheckingAccount'
 require 'Test.More'
 
-plan(19)
+plan(20)
+
+if not require_ok 'CheckingAccount' then
+    skip_rest "no lib"
+    os.exit()
+end
 
 savings_account = BankAccount{ balance = 250 }
 ok( savings_account:isa 'BankAccount', "BankAccount" )
