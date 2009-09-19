@@ -5,8 +5,7 @@ require 'Test.More'
 plan(9)
 
 if not require_ok 'Coat' then
-    skip_rest "no lib"
-    os.exit()
+    BAIL_OUT "no lib"
 end
 
 local m = require 'Coat'
