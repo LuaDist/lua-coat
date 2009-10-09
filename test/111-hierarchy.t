@@ -1,10 +1,13 @@
 #!/usr/bin/env lua
 
-require 'MyApp'
-
 require 'Test.More'
 
-plan(6)
+plan(7)
+
+if not require_ok 'MyApp' then
+    skip_rest "no lib"
+    os.exit()
+end
 
 bar = MyApp.Bar.new()
 ok( bar:isa 'MyApp.Bar', "MyApp.Bar" )

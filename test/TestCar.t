@@ -1,9 +1,13 @@
 #!/usr/bin/env lua
 
-require 'Car'
 require 'Test.More'
 
-plan(6)
+plan(7)
+
+if not require_ok 'Car' then
+    skip_rest "no lib"
+    os.exit()
+end
 
 car = Car.new()
 ok( car:isa 'Car', "isa" )
