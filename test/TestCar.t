@@ -9,9 +9,11 @@ if not require_ok 'Car' then
     os.exit()
 end
 
-local f = io.popen("dot -T png -o Car.png", 'w')
-f:write(require 'Coat.Meta.UML'.to_dot())
-f:close()
+if os.execute "dot -V" == 0 then
+    local f = io.popen("dot -T png -o Car.png", 'w')
+    f:write(require 'Coat.Meta.UML'.to_dot())
+    f:close()
+end
 
 car = Car.new()
 ok( car:isa 'Car', "isa" )

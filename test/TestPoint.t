@@ -9,9 +9,11 @@ if not require_ok 'Point' then
     os.exit()
 end
 
-local f = io.popen("dot -T png -o Point.png", 'w')
-f:write(require 'Coat.Meta.UML'.to_dot())
-f:close()
+if os.execute "dot -V" == 0 then
+    local f = io.popen("dot -T png -o Point.png", 'w')
+    f:write(require 'Coat.Meta.UML'.to_dot())
+    f:close()
+end
 
 a = Point{x = 1, y = 2}
 is( a:type(), 'Point', "new" )

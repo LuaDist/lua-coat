@@ -67,7 +67,7 @@ html:
 	xmllint --noout --valid doc/*.html
 
 clean:
-	rm -f MANIFEST *.bak
+	rm -f MANIFEST *.bak *.png test/*.png
 
 .PHONY: test rockspec CHANGES
 

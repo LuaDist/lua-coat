@@ -10,9 +10,11 @@ if not require_ok 'CheckingAccount' then
     os.exit()
 end
 
-local f = io.popen("dot -T png -o CheckingAccount.png", 'w')
-f:write(require 'Coat.Meta.UML'.to_dot())
-f:close()
+if os.execute "dot -V" == 0 then
+    local f = io.popen("dot -T png -o CheckingAccount.png", 'w')
+    f:write(require 'Coat.Meta.UML'.to_dot())
+    f:close()
+end
 
 savings_account = BankAccount{ balance = 250 }
 ok( savings_account:isa 'BankAccount', "BankAccount" )
