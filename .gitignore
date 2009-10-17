@@ -4,5 +4,5 @@ MANIFEST
 *.tar.gz
 *.bak
 
-lunity.lua
+test/*.png
 
