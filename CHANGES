@@ -1,6 +1,7 @@
 Revision history for lua-Coat
 
 0.6.0
+	+ add singleton / instance
 	+ add module Coat.Meta.UML & utility coat2dot
 
 0.5.1  Fri Oct 16 10:30:00 2009

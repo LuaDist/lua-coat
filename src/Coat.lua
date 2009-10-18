@@ -152,6 +152,11 @@ function new (class, args)
     return obj
 end
 
+function instance (class, args)
+    class._INSTANCE = class._INSTANCE or new(class, args)
+    return class._INSTANCE
+end
+
 function __gc (class, obj)
     if class.DEMOLISH then
         class.DEMOLISH(obj)
@@ -563,8 +568,7 @@ function with (class, ...)
     end
 end
 
-function _G.class (modname)
-    checktype('class', 1, modname, 'string')
+local function _class (modname)
     if basic_type(package.loaded[modname]) == 'table' then
         error("name conflict for module '" .. modname .. "'")
     end
@@ -577,7 +581,7 @@ function _G.class (modname)
                       return t.new(...)
                   end,
     })
-    setfenv(2, M)
+    setfenv(3, M)
     M._NAME = modname
     M._M = M
     M._ISA = { modname }
@@ -605,6 +609,19 @@ function _G.class (modname)
     M.with = function (...) return with(M, ...) end
     local classes = Meta.classes()
     classes[modname] = M
+    return M
+end
+
+function _G.class (modname)
+    checktype('class', 1, modname, 'string')
+    _class(modname)
+end
+
+function _G.singleton (modname)
+    checktype('singleton', 1, modname, 'string')
+    local M = _class(modname)
+    M.instance = function (...) return instance(M, ...) end
+    M.new = M.instance
 end
 
 _VERSION = "0.5.1"

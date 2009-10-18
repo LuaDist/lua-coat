@@ -10,7 +10,7 @@ method._break = function (self)
     return "I broke"
 end
 
-class 'Car'
+singleton 'Car'
 with 'Breakable'
 
 has.engine = { is = 'ro', isa = 'Engine' }

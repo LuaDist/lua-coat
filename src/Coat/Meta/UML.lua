@@ -18,6 +18,7 @@ local reserved = {
     does = true,
     extends = true,
     has = true,
+    instance = true,
     isa = true,
     method = true,
     new = true,
@@ -28,6 +29,7 @@ local reserved = {
     _ATTR = true,
     _DOES = true,
     _INIT = true,
+    _INSTANCE = true,
     _ISA = true,
     _M = true,
     _MT = true,
@@ -43,7 +45,11 @@ function to_dot ()
     local out = 'digraph {\n\n    node [shape=record];\n\n'
     for _, class in pairs(classes) do
         out = out .. '    "' .. class._NAME .. '"\n'
-        out = out .. '        [label="{\\N'
+        out = out .. '        [label="{'
+        if class.instance then
+            out = out .. '&laquo;singleton&raquo;\\n'
+        end
+        out = out .. '\\N'
         local first = true
         for name, attr in pairs(class._ATTR) do
             if first then
