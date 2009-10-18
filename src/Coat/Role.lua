@@ -19,7 +19,7 @@ local findtable = Coat.findtable
 
 module 'Coat.Role'
 
-local Meta = require 'Coat.Meta'
+local Meta = require 'Coat.Meta.Role'
 
 function has (role, name, options)
     checktype('has', 1, name, 'string')

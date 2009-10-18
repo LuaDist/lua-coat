@@ -20,7 +20,7 @@ local table = table
 
 module 'Coat'
 
-local Meta = require 'Coat.Meta'
+local Meta = require 'Coat.Meta.Class'
 
 function type (obj)
     local t = basic_type(obj)

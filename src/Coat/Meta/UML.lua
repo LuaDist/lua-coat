@@ -3,55 +3,24 @@
 -- lua-Coat : <http://lua-coat.luaforge.net/>
 --
 
-local ipairs = ipairs
 local pairs = pairs
 
-local m = require 'Coat.Meta'
+local mc = require 'Coat.Meta.Class'
+local mr = require 'Coat.Meta.Role'
 
 module 'Coat.Meta.UML'
 
-local reserved = {
-    after = true,
-    around = true,
-    before = true,
-    can = true,
-    does = true,
-    extends = true,
-    has = true,
-    instance = true,
-    isa = true,
-    method = true,
-    new = true,
-    overload = true,
-    override = true,
-    type = true,
-    with = true,
-    _ATTR = true,
-    _DOES = true,
-    _INIT = true,
-    _INSTANCE = true,
-    _ISA = true,
-    _M = true,
-    _MT = true,
-    _NAME = true,
-    _PARENT = true,
-    _ROLE = true,
-    __gc = true,
-}
-
 function to_dot ()
-    local classes = m.classes()
-    local roles = m.roles()
     local out = 'digraph {\n\n    node [shape=record];\n\n'
-    for _, class in pairs(classes) do
-        out = out .. '    "' .. class._NAME .. '"\n'
+    for classname, class in pairs(mc.classes()) do
+        out = out .. '    "' .. classname .. '"\n'
         out = out .. '        [label="{'
         if class.instance then
             out = out .. '&laquo;singleton&raquo;\\n'
         end
         out = out .. '\\N'
         local first = true
-        for name, attr in pairs(class._ATTR) do
+        for name, attr in mc.attributes(class) do
             if first then
                 out = out .. '|'
                 first = false
@@ -69,92 +38,79 @@ function to_dot ()
             out = out .. '\\l'
         end
         first = true
-        for name in pairs(class._MT) do
-            if name ~= '__index' then
-                if first then
-                    out = out .. '|'
-                    first = false
-                end
-                out = out .. name .. '()\\l'
+        for name in mc.metamethods(class) do
+            if first then
+                out = out .. '|'
+                first = false
             end
+            out = out .. name .. '()\\l'
         end
-        for name in pairs(class) do
-            if not reserved[name] and not class._ATTR[name] then
-                if first then
-                    out = out .. '|'
-                    first = false
-                end
-                out = out .. name .. '()\\l'
+        for name in mc.methods(class) do
+            if first then
+                out = out .. '|'
+                first = false
             end
+            out = out .. name .. '()\\l'
         end
         out = out .. '}"];\n'
-        for name, attr in pairs(class._ATTR) do
-            if attr.isa and classes[attr.isa] then
-                out = out .. '    "' .. class._NAME .. '" -> "' .. attr.isa .. '" // has\n'
+        for name, attr in mc.attributes(class) do
+            if attr.isa and mc.class(attr.isa) then
+                out = out .. '    "' .. classname .. '" -> "' .. attr.isa .. '" // has\n'
                 out = out .. '        [label = "' .. name .. '", arrowhead = none, arrowtail = odiamond];\n'
             end
-            if attr.does and roles[attr.does] then
-                out = out .. '    "' .. class._NAME .. '" -> "' .. attr.does .. '" // has\n'
+            if attr.does and mr.role(attr.does) then
+                out = out .. '    "' .. classname .. '" -> "' .. attr.does .. '" // has\n'
                 out = out .. '        [label = "' .. name .. '", arrowhead = none, arrowtail = odiamond];\n'
             end
         end
-        for _, parent in ipairs(class._PARENT) do
-            out = out .. '    "' .. class._NAME .. '" -> "' .. parent._NAME .. '" // extends\n'
+        for parent in mc.parents(class) do
+            out = out .. '    "' .. classname .. '" -> "' .. parent .. '" // extends\n'
             out = out .. '        [arrowhead = onormal, arrowtail = none, arrowsize = 2.0];\n'
         end
-        for _, role in ipairs(class._ROLE) do
-            out = out .. '    "' .. class._NAME .. '" -> "' .. role._NAME .. '" // with\n'
+        for role in mc.roles(class) do
+            out = out .. '    "' .. classname .. '" -> "' .. role .. '" // with\n'
             out = out .. '        [arrowhead = odot, arrowtail = none];\n'
         end
         out = out .. '\n'
     end
-    for _, role in pairs(roles) do
-        out = out .. '    "' .. role._NAME .. '"\n'
+    for rolename, role in pairs(mr.roles()) do
+        out = out .. '    "' .. rolename .. '"\n'
         out = out .. '        [label="{&laquo;role&raquo;\\n\\N'
         local first = true
-        for _, v in ipairs(role._STORE) do
-            if v[1] == 'has' then
-                if first then
-                    out = out .. '|'
-                    first = false
-                end
-                local name, attr = v[2], v[3]
-                out = out .. name
-                if attr.is then
-                    out = out .. ', is ' .. attr.is
-                end
-                if attr.isa then
-                    out = out .. ', isa ' .. attr.isa
-                end
-                if attr.does then
-                    out = out .. ', does ' .. attr.isa
-                end
-                out = out .. '\\l'
+        for name, attr in mr.attributes(role) do
+            if first then
+                out = out .. '|'
+                first = false
             end
+            out = out .. name
+            if attr.is then
+                out = out .. ', is ' .. attr.is
+            end
+            if attr.isa then
+                out = out .. ', isa ' .. attr.isa
+            end
+            if attr.does then
+                out = out .. ', does ' .. attr.isa
+            end
+            out = out .. '\\l'
         end
         first = true
-        for _, v in ipairs(role._STORE) do
-            if v[1] == 'method' then
-                if first then
-                    out = out .. '|'
-                    first = false
-                end
-                local name = v[2]
-                out = out .. name .. '()\\l'
+        for name in mr.methods(role) do
+            if first then
+                out = out .. '|'
+                first = false
             end
+            out = out .. name .. '()\\l'
         end
         out = out .. '}"];\n\n'
-        for _, v in pairs(role._STORE) do
-            if v[1] == 'has' then
-                local name, attr = v[2], v[3]
-                if attr.isa and classes[attr.isa] then
-                    out = out .. '    "' .. role._NAME .. '" -> "' .. attr.isa .. '" // has\n'
-                    out = out .. '        [label = "' .. name .. '", arrowhead = none, arrowtail = odiamond];\n'
-                end
-                if attr.does and roles[attr.does] then
-                    out = out .. '    "' .. role._NAME .. '" -> "' .. attr.does .. '" // has\n'
-                    out = out .. '        [label = "' .. name .. '", arrowhead = none, arrowtail = odiamond];\n'
-                end
+        for name, attr in mr.attributes(role) do
+            if attr.isa and mc.class(attr.isa) then
+                out = out .. '    "' .. rolename .. '" -> "' .. attr.isa .. '" // has\n'
+                out = out .. '        [label = "' .. name .. '", arrowhead = none, arrowtail = odiamond];\n'
+            end
+            if attr.does and mr.role(attr.does) then
+                out = out .. '    "' .. rolename .. '" -> "' .. attr.does .. '" // has\n'
+                out = out .. '        [label = "' .. name .. '", arrowhead = none, arrowtail = odiamond];\n'
             end
         end
     end
