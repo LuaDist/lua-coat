@@ -16,17 +16,20 @@ with 'Breakable'
 has.engine = { is = 'ro', isa = 'Engine' }
 
 after._break = function (self)
-    return "I broke"
+    _G.seen = "I broke"
 end
 
 require 'Test.More'
 
 plan(5)
 
+_G.seen = ''
+
 car = Car.new()
 ok( car:isa 'Car', "Car" )
 ok( car:does 'Breakable' )
 is( car:is_broken(), nil )
-is( car:_break(), "I broke" )
+car:_break()
 ok( car:is_broken() )
+is( _G.seen, "I broke" )
 

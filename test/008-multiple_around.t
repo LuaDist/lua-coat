@@ -7,6 +7,7 @@ class 'Parent'
 method.orig = function (self, ...)
     local val = ...
     table.insert( _G.seen, 'orig : ' .. val )
+    return 1
 end
 
 class 'Child'
@@ -15,20 +16,22 @@ extends 'Parent'
 around.orig = function (self, func, ...)
     local val = ...
     table.insert( _G.seen, 'around 1 before : ' .. val)
-    func(self, ...)
+    local result = func(self, ...)
     table.insert( _G.seen, 'around 1 after' )
+    return result + 1
 end
 
 around.orig = function (self, func, ...)
     local val = ...
     table.insert( _G.seen, 'around 2 before : ' .. val)
-    func(self, ...)
+    local result = func(self, ...)
     table.insert( _G.seen, 'around 2 after' )
+    return result + 1
 end
 
 require 'Test.More'
 
-plan(7)
+plan(8)
 
 p = Parent.new()
 ok( p:isa 'Parent', "Simple" )
@@ -42,7 +45,7 @@ ok( c:isa 'Child', "MultipleAround" )
 ok( c:isa 'Parent' )
 ok( c.orig )
 _G.seen = {}
-c:orig 'val'
+is( c:orig 'val', 3 )
 eq_array( _G.seen, {
         'around 2 before : val',
                 'around 1 before : val',

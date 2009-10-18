@@ -27,11 +27,6 @@ extends 'Soldier'
 
 has.force = { '+', default = 5 }
 
--- just to make sur we can hook something inherited
-before.walk = function ()
-    return 1
-end
-
 require 'Test.More'
 
 plan(28)

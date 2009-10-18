@@ -425,9 +425,8 @@ function before (class, name, func)
     end
 
     class[name] = function (...)
-        local result = func(...)
+        func(...)
         super(...)
-        return result
     end
 end
 
@@ -456,7 +455,7 @@ function after (class, name, func)
 
     class[name] = function (...)
         super(...)
-        return func(...)
+        func(...)
     end
 end
 
