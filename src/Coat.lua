@@ -25,7 +25,9 @@ local Meta = require 'Coat.Meta'
 function type (obj)
     local t = basic_type(obj)
     if t == 'table' then
-        pcall(function () t = obj._CLASS or t end)
+        pcall(function ()
+                t = obj._CLASS or t
+              end)
     end
     return t
 end
