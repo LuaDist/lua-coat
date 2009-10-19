@@ -360,18 +360,58 @@ function has (class, name, options)
     end
 
     if options.handles then
-        for k, v in pairs(options.handles) do
-            class[k] = function (obj, ...)
-                local attr = obj._VALUES[name]
-                local func = attr[v]
-                if func == nil then
-                    error("Cannot delegate " .. k .. " from "
-                          .. name .. " (" .. v .. ")")
+        if basic_type(options.handles) == 'table' and not options.handles._NAME then
+            for k, v in pairs(options.handles) do
+                local meth = k
+                if basic_type(meth) == 'number' then
+                    meth = v
                 end
-                return func(attr, ...)
+                if class[meth] then
+                    error("Duplicate definition of method " .. meth)
+                end
+                class[meth] = function (obj, ...)
+                    local attr = obj._VALUES[name]
+                    local func = attr[v]
+                    if func == nil then
+                        error("Cannot delegate " .. meth .. " from "
+                              .. name .. " (" .. v .. ")")
+                    end
+                    return func(attr, ...)
+                end -- delegate
             end
+        else
+            local role
+            if basic_type(options.handles) == 'string' then
+                role = require(options.handles)
+            elseif options.handles._NAME then
+                role = options.handles
+            end
+            if not role or role._INIT then
+                error "The handles option requires a table or a Role"
+            end
+            if options.does ~= role._NAME then
+                error "The handles option requires a does option with the same role"
+            end
+            for _, v in ipairs(role._STORE) do
+                if v[1] == 'method' then
+                    local meth = v[2]
+                    if class[meth] then
+                        error("Duplicate definition of method " .. meth)
+                    end
+                    class[meth] = function (obj, ...)
+                        local attr = obj._VALUES[name]
+                        local func = attr[meth]
+                        if func == nil then
+                            error("Cannot delegate " .. meth .. " from "
+                                  .. name .. " (" .. meth .. ")")
+                        end
+                        return func(attr, ...)
+                    end -- delegate
+                end
+            end
+            table.insert(class._DOES, role._NAME)
         end
-    end
+    end -- options.handles
 
     if options.clearer then
         if options.required then

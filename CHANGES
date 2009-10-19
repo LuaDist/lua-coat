@@ -5,6 +5,7 @@ Revision history for lua-Coat
 	+ add module Coat.Meta.UML & utility coat2dot
 	+ modifiers before/after don't handle return values of methods
 		(use modifier around for that)
+	+ option handles allows delegation of role
 	+ split Coat.Meta in Coat.Meta.Class & Coat.Meta.Role
 
 0.5.1  Fri Oct 16 10:30:00 2009

@@ -16,12 +16,13 @@ has.translate = {
         two = 'dos',
         name = 'nombre',
         bad = '_bad_',
+        '_bad', -- equiv: _bad = '_bad'
     },
 }
 
 require 'Test.More'
 
-plan(17)
+plan(18)
 
 foo = Spanish.new()
 ok( foo:isa "Spanish", "Spanish" )
@@ -45,4 +46,7 @@ ok( foo.bad )
 
 error_like([[local foo = English.new(); foo:bad()]],
            "^[^:]+:%d+: Cannot delegate bad from translate %(_bad_%)")
+
+error_like([[local foo = English.new(); foo:_bad()]],
+           "^[^:]+:%d+: Cannot delegate _bad from translate %(_bad%)")
 
