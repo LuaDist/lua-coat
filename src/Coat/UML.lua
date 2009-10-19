@@ -33,7 +33,7 @@ function to_dot ()
                 out = out .. ', isa ' .. attr.isa
             end
             if attr.does then
-                out = out .. ', does ' .. attr.isa
+                out = out .. ', does ' .. attr.does
             end
             out = out .. '\\l'
         end
@@ -90,7 +90,7 @@ function to_dot ()
                 out = out .. ', isa ' .. attr.isa
             end
             if attr.does then
-                out = out .. ', does ' .. attr.isa
+                out = out .. ', does ' .. attr.does
             end
             out = out .. '\\l'
         end
