@@ -2,13 +2,13 @@
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-  <title>Module Coat.Meta</title>
+  <title>Module Coat.Meta.Class</title>
     <link rel="stylesheet" href="http://www.keplerproject.org/doc.css" type="text/css"/>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta http-equiv="Author" content="Fran&ccedil;ois Perrad"/>
   <meta http-equiv="Language" content="en"/>
-  <meta http-equiv="Description" content="Module Coat.Meta"/>
-  <meta http-equiv="Keywords" content="lua, coat, meta, class, classes, has, role, roles"/>
+  <meta http-equiv="Description" content="Module Coat.Meta.Class"/>
+  <meta http-equiv="Keywords" content="lua, coat, meta, class, attributes, classes, has, methods, metamethods, parents, roles"/>
 </head>
 
 <body>
@@ -41,30 +41,35 @@
         <li><a href="index.html#license">License</a></li>
       </ul>
     </li>
-    <li><a href="coat.html">The module <code>Coat</code></a>
+    <li><a href="coat.html">module <code>Coat</code></a>
       <ul>
         <li><a href="coat.html#reference">Reference</a></li>
         <li><a href="coat.html#examples">Examples</a></li>
       </ul>
     </li>
-    <li><strong>The module <code>Meta</code></strong>
-      <ul>
-        <li><a href="meta.html#reference">Reference</a></li>
-      </ul>
-    </li>
-    <li><a href="role.html">The module <code>Role</code></a>
+    <li><a href="role.html">module <code>Coat.Role</code></a>
       <ul>
         <li><a href="role.html#reference">Reference</a></li>
         <li><a href="role.html#examples">Examples</a></li>
       </ul>
     </li>
-    <li><a href="types.html">The module <code>Types</code></a>
+    <li><a href="types.html">module <code>Coat.Types</code></a>
       <ul>
         <li><a href="types.html#reference">Reference</a></li>
         <li><a href="types.html#examples">Examples</a></li>
       </ul>
     </li>
-    <li><a href="uml.html">The module <code>UML</code></a>
+    <li><strong>module <code>C.Meta.Class</code></strong>
+      <ul>
+        <li><a href="meta_class.html#reference">Reference</a></li>
+      </ul>
+    </li>
+    <li><a href="meta_role.html">module <code>C.Meta.Role</code></a>
+      <ul>
+        <li><a href="meta_role.html#reference">Reference</a></li>
+      </ul>
+    </li>
+    <li><a href="uml.html">module <code>C.Meta.UML</code></a>
       <ul>
         <li><a href="uml.html#reference">Reference</a></li>
         <li><a href="uml.html#examples">Examples</a></li>
@@ -85,26 +90,38 @@
 
 <h3>Functions</h3>
 
-<h4><code>Coat.Meta.class( modname )</code></h4>
+<h4><code>Coat.Meta.Class.attributes( class )</code></h4>
+
+<p>Returns a generator of couple <code>(name, attr)</code> for <code>class</code>.</p>
+
+<h4><code>Coat.Meta.Class.class( modname )</code></h4>
 
 <p>Returns the Coat class <code>modname</code> or nil.</p>
 
-<h4><code>Coat.Meta.classes()</code></h4>
+<h4><code>Coat.Meta.Class.classes()</code></h4>
 
 <p>Returns a table with all Coat classes.</p>
 
-<h4><code>Coat.Meta.has( class, name )</code></h4>
+<h4><code>Coat.Meta.Class.has( class, name )</code></h4>
 
 <p>Returns the table of options of the attribute <code>name</code>
 in the class <code>class</code> or nil.</p>
 
-<h4><code>Coat.Meta.role( modname )</code></h4>
+<h4><code>Coat.Meta.Class.methods( class )</code></h4>
 
-<p>Returns the Coat role <code>modname</code> or nil.</p>
+<p>Returns a generator of couple <code>(name, method)</code> for <code>class</code>.</p>
 
-<h4><code>Coat.Meta.roles()</code></h4>
+<h4><code>Coat.Meta.Class.metamethods( class )</code></h4>
 
-<p>Returns a table with all Coat roles.</p>
+<p>Returns a generator of couple <code>(name, metamethod)</code> for <code>class</code>.</p>
+
+<h4><code>Coat.Meta.Class.parents( class )</code></h4>
+
+<p>Returns a generator of couple <code>(name, parent)</code> for <code>class</code>.</p>
+
+<h4><code>Coat.Meta.Class.roles( class )</code></h4>
+
+<p>Returns a generator of couple <code>(name, role)</code> for <code>class</code>.</p>
 
 </div> <!-- id="content" -->
 

@@ -2,13 +2,13 @@
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-  <title>Module Coat.Role</title>
+  <title>Module Coat.Meta.Role</title>
     <link rel="stylesheet" href="http://www.keplerproject.org/doc.css" type="text/css"/>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta http-equiv="Author" content="Fran&ccedil;ois Perrad"/>
   <meta http-equiv="Language" content="en"/>
-  <meta http-equiv="Description" content="Module Coat.Role"/>
-  <meta http-equiv="Keywords" content="lua, coat, role, excludes, has, method, requires"/>
+  <meta http-equiv="Description" content="Module Coat.Meta.Role"/>
+  <meta http-equiv="Keywords" content="lua, coat, meta, role, attributes, methods, roles"/>
 </head>
 
 <body>
@@ -28,7 +28,7 @@
 <div id="main">
 
 <div id="navigation">
-<h1>Coat.Role</h1>
+<h1>Coat.Meta</h1>
   <ul>
     <li><a href="index.html">Home</a>
       <ul>
@@ -47,7 +47,7 @@
         <li><a href="coat.html#examples">Examples</a></li>
       </ul>
     </li>
-    <li><strong>module <code>Coat.Role</code></strong>
+    <li><a href="role.html">module <code>Coat.Role</code></a>
       <ul>
         <li><a href="role.html#reference">Reference</a></li>
         <li><a href="role.html#examples">Examples</a></li>
@@ -64,7 +64,7 @@
         <li><a href="meta_class.html#reference">Reference</a></li>
       </ul>
     </li>
-    <li><a href="meta_role.html">module <code>C.Meta.Role</code></a>
+    <li><strong>module <code>C.Meta.Role</code></strong>
       <ul>
         <li><a href="meta_role.html#reference">Reference</a></li>
       </ul>
@@ -88,52 +88,23 @@
 
 <h2><a name="reference"></a>References</h2>
 
-<h3>Global Functions</h3>
+<h3>Functions</h3>
 
-<h4><code>role( modname )</code></h4>
+<h4><code>Coat.Meta.Role.attributes( role )</code></h4>
 
-<p>Create a Coat role as a standard Lua module.</p>
+<p>Returns a generator of couple <code>(name, attr)</code> for <code>role</code>.</p>
 
-<h3>Functions in the <em>built Role</em></h3>
+<h4><code>Coat.Meta.Role.methods( role )</code></h4>
 
-<h4><code>excludes( role [, ...] )</code></h4>
+<p>Returns a generator of couple <code>(name, method)</code> for <code>role</code>.</p>
 
-<p>A role could exclude a list of other roles.</p>
+<h4><code>Coat.Meta.Role.role( modname )</code></h4>
 
-<h4><code>has.name = { options }</code></h4>
+<p>Returns the Coat role <code>modname</code> or nil.</p>
 
-<p>Adds a attribute <code>name</code> in the current role,
-like in a class.</p>
+<h4><code>Coat.Meta.Role.roles()</code></h4>
 
-<h4><code>method.name = func</code></h4>
-
-<p>Registers a method,
-like in a class.</p>
-
-<h4><code>requires( method [, ...] )</code></h4>
-
-<p>A role could require a list of method in the class which consumes it.</p>
-
-<h2><a name="examples"></a>Examples</h2>
-
-<h3>Like an Interface</h3>
-
-<pre class="example">
-require 'Coat.Role'
-
-role 'Breakable'
-requires '_break'
-</pre>
-<pre class="example">
-require 'Coat'
-
-class 'Car'
-with 'Breakable'
-
-method._break = function (self)
-    return "I broke"
-end
-</pre>
+<p>Returns a table with all Coat roles.</p>
 
 </div> <!-- id="content" -->
 
