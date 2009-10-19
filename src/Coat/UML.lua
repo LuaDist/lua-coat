@@ -8,7 +8,7 @@ local pairs = pairs
 local mc = require 'Coat.Meta.Class'
 local mr = require 'Coat.Meta.Role'
 
-module 'Coat.Meta.UML'
+module 'Coat.UML'
 
 function to_dot ()
     local out = 'digraph {\n\n    node [shape=record];\n\n'

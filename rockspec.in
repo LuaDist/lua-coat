@@ -27,9 +27,9 @@ build = {
         ['Coat']                = 'src/Coat.lua',
         ['Coat.Meta.Class']     = 'src/Coat/Meta/Class.lua',
         ['Coat.Meta.Role']      = 'src/Coat/Meta/Role.lua',
-        ['Coat.Meta.UML']       = 'src/Coat/Meta/UML.lua',
         ['Coat.Role']           = 'src/Coat/Role.lua',
         ['Coat.Types']          = 'src/Coat/Types.lua',
+        ['Coat.UML']            = 'src/Coat/UML.lua',
     },
     copy_directories = { 'doc', 'test' },
 }

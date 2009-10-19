@@ -11,7 +11,7 @@ end
 
 if os.execute "dot -V" == 0 then
     local f = io.popen("dot -T png -o Point3D.png", 'w')
-    f:write(require 'Coat.Meta.UML'.to_dot())
+    f:write(require 'Coat.UML'.to_dot())
     f:close()
 end
 
