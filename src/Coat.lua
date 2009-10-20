@@ -189,7 +189,7 @@ local function validate (name, options, val)
     else
         if options.isa then
             if options.coerce then
-                local mapping = Types and Types._COERCE[options.isa]
+                local mapping = Types and Types.coercion_map(options.isa)
                 if not mapping then
                     error("Coercion is not available for type " .. options.isa)
                 end
@@ -200,7 +200,7 @@ local function validate (name, options, val)
             end
 
             local function check_isa (tname)
-                local tc = Types and Types._TC[tname]
+                local tc = Types and Types.find_type_constraint(tname)
                 if tc then
                     check_isa(tc.parent)
                     if not tc.validator(val) then

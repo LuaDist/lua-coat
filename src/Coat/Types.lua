@@ -14,8 +14,16 @@ local checktype = Coat.checktype
 
 module 'Coat.Types'
 
-_TC = {}
-_COERCE = {}
+local _TC = {}
+local _COERCE = {}
+
+function find_type_constraint (name)
+    return _TC[name]
+end
+
+function coercion_map (name)
+    return _COERCE[name]
+end
 
 function subtype (name, t)
     checktype('subtype', 1, name, 'string')
