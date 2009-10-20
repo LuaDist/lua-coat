@@ -526,32 +526,41 @@ function extends(class, ...)
 
     local t = getmetatable(class)
     t.__index = function (t, k)
-                    local function search ()
-                        for _, p in ipairs(class._PARENT) do
-                            local v = p[k]
+                    local function search (cl)
+                        for _, p in ipairs(cl._PARENT) do
+                            local v = rawget(p, k) or search(p)
                             if v then
                                 return v
                             end
                         end
                     end -- search
 
-                    local v = rawget(t, k) or search()
-                    t[k] = v      -- save for next access
+                    local v = rawget(t, k)
+                    if v == nil then
+                        v = search(class)
+                        t[k] = v      -- save for next access
+                    end
+                    if v == nil then
+                        v = _G[k]
+                    end
                     return v
                 end
     local a = getmetatable(class._ATTR)
     a.__index = function (t, k)
-                    local function search ()
-                        for _, p in ipairs(class._PARENT) do
-                            local v = p._ATTR[k]
+                    local function search (cl)
+                        for _, p in ipairs(cl._PARENT) do
+                            local v = rawget(p._ATTR, k) or search(p)
                             if v then
                                 return v
                             end
                         end
                     end -- search
 
-                    local v = rawget(t, k) or search()
-                    t[k] = v      -- save for next access
+                    local v = rawget(t, k)
+                    if v == nil then
+                        v = search(class)
+                        t[k] = v      -- save for next access
+                    end
                     return v
                 end
 end
