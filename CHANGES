@@ -6,6 +6,7 @@ Revision history for lua-Coat
 	+ modifiers before/after don't handle return values of methods
 		(use modifier around for that)
 	+ option handles allows delegation of role
+	+ add parameterized type constraint
 	+ split Coat.Meta in Coat.Meta.Class & Coat.Meta.Role
 
 0.5.1  Fri Oct 16 10:30:00 2009

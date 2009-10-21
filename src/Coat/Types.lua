@@ -11,6 +11,8 @@ local _G = _G
 local table = table
 
 local checktype = Coat.checktype
+local does = Coat.does
+local isa = Coat.isa
 
 module 'Coat.Types'
 
@@ -18,7 +20,51 @@ local _TC = {}
 local _COERCE = {}
 
 function find_type_constraint (name)
-    return _TC[name]
+    local tc = _TC[name]
+    if tc then
+        return tc
+    end
+    local capt = name:match'^table(%b<>)$'
+    if capt then
+        local function check_type (val, tname)
+            local tc = find_type_constraint(tname)
+            if tc then
+                return check_type(val, tc.parent) and tc.validator(val)
+            else
+                return isa(val, tname) or does(val, tname)
+            end
+        end -- check_type
+
+        tc = { parent = 'table' }
+        local typev = capt:sub(2, capt:len()-1)
+        local idx = typev:find','
+        if idx then
+            local typek = typev:sub(1, idx-1)
+            typev = typev:sub(idx+1)
+            tc.validator = function (val)
+                            for k, v in pairs(val) do
+                                if not check_type(k, typek) then
+                                    return false
+                                end
+                                if not check_type(v, typev) then
+                                    return false
+                                end
+                            end
+                            return true
+                        end
+        else
+            tc.validator = function (val)
+                            for _, v in ipairs(val) do
+                                if not check_type(v, typev) then
+                                    return false
+                                end
+                            end
+                            return true
+                        end
+        end
+        _TC[name] = tc
+    end
+    return tc
 end
 
 function coercion_map (name)
