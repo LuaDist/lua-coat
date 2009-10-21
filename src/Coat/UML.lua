@@ -10,6 +10,13 @@ local mr = require 'Coat.Meta.Role'
 
 module 'Coat.UML'
 
+local function escape (txt)
+    txt = txt:gsub( '&', '&amp;' )
+    txt = txt:gsub( '<', '&lt;' )
+    txt = txt:gsub( '>', '&gt;' )
+    return txt
+end
+
 function to_dot ()
     local out = 'digraph {\n\n    node [shape=record];\n\n'
     for classname, class in pairs(mc.classes()) do
@@ -30,7 +37,7 @@ function to_dot ()
                 out = out .. ', is ' .. attr.is
             end
             if attr.isa then
-                out = out .. ', isa ' .. attr.isa
+                out = out .. ', isa ' .. escape(attr.isa)
             end
             if attr.does then
                 out = out .. ', does ' .. attr.does
@@ -87,7 +94,7 @@ function to_dot ()
                 out = out .. ', is ' .. attr.is
             end
             if attr.isa then
-                out = out .. ', isa ' .. attr.isa
+                out = out .. ', isa ' .. escape(attr.isa)
             end
             if attr.does then
                 out = out .. ', does ' .. attr.does
