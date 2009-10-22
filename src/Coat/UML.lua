@@ -17,6 +17,24 @@ local function escape (txt)
     return txt
 end
 
+local function find_type (name)
+    if mc.class(name) then
+        return name
+    end
+    if mr.role(name) then
+        return name
+    end
+    local capt = name:match'^table(%b<>)$'
+    if capt then
+        local typev = capt:sub(2, capt:len()-1)
+        local idx = typev:find','
+        if idx then
+            typev = typev:sub(idx+1)
+        end
+        return find_type(typev)
+    end
+end
+
 function to_dot ()
     local out = 'digraph {\n\n    node [shape=record];\n\n'
     for classname, class in pairs(mc.classes()) do
@@ -61,12 +79,15 @@ function to_dot ()
         end
         out = out .. '}"];\n'
         for name, attr in mc.attributes(class) do
-            if attr.isa and mc.class(attr.isa) then
-                out = out .. '    "' .. classname .. '" -> "' .. attr.isa .. '" // has\n'
-                out = out .. '        [label = "' .. name .. '", arrowhead = none, arrowtail = odiamond];\n'
+            if attr.isa then
+                local isa = find_type(attr.isa)
+                if isa then
+                    out = out .. '    "' .. classname .. '" -> "' .. isa .. '" // attr isa ' .. attr.isa .. '\n'
+                    out = out .. '        [label = "' .. name .. '", arrowhead = none, arrowtail = odiamond];\n'
+                end
             end
             if attr.does and mr.role(attr.does) then
-                out = out .. '    "' .. classname .. '" -> "' .. attr.does .. '" // has\n'
+                out = out .. '    "' .. classname .. '" -> "' .. attr.does .. '" // attr does\n'
                 out = out .. '        [label = "' .. name .. '", arrowhead = none, arrowtail = odiamond];\n'
             end
         end
@@ -111,12 +132,15 @@ function to_dot ()
         end
         out = out .. '}"];\n\n'
         for name, attr in mr.attributes(role) do
-            if attr.isa and mc.class(attr.isa) then
-                out = out .. '    "' .. rolename .. '" -> "' .. attr.isa .. '" // has\n'
-                out = out .. '        [label = "' .. name .. '", arrowhead = none, arrowtail = odiamond];\n'
+            if attr.isa then
+                local isa = find_type(attr.isa)
+                if isa then
+                    out = out .. '    "' .. rolename .. '" -> "' .. isa .. '" // attr isa ' .. attr.isa .. '\n'
+                    out = out .. '        [label = "' .. name .. '", arrowhead = none, arrowtail = odiamond];\n'
+                end
             end
             if attr.does and mr.role(attr.does) then
-                out = out .. '    "' .. rolename .. '" -> "' .. attr.does .. '" // has\n'
+                out = out .. '    "' .. rolename .. '" -> "' .. attr.does .. '" // attr does\n'
                 out = out .. '        [label = "' .. name .. '", arrowhead = none, arrowtail = odiamond];\n'
             end
         end
