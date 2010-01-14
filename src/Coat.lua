@@ -616,29 +616,33 @@ function with (class, ...)
     end
 end
 
-local function _class (modname)
+function module (modname, level)
     if basic_type(package.loaded[modname]) == 'table' then
         error("name conflict for module '" .. modname .. "'")
     end
 
     local M = findtable(modname)
     package.loaded[modname] = M
+    M._NAME = modname
+    M._M = M
+    setfenv(level, M)
+    return M
+end
+
+local function _class (modname)
+    local M = module(modname, 4)
     setmetatable(M, {
         __index = _G,
         __call  = function (t, ...)
                       return t.new(...)
                   end,
     })
-    setfenv(3, M)
-    M._NAME = modname
-    M._M = M
     M._ISA = { modname }
     M._PARENT = {}
     M._DOES = {}
     M._ROLE = {}
     M._MT = { __index = M }
-    M._ATTR = {}
-    setmetatable(M._ATTR, {})
+    M._ATTR = setmetatable({}, {})
     M.type = type
     M.can = can
     M.isa = isa

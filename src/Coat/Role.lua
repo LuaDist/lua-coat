@@ -7,15 +7,13 @@ require 'Coat'
 
 local ipairs = ipairs
 local require = require
-local setfenv = setfenv
 local setmetatable = setmetatable
 local _G = _G
-local package = package
 local table = table
 
 local basic_type = type
 local checktype = Coat.checktype
-local findtable = Coat.findtable
+local coat_module = Coat.module
 
 module 'Coat.Role'
 
@@ -49,16 +47,8 @@ end
 
 function _G.role (modname)
     checktype('role', 1, modname, 'string')
-    if basic_type(package.loaded[modname]) == 'table' then
-        error("name conflict for module '" .. modname .. "'")
-    end
-
-    local M = findtable(modname)
-    package.loaded[modname] = M
+    local M = coat_module(modname, 3)
     setmetatable(M, { __index = _G })
-    setfenv(2, M)
-    M._NAME = modname
-    M._M = M
     M._STORE = {}
     M._REQ = {}
     M._EXCL = {}
