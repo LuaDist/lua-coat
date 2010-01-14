@@ -6,7 +6,7 @@ class 'Foo'
 
 has.var = { is = 'rw', isa = 'number', default = 1 }
 
-method.BUILD = function (self)
+function method:BUILD ()
     self:var(2)
 end
 

@@ -4,7 +4,7 @@ require 'Coat'
 
 class 'Engine'
 
-method._break = function (self)
+function method._break ()
     _G.seen = "I broke"
 end
 

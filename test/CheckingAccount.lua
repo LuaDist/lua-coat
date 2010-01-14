@@ -5,11 +5,11 @@ class 'BankAccount'
 
 has.balance = { isa = 'number', is = 'rw', default = 0 }
 
-method.deposit = function (self, amount)
+function method:deposit (amount)
     self:balance( self:balance() + amount )
 end
 
-method.withdraw = function (self, amount)
+function method:withdraw (amount)
     local current_balance = self:balance()
     if current_balance < amount then
         error "Account overdrawn"
@@ -22,7 +22,7 @@ extends 'BankAccount'
 
 has.overdraft_account = { isa = 'BankAccount', is = 'rw' }
 
-before.withdraw = function (self, amount)
+function before:withdraw (amount)
     local overdraft_amount = amount - self:balance()
     if overdraft_amount > 0 then
         local overdraft_account = self:overdraft_account()

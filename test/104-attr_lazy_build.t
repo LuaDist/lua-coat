@@ -7,18 +7,18 @@ class 'Car'
 has.engine = { is = 'ro', isa = 'string', lazy_build = true }
 has._size = { is = 'ro', lazy_build = true }
 
-method._build_engine = function ()
+function method._build_engine ()
     return "Engine"
 end
 
-method._build__size = function ()
+function method._build__size ()
     return 1
 end
 
 class 'SpecialCar'
 extends 'Car'
 
-override._build_engine = function ()
+function override._build_engine ()
     return "SpecialEngine"
 end
 

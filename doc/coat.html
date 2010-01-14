@@ -195,11 +195,11 @@ class 'Point'
 has.x = { is = 'rw', isa = 'number', default = 0 }
 has.y = { is = 'rw', isa = 'number', default = 0 }
 
-overload.__tostring = function (self)
+function overload:__tostring ()
     return '(' .. self:x() .. ', ' .. self:y() .. ')'
 end
 
-method.draw = function (self)
+function method:draw ()
     return "drawing " .. self._CLASS .. tostring(self)
 end
 </pre>
@@ -218,7 +218,7 @@ extends 'Point'
 
 has.z = {is = 'rw', isa = 'number', default = 0 }
 
-overload.__tostring = function(self)
+function overload:__tostring ()
     return '(' .. self:x() .. ', ' .. self:y() .. ', ' .. self:z() .. ')'
 end
 </pre>

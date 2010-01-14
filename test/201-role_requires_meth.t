@@ -11,7 +11,7 @@ role 'Repairable'
 class 'Car'
 with 'Breakable'
 
-method._break = function (self)
+function method:_break ()
     return "I broke"
 end
 

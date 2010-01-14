@@ -14,20 +14,20 @@ has.buffer = {
     default = function () return {} end,
 }
 
-method.BUILD = function (self)
+function method:BUILD ()
     table.insert( self:buffer(), "BUILD A" )
 end
-method.DEMOLISH = function (self)
+function method:DEMOLISH ()
     _G.REG.A[self:id()] = self:buffer()
 end
 
 class 'B'
 extends 'A'
 
-after.BUILD = function (self)
+function after:BUILD ()
     table.insert( self:buffer(), "BUILD B" )
 end
-before.DEMOLISH = function (self)
+function before:DEMOLISH ()
     _G.REG.B[self:id()] = self:buffer()
 end
 

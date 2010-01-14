@@ -6,7 +6,7 @@ role 'Breakable'
 
 has.is_broken = { is = 'rw', isa = 'boolean' }
 
-method._break = function (self)
+function method:_break ()
     self:is_broken(true)
 end
 

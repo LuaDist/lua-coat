@@ -6,7 +6,7 @@ role 'Breakable'
 
 has.is_broken = { is = 'rw', isa = 'boolean' }
 
-method._break = function (self)
+function method:_break ()
     self:is_broken(true)
 end
 
@@ -15,7 +15,7 @@ with 'Breakable'
 
 has.engine = { is = 'ro', isa = 'Engine' }
 
-after._break = function (self)
+function after:_break ()
     _G.seen = "I broke"
 end
 

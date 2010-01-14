@@ -10,14 +10,14 @@ has.color = { is = 'ro', isa = 'string', lazy = true, builder = '_build_color' }
 class 'Red'
 with 'HasColor'
 
-method._build_color = function ()
+function method._build_color ()
     return 'red'
 end
 
 class 'Blue'
 with 'HasColor'
 
-method._build_color = function ()
+function method._build_color ()
     return 'blue'
 end
 

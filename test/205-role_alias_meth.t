@@ -10,7 +10,7 @@ end
 
 method.m1 = m1
 
-method.m2 = function (self)
+function method:m2 ()
     return m1(self) .. "m2"
 end
 

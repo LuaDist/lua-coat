@@ -3,12 +3,12 @@
 require 'Coat'
 
 class 'Parent'
-method.bar = function (self) return 'bar' end
-method.baz = function (self) return 'baz' end
+function method:bar () return 'bar' end
+function method:baz () return 'baz' end
 
 class 'Child'
 extends 'Parent'
-override.bar = function (self) return 'BAR' end
+function override:bar () return 'BAR' end
 
 require 'Test.More'
 

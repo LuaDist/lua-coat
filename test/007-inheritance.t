@@ -7,7 +7,7 @@ class 'Person'
 has.name = { is = 'rw', isa = 'string' }
 has.force = { is = 'rw', isa = 'number', default = 1 }
 
-method.walk = function (self)
+function method:walk ()
     return self:name() .. " walks\n"
 end
 
@@ -17,7 +17,7 @@ extends 'Person'
 
 has.force = { '+', default = 3 }
 
-method.attack = function (self)
+function method:attack ()
     return self:force() + math.random( 10 )
 end
 

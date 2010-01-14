@@ -4,34 +4,34 @@ require 'Coat'
 
 class 'Parent'
 
-method.pushelem = function (self, elem)
+function method:pushelem (elem)
     table.insert( _G.list, elem )
 end
 
 class 'Child'
 extends 'Parent'
 
-before.pushelem = function (self, elem)
+function before:pushelem (elem)
     table.insert( _G.list, 'before1:' .. elem )
 end
 
-before.pushelem = function (self, elem)
+function before:pushelem (elem)
     table.insert( _G.list, 'before2:' .. elem )
 end
 
-after.pushelem = function (self, elem)
+function after:pushelem (elem)
     table.insert( _G.list, 'after1:' .. elem )
 end
 
-before.pushelem = function (self, elem)
+function before:pushelem (elem)
     table.insert( _G.list, 'before3:' .. elem )
 end
 
-after.pushelem = function (self, elem)
+function after:pushelem (elem)
     table.insert( _G.list, 'after2:' .. elem )
 end
 
-after.pushelem = function (self, elem)
+function after:pushelem (elem)
     table.insert( _G.list, 'after3:' .. elem )
 end
 

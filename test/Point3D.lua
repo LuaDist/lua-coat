@@ -6,6 +6,6 @@ extends 'Point'
 
 has.z = {is = 'rw', isa = 'number', default = 0 }
 
-overload.__tostring = function(self)
+function overload:__tostring ()
     return '(' .. self:x() .. ', ' .. self:y() .. ', ' .. self:z() .. ')'
 end

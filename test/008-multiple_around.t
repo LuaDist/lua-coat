@@ -4,7 +4,7 @@ require 'Coat'
 
 class 'Parent'
 
-method.orig = function (self, ...)
+function method:orig (...)
     local val = ...
     table.insert( _G.seen, 'orig : ' .. val )
     return 1
@@ -13,7 +13,7 @@ end
 class 'Child'
 extends 'Parent'
 
-around.orig = function (self, func, ...)
+function around:orig (func, ...)
     local val = ...
     table.insert( _G.seen, 'around 1 before : ' .. val)
     local result = func(self, ...)
@@ -21,7 +21,7 @@ around.orig = function (self, func, ...)
     return result + 1
 end
 
-around.orig = function (self, func, ...)
+function around:orig (func, ...)
     local val = ...
     table.insert( _G.seen, 'around 2 before : ' .. val)
     local result = func(self, ...)

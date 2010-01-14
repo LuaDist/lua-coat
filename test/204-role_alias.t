@@ -6,13 +6,13 @@ role 'Breakable'
 
 has.is_broken = { is = 'rw', isa = 'boolean' }
 
-method._break = function (self)
+function method:_break ()
     self:is_broken(true)
 end
 
 role 'Breakdancer'
 
-method._break = function (self)
+function method:_break ()
     self:is_broken(true)
     print "break dance"
 end
@@ -27,7 +27,7 @@ with( 'Breakable', {
                 excludes = '_break',
       } )
 
-method._break = function (self)
+function method:_break ()
     print "I broke"
 end
 
