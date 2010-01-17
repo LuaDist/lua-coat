@@ -1,8 +1,8 @@
 Revision history for lua-Coat
 
-0.6.0
+0.6.0  Sun Jan 17 16:30:00 2010
 	+ add singleton / instance
-	+ add module Coat.Meta.UML & utility coat2dot
+	+ add module Coat.Meta.UML & utility coat2dot (Graphviz)
 	+ modifiers before/after don't handle return values of methods
 		(use modifier around for that)
 	+ option handles allows delegation of role
