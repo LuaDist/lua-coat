@@ -96,7 +96,7 @@ function roles (class)
 end
 
 --
--- Copyright (c) 2009 Francois Perrad
+-- Copyright (c) 2009-2010 Francois Perrad
 --
 -- This library is licensed under the terms of the MIT/X11 license,
 -- like Lua itself.
