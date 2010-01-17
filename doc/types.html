@@ -88,8 +88,8 @@
 
 <h2><a name="reference"></a>References</h2>
 
-<p>This module provides the ability to create type contraints
-which are used in attribute definition.</p>
+<p>This module provides the ability to create constrained type
+and parametrized type which are used in attribute definition.</p>
 
 <p>All functions are stored in a global space.</p>
 
@@ -111,6 +111,8 @@ which passes the constraint specified in the function <code>validator</code>,
 the optional <code>msg</code> is used as error message.</p>
 
 <h2><a name="examples"></a>Examples</h2>
+
+<h3>Constrained Types</h3>
 
 <pre class="example">
 require 'Coat.Types'
@@ -136,6 +138,19 @@ subtype.DateTime = {
 coerce.DateTime = {
     number = function (val) return os.date("!%d/%m/%Y %H:%M:%S", val) end
 }
+</pre>
+
+<h3>Parametrized Types</h3>
+
+<pre class="example">
+require 'Coat.Types'
+
+class 'A'
+
+has.array_of_str = { is = 'rw', isa = 'table&lt;string&gt;' }
+has.hash_of_a = { is = 'rw', isa = 'table&lt;string,A&gt;' }
+has.hash_of_num = { is = 'rw', isa = 'table&lt;string,number&gt;' }
+has.many_a = { is = 'rw', isa = 'table&lt;A&gt;' }
 </pre>
 
 </div> <!-- id="content" -->
