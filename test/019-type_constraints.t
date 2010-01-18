@@ -35,6 +35,12 @@ require 'Test.More'
 
 plan(18)
 
+if os.execute "dot -V" == 0 then
+    local f = io.popen("dot -T png -o 019.png", 'w')
+    f:write(require 'Coat.UML'.to_dot())
+    f:close()
+end
+
 factory = NumberFactory()
 factory.n = 24
 is( factory.n , 24, "Natural" )

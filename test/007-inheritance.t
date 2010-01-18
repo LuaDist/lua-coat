@@ -31,6 +31,12 @@ require 'Test.More'
 
 plan(28)
 
+if os.execute "dot -V" == 0 then
+    local f = io.popen("dot -T png -o 007.png", 'w')
+    f:write(require 'Coat.UML'.to_dot())
+    f:close()
+end
+
 man = Person.new{ name = 'John' }
 ok( man:isa 'Person', "Person" )
 ok( man:isa(Person) )

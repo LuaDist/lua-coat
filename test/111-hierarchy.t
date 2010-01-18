@@ -9,6 +9,12 @@ if not require_ok 'MyApp' then
     os.exit()
 end
 
+if os.execute "dot -V" == 0 then
+    local f = io.popen("dot -T png -o 111.png", 'w')
+    f:write(require 'Coat.UML'.to_dot())
+    f:close()
+end
+
 bar = MyApp.Bar.new()
 ok( bar:isa 'MyApp.Bar', "MyApp.Bar" )
 

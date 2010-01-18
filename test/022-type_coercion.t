@@ -19,6 +19,12 @@ require 'Test.More'
 
 plan(5)
 
+if os.execute "dot -V" == 0 then
+    local f = io.popen("dot -T png -o 022.png", 'w')
+    f:write(require 'Coat.UML'.to_dot())
+    f:close()
+end
+
 foo = Record{ timestamp = 'now' }
 ok( foo:isa 'Record', "direct" )
 is( foo.timestamp, 'now' )

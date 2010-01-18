@@ -14,6 +14,12 @@ require 'Test.More'
 
 plan(14)
 
+if os.execute "dot -V" == 0 then
+    local f = io.popen("dot -T png -o 102.png", 'w')
+    f:write(require 'Coat.UML'.to_dot())
+    f:close()
+end
+
 p = Parent.new()
 ok( p:isa 'Parent', "Parent" )
 ok( p.bar )

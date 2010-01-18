@@ -29,6 +29,12 @@ require 'Test.More'
 
 plan(19)
 
+if os.execute "dot -V" == 0 then
+    local f = io.popen("dot -T png -o 205.png", 'w')
+    f:write(require 'Coat.UML'.to_dot())
+    f:close()
+end
+
 a = A.new()
 ok( a:isa 'A', "A" )
 ok( a.m1 )

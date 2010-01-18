@@ -14,6 +14,12 @@ require 'Test.More'
 
 plan(4)
 
+if os.execute "dot -V" == 0 then
+    local f = io.popen("dot -T png -o 015.png", 'w')
+    f:write(require 'Coat.UML'.to_dot())
+    f:close()
+end
+
 foo = Foo.new{ var = 4 }
 ok( foo:isa 'Foo', "Foo" )
 is( foo.var, 2 )

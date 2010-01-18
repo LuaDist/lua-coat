@@ -14,6 +14,12 @@ require 'Test.More'
 
 plan(14)
 
+if os.execute "dot -V" == 0 then
+    local f = io.popen("dot -T png -o 006.png", 'w')
+    f:write(require 'Coat.UML'.to_dot())
+    f:close()
+end
+
 point2d = Point.new{ x = 2, y = 4}
 is( point2d:type(), 'Point', "Point" )
 ok( point2d:isa 'Point' )

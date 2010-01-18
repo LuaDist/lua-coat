@@ -32,6 +32,12 @@ require 'Test.More'
 
 plan(16)
 
+if os.execute "dot -V" == 0 then
+    local f = io.popen("dot -T png -o 027.png", 'w')
+    f:write(require 'Coat.UML'.to_dot())
+    f:close()
+end
+
 foo = Spanish.new()
 ok( foo:isa "Spanish", "Spanish" )
 ok( foo.uno )
