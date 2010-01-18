@@ -1,5 +1,10 @@
 Revision history for lua-Coat
 
+0.8.0
+	+ refactor with a more luaesque syntax (access to attribute)
+		NOT COMPATIBLE with previous versions
+		remove attributes : clearer, reader & writer
+
 0.6.0  Sun Jan 17 16:30:00 2010
 	+ add singleton / instance
 	+ add module Coat.Meta.UML & utility coat2dot (Graphviz)

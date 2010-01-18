@@ -60,6 +60,7 @@ function methods (class)
             k, v = next(t, k)
             if not k then return nil end
         until not reserved[k] and not t._ATTR[k]
+          and not k:match '^_get_' and not k:match '^_set_'
         return k, v
     end
     return getnext, class, nil

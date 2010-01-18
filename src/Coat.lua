@@ -130,7 +130,8 @@ function new (class, args)
         _CLASS = class._NAME,
         _VALUES = {}
     }
-    setmetatable(obj, {})
+    local mt = {}
+    setmetatable(obj, mt)
 
     for _, r in ipairs(class._ROLE) do -- check roles
         for _, v in ipairs(r._EXCL) do
@@ -146,6 +147,22 @@ function new (class, args)
     end
 
     class._INIT(obj, args)
+    mt.__index = function (o, k)
+        local getter = '_get_' .. k
+        if class[getter] then
+            return class[getter](o)
+        else
+            return class[k]
+        end
+    end
+    mt.__newindex = function (o, k, v)
+        local setter = '_set_' .. k
+        if class[setter] then
+            class[setter](o, v)
+        else
+            error("Cannot set '" .. k .. "' (unknown)")
+        end
+    end
     if class.BUILD then
         class.BUILD(obj, args)
     end
@@ -269,6 +286,9 @@ function has (class, name, options)
     options = options or {}
     checktype('has', 2, options, 'table')
 
+    if class[name] then
+        error("Overwrite definition of method " .. name)
+    end
     if options[1] == '+' then
         inherited = class._ATTR[name]
         if inherited == nil then
@@ -289,11 +309,6 @@ function has (class, name, options)
     if options.lazy_build then
         options.lazy = true
         options.builder = '_build_' .. name
-        if name:sub(1, 1) == '_' then
-            options.clearer = '_clear' .. name
-        else
-            options.clearer = 'clear_' .. name
-        end
     end
     if options.trigger and basic_type(options.trigger) ~= 'function' then
         error "The trigger option requires a function"
@@ -310,52 +325,28 @@ function has (class, name, options)
     class._ATTR[name] = options
 
     if options.is then
-        class[name] = function (obj, val)
-            if val ~= nil then
-                -- setter
-                if options.is == 'ro' then
-                    error("Cannot set a read-only attribute ("
-                          .. name .. ")")
-                else
-                    val = validate(name, options, val)
-                    obj._VALUES[name] = val
-                    local trigger = options.trigger
-                    if trigger then
-                        trigger(obj, val)
-                    end
-                    return val
-                end
+        class['_set_' .. name] = function (obj, val)
+            if options.is == 'ro' then
+                error("Cannot set a read-only attribute ("
+                      .. name .. ")")
             end
-            -- getter
-            if options.lazy and obj._VALUES[name] == nil then
-                local val = attr_default(options, obj)
-                val = validate(name, options, val)
-                obj._VALUES[name] = val
-            end
-            return obj._VALUES[name]
-        end
-    end
-
-    if options.reader then
-        class[options.reader] = function (obj)
-            if options.lazy and obj._VALUES[name] == nil then
-                local val = attr_default(options, obj)
-                val = validate(name, options, val)
-                obj._VALUES[name] = val
-                end
-            return obj._VALUES[name]
-        end
-    end
-
-    if options.writer then
-        class[options.writer] = function (obj, val)
             val = validate(name, options, val)
-            obj._VALUES[name] = val
+            rawget(obj, '_VALUES')[name] = val
             local trigger = options.trigger
             if trigger then
                 trigger(obj, val)
             end
             return val
+        end
+
+        class['_get_' .. name] = function (obj)
+            local t = rawget(obj, '_VALUES')
+            if options.lazy and t[name] == nil then
+                local val = attr_default(options, obj)
+                val = validate(name, options, val)
+                t[name] = val
+            end
+            return t[name]
         end
     end
 
@@ -370,7 +361,7 @@ function has (class, name, options)
                     error("Duplicate definition of method " .. meth)
                 end
                 class[meth] = function (obj, ...)
-                    local attr = obj._VALUES[name]
+                    local attr = rawget(obj, '_VALUES')[name]
                     local func = attr[v]
                     if func == nil then
                         error("Cannot delegate " .. meth .. " from "
@@ -399,7 +390,7 @@ function has (class, name, options)
                         error("Duplicate definition of method " .. meth)
                     end
                     class[meth] = function (obj, ...)
-                        local attr = obj._VALUES[name]
+                        local attr = rawget(obj, '_VALUES')[name]
                         local func = attr[meth]
                         if func == nil then
                             error("Cannot delegate " .. meth .. " from "
@@ -412,27 +403,14 @@ function has (class, name, options)
             table.insert(class._DOES, role._NAME)
         end
     end -- options.handles
-
-    if options.clearer then
-        if options.required then
-            error "The clearer option is incompatible with required option"
-        end
-        if basic_type(options.clearer) ~= 'string' then
-            error "The clearer option requires a string"
-        end
-        class[options.clearer] = function (obj)
-            obj._VALUES[name] = nil
-            local trigger = options.trigger
-            if trigger then
-                trigger(obj, nil)
-            end
-        end
-    end
 end
 
 function method (class, name, func)
     checktype('method', 1, name, 'string')
     checktype('method', 2, func, 'function')
+    if class._ATTR[name] then
+        error("Overwrite definition of attribute " .. name)
+    end
     if class[name] then
         error("Duplicate definition of method " .. name)
     end
@@ -676,7 +654,7 @@ function _G.singleton (modname)
     M.new = M.instance
 end
 
-_VERSION = "0.6.0"
+_VERSION = "0.8.0"
 _DESCRIPTION = "lua-Coat : Yet Another Lua Object-Oriented Model"
 _COPYRIGHT = "Copyright (c) 2009-2010 Francois Perrad"
 --
