@@ -23,10 +23,10 @@ plan(5)
 
 car = Car.new()
 ok( car:isa 'Car', "Car" )
-is( car:engine(), 'Engine' )
+is( car.engine, 'Engine' )
 
 car = SpecialCar.new()
 ok( car:isa 'SpecialCar', "SpecialCar" )
 ok( car:isa 'Car' )
-is( car:engine(), 'SpecialEngine' )
+is( car.engine, 'SpecialEngine' )
 

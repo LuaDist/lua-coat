@@ -23,14 +23,14 @@ a = A{ x = 1 }
 b = B{ x = 2 }
 ok( a:isa 'A' )
 ok( b:isa 'B' )
-a:b(b)
-is( a:b():x(), 2 )
-a:b(a)
-is( a:b():x(), 3 ) -- coerced
+a.b = b
+is( a.b.x, 2 )
+a.b = a
+is( a.b.x, 3 ) -- coerced
 
-error_like([[local a = A{ x = 1 }; a:c( A.new() )]],
+error_like([[local a = A{ x = 1 }; a.c = A.new()]],
            "^[^:]+:%d+: Invalid type for attribute 'c' %(got A, expected C%)")
 
-error_like([[local a = A{ x = 1 }; a:c "text"]],
+error_like([[local a = A{ x = 1 }; a.c = "text"]],
            "^[^:]+:%d+: Invalid type for attribute 'c' %(got string, expected C%)")
 

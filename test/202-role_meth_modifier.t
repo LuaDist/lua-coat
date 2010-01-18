@@ -7,7 +7,7 @@ role 'Breakable'
 has.is_broken = { is = 'rw', isa = 'boolean' }
 
 function method:_break ()
-    self:is_broken(true)
+    self.is_broken = true
 end
 
 class 'Car'
@@ -28,8 +28,8 @@ _G.seen = ''
 car = Car.new()
 ok( car:isa 'Car', "Car" )
 ok( car:does 'Breakable' )
-is( car:is_broken(), nil )
+is( car.is_broken, nil )
 car:_break()
-ok( car:is_broken() )
+ok( car.is_broken )
 is( _G.seen, "I broke" )
 

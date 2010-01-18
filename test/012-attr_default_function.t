@@ -12,11 +12,11 @@ plan(5)
 
 foo = Foo.new{ t = 2 }
 ok( foo:isa 'Foo', "Foo" )
-is( foo:t(), 2 )
+is( foo.t, 2 )
 
 foo = Foo.new()
 ok( foo:isa 'Foo', "Foo (default)" )
-val = foo:t()
+val = foo.t
 isnt( type(val), 'function' )
 is( val, 4 )
 

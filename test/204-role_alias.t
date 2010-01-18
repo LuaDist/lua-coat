@@ -4,16 +4,15 @@ require 'Coat.Role'
 
 role 'Breakable'
 
-has.is_broken = { is = 'rw', isa = 'boolean' }
+has.is_broken = { is = 'rw', isa = 'boolean', default = false }
 
 function method:_break ()
-    self:is_broken(true)
+    self.is_broken = true
 end
 
 role 'Breakdancer'
 
 function method:_break ()
-    self:is_broken(true)
     print "break dance"
 end
 
@@ -34,12 +33,13 @@ end
 
 require 'Test.More'
 
-plan(6)
+plan(7)
 
 man = FragileDancer.new()
 ok( man:isa 'FragileDancer', "FragileDancer" )
 ok( man:does 'Breakable' )
 ok( man:does 'Breakdancer' )
+is( man.is_broken, false )
 ok( man.break_bone )
 ok( man.break_dance )
 ok( man._break )

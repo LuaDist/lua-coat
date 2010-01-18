@@ -24,18 +24,15 @@ end
 
 require 'Test.More'
 
-plan(9)
+plan(6)
 
 car = Car.new()
 ok( car:isa 'Car', "Car" )
-is( car:engine(), 'Engine' )
-ok( car.clear_engine )
-is( car:_size(), 1 )
-ok( car._clear_size )
+is( car.engine, 'Engine' )
+is( car._size, 1 )
 
 car = SpecialCar.new()
 ok( car:isa 'SpecialCar', "SpecialCar" )
 ok( car:isa 'Car' )
-is( car:engine(), 'SpecialEngine' )
-ok( car.clear_engine )
+is( car.engine, 'SpecialEngine' )
 

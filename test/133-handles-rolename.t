@@ -22,8 +22,8 @@ _G.seen = ''
 
 car = Car.new{ engine = Engine.new() }
 ok( car:isa 'Car', "isa Car" )
-ok( car:engine():isa 'Engine' )
-ok( car:engine():does 'Breakable' )
+ok( car.engine:isa 'Engine' )
+ok( car.engine:does 'Breakable' )
 ok( car:does 'Breakable', "does Breakable" )
 ok( car:can '_break', "can _break" )
 car:_break()

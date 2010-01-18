@@ -11,5 +11,6 @@ plan(2)
 
 foo = MyApp.Foo.Bar.new()
 ok( foo:isa 'MyApp.Foo.Bar' )
-is( foo:baz( 'baz' ), 'baz' )
+foo.baz = 'baz'
+is( foo.baz, 'baz' )
 

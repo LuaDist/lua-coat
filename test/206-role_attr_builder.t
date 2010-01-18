@@ -28,9 +28,9 @@ plan(4)
 
 c = Red.new()
 ok( c:isa 'Red', "Red" )
-is( c:color(), 'red' )
+is( c.color, 'red' )
 
 c = Blue.new()
 ok( c:isa 'Blue', "Blue" )
-is( c:color(), 'blue' )
+is( c.color, 'blue' )
 

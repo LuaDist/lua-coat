@@ -26,35 +26,35 @@ for _ = 1, 10 do table.insert(many_a, A() ) end
 many_b = {}
 for _ = 1, 10 do table.insert(many_b, B() ) end
 
-lives_ok( function () a:many_a(many_a) end, "array of objects A accepted" )
+lives_ok( function () a.many_a = many_a end, "array of objects A accepted" )
 
-error_like(function () a:many_a(many_b) end,
+error_like(function () a.many_a = many_b end,
            "^[^:]+:%d+: Value for attribute 'many_a' does not validate type constraint 'table<A>'",
            "array of objects B refused")
 
-lives_ok( function () a:hash_of_a{ one = A(), two = A() } end, "hash of A accepted" )
+lives_ok( function () a.hash_of_a = { one = A(), two = A() } end, "hash of A accepted" )
 
-error_like(function () a:hash_of_a{ one = A(), two = B() } end,
+error_like(function () a.hash_of_a = { one = A(), two = B() } end,
            "^[^:]+:%d+: Value for attribute 'hash_of_a' does not validate type constraint 'table<string,A>'",
            "Hash of mixed A and B objects refused")
 
-error_like(function () a:hash_of_a(123) end,
+error_like(function () a.hash_of_a = 123 end,
            "^[^:]+:%d+: Invalid type for attribute 'hash_of_a' %(got number, expected table%)",
            "value refused : not a table")
 
-lives_ok(function () a:hash_of_num{ one = 1, two = 2, three = 3 } end, "hash of Num accepted" )
+lives_ok(function () a.hash_of_num = { one = 1, two = 2, three = 3 } end, "hash of Num accepted" )
 
-error_like(function () a:hash_of_num{ one = 1, two = 2, three = 'foo' } end,
+error_like(function () a.hash_of_num = { one = 1, two = 2, three = 'foo' } end,
            "^[^:]+:%d+: Value for attribute 'hash_of_num' does not validate type constraint 'table<string,number>'",
            "hash mixed of num and str refused")
 
-lives_ok( function () a:array_of_str{ 'Foo', 'Bar', 'Baz' } end, "array_of_str accepted" )
+lives_ok( function () a.array_of_str = { 'Foo', 'Bar', 'Baz' } end, "array_of_str accepted" )
 
-error_like(function () a:array_of_str(23) end,
+error_like(function () a.array_of_str = 23 end,
            "^[^:]+:%d+: Invalid type for attribute 'array_of_str' %(got number, expected table%)",
            "array_of_str refused : not a table")
 
-error_like(function () a:array_of_str{ 23, 'Foo' } end,
+error_like(function () a.array_of_str = { 23, 'Foo' } end,
            "^[^:]+:%d+: Value for attribute 'array_of_str' does not validate type constraint 'table<string>'",
            "mixed array refused")
 

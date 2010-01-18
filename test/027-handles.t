@@ -3,8 +3,15 @@
 require 'Coat'
 
 class 'Spanish'
-has.uno = { is = 'ro', default = 1 }
-has.dos = { is = 'ro', default = 2 }
+
+function method.uno ()
+    return 1
+end
+
+function method.dos ()
+    return 2
+end
+
 has.nombre = { is = 'rw', isa = 'string' }
 
 class 'English'
@@ -14,7 +21,8 @@ has.translate = {
     handles = {
         one = 'uno',
         two = 'dos',
-        name = 'nombre',
+        _get_name = '_get_nombre',
+        _set_name = '_set_nombre',
         bad = '_bad_',
         '_bad', -- equiv: _bad = '_bad'
     },
@@ -22,7 +30,7 @@ has.translate = {
 
 require 'Test.More'
 
-plan(18)
+plan(16)
 
 foo = Spanish.new()
 ok( foo:isa "Spanish", "Spanish" )
@@ -30,18 +38,18 @@ ok( foo.uno )
 is( foo:uno(), 1 )
 ok( foo.dos )
 is( foo:dos(), 2 )
-ok( foo.nombre )
-is( foo:nombre( 'Juan' ), 'Juan' )
+foo.nombre = 'Juan'
+is( foo.nombre, 'Juan' )
 
 foo = English.new()
 ok( foo:isa 'English', "English" )
-ok( foo:translate():isa 'Spanish')
+ok( foo.translate:isa 'Spanish')
 ok( foo.one )
 is( foo:one(), 1 )
 ok( foo.two )
 is( foo:two(), 2 )
-ok( foo.name )
-is( foo:name( 'John' ), 'John' )
+foo.name = 'John'
+is( foo.name, 'John' )
 ok( foo.bad )
 
 error_like([[local foo = English.new(); foo:bad()]],

@@ -12,7 +12,7 @@ plan(6)
 
 foo = Foo.instance{ var = 4 }
 ok( foo:isa 'Foo', "Foo" )
-is( foo:var(), 4 )
+is( foo.var, 4 )
 
 bar = Foo.instance()
 ok( bar:isa 'Foo' )

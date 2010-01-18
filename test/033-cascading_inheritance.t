@@ -23,10 +23,10 @@ require 'Test.More'
 plan(8)
 
 foo = Four.new()
-is( foo:one(), 1, "attr" )
-is( foo:two(), 2 )
-is( foo:three(), 3 )
-is( foo:four(), 4 )
+is( foo.one, 1, "attr" )
+is( foo.two, 2 )
+is( foo.three, 3 )
+is( foo.four, 4 )
 
 ok( foo:isa 'One', "isa" )
 ok( foo:isa 'Two' )

@@ -8,7 +8,7 @@ has.name = { is = 'rw', isa = 'string' }
 has.force = { is = 'rw', isa = 'number', default = 1 }
 
 function method:walk ()
-    return self:name() .. " walks\n"
+    return self.name .. " walks\n"
 end
 
 class 'Soldier'
@@ -18,7 +18,7 @@ extends 'Person'
 has.force = { '+', default = 3 }
 
 function method:attack ()
-    return self:force() + math.random( 10 )
+    return self.force + math.random( 10 )
 end
 
 class 'General'
@@ -37,7 +37,7 @@ ok( man:isa(Person) )
 ok( man:isa(man) )
 ok( Coat.Meta.Class.has( Person, 'name' ) )
 ok( Coat.Meta.Class.has( Person, 'force' ) )
-is( man:force(), 1 )
+is( man.force, 1 )
 ok( man:walk() )
 
 ok( Soldier:isa 'Soldier', "Class Soldier" )
@@ -52,7 +52,7 @@ ok( soldier:isa(Person) )
 ok( soldier:isa(man) )
 ok( Coat.Meta.Class.has( Soldier, 'name' ) )
 ok( Coat.Meta.Class.has( Soldier, 'force' ) )
-is( soldier:force(), 3 )
+is( soldier.force, 3 )
 ok( soldier:walk() )
 ok( soldier:attack() )
 
@@ -62,7 +62,7 @@ ok( general:isa 'Soldier' )
 ok( general:isa 'Person' )
 ok( Coat.Meta.Class.has( General, 'name' ) )
 ok( Coat.Meta.Class.has( General, 'force' ) )
-is( general:force(), 5 )
+is( general.force, 5 )
 ok( general:walk() )
 ok( general:attack() )
 

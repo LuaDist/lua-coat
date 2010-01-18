@@ -21,11 +21,11 @@ plan(5)
 
 foo = Record{ timestamp = 'now' }
 ok( foo:isa 'Record', "direct" )
-is( foo:timestamp(), 'now' )
+is( foo.timestamp, 'now' )
 
 foo = Record{ timestamp = 0 }
 ok( foo:isa 'Record', "coercion" )
-is( foo:timestamp(), '01/01/1970 00:00:00' )
+is( foo.timestamp, '01/01/1970 00:00:00' )
 
 error_like([[foo = Record{ timestamp = true }]],
            "^[^:]+:%d+: Invalid type for attribute 'timestamp' %(got boolean, expected string%)",

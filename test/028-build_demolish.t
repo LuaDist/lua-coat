@@ -15,20 +15,20 @@ has.buffer = {
 }
 
 function method:BUILD ()
-    table.insert( self:buffer(), "BUILD A" )
+    table.insert( self.buffer, "BUILD A" )
 end
 function method:DEMOLISH ()
-    _G.REG.A[self:id()] = self:buffer()
+    _G.REG.A[self.id] = self.buffer
 end
 
 class 'B'
 extends 'A'
 
 function after:BUILD ()
-    table.insert( self:buffer(), "BUILD B" )
+    table.insert( self.buffer, "BUILD B" )
 end
 function before:DEMOLISH ()
-    _G.REG.B[self:id()] = self:buffer()
+    _G.REG.B[self.id] = self.buffer
 end
 
 
@@ -42,7 +42,7 @@ expected = { "BUILD A" }
 _G.REG.A = {}
 a = A{ id = 1 }
 ok( a:isa 'A', "A" )
-eq_array( a:buffer(), expected )
+eq_array( a.buffer, expected )
 a:__gc()  -- manual
 a = nil
 -- collectgarbage 'collect'
@@ -54,7 +54,7 @@ _G.REG.B = {}
 b = B{ id = 2 }
 ok( b:isa 'B', "B" )
 ok( b:isa 'A' )
-eq_array( b:buffer(), expected )
+eq_array( b.buffer, expected )
 b:__gc()  -- manual
 b = nil
 -- collectgarbage 'collect'

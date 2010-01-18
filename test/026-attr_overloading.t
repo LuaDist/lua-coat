@@ -15,10 +15,10 @@ plan(5)
 
 foo = A.new()
 ok( foo:isa 'A', "A" )
-is( foo:x(), 42 )
+is( foo.x, 42 )
 
 foo = B.new()
 ok( foo:isa 'B', "B" )
 ok( foo:isa 'A' )
-is( foo:x(), 43 )
+is( foo.x, 43 )
 

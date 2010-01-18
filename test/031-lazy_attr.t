@@ -11,7 +11,7 @@ has.dir = { is = 'rw', isa = 'string' }
 has.name = { is = 'rw', isa = 'string' }
 has.path = { is = 'rw', isa = 'string', lazy = true,
     default = function (self)
-        return self:dir() .. '/' .. self:name()
+        return self.dir .. '/' .. self.name
     end,
 }
 
@@ -23,7 +23,7 @@ a = A.new()
 ok( a:isa 'A', "A" )
 is( a._VALUES.x, nil )
 is( a._VALUES.y, 2 )
-is( a:x(), 2 )
+is( a.x, 2 )
 
 error_like([[A.has.z = { isa = 'number', is = 'rw', lazy = true }]],
            "^[^:]+:%d+: The lazy option implies the builder or default option",
@@ -31,6 +31,6 @@ error_like([[A.has.z = { isa = 'number', is = 'rw', lazy = true }]],
 
 foo = Foo.new{ dir = '/tmp', name = 'file' }
 ok( foo:isa 'Foo', "Foo" )
-is( foo:name() , 'file' )
-is( foo:path(), '/tmp/file' )
+is( foo.name , 'file' )
+is( foo.path, '/tmp/file' )
 
