@@ -10,10 +10,10 @@ local pairs = pairs
 local pcall = pcall
 local rawget = rawget
 local require = require
-local setfenv = setfenv
 local setmetatable = setmetatable
 local basic_type = type
 local _G = _G
+local debug = require 'debug'
 local package = package
 local string = string
 local table = table
@@ -603,7 +603,7 @@ function module (modname, level)
     package.loaded[modname] = M
     M._NAME = modname
     M._M = M
-    setfenv(level, M)
+    debug.setfenv(debug.getinfo(level, 'f').func, M)
     return M
 end
 

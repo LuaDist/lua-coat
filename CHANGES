@@ -4,6 +4,7 @@ Revision history for lua-Coat
 	+ refactor with a more luaesque syntax (access to attribute)
 		NOT COMPATIBLE with previous versions
 		remove attributes : clearer, reader & writer
+	+ fix compatibility with Lua 5.2
 
 0.6.0  Sun Jan 17 16:30:00 2010
 	+ add singleton / instance
