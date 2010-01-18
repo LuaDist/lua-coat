@@ -60,6 +60,7 @@ rockspec: $(TARBALL)
 	perl -e '$(rockspec_pl)' rockspec.in > rockspec/lua-coat-$(VERSION)-$(REV).rockspec
 
 export LUA_PATH=;;./src/?.lua;./test/?.lua
+#export GEN_PNG=1
 
 test:
 	prove --exec=$(LUA) test/*.t

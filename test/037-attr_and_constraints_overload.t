@@ -27,7 +27,7 @@ require 'Test.More'
 
 plan(17)
 
-if os.execute "dot -V" == 0 then
+if os.getenv "GEN_PNG" and os.execute "dot -V" == 0 then
     local f = io.popen("dot -T png -o 037.png", 'w')
     f:write(require 'Coat.UML'.to_dot())
     f:close()
