@@ -126,12 +126,6 @@ end
 
 function new (class, args)
     args = args or {}
-    local obj = {
-        _CLASS = class._NAME,
-        _VALUES = {}
-    }
-    local mt = {}
-    setmetatable(obj, mt)
 
     for _, r in ipairs(class._ROLE) do -- check roles
         for _, v in ipairs(r._EXCL) do
@@ -146,6 +140,12 @@ function new (class, args)
         end
     end
 
+    local obj = {
+        _CLASS = class._NAME,
+        _VALUES = {}
+    }
+    local mt = {}
+    setmetatable(obj, mt)
     class._INIT(obj, args)
     mt.__index = function (o, k)
         local getter = '_get_' .. k
