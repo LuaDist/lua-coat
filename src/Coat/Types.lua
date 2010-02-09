@@ -8,7 +8,7 @@ local ipairs = ipairs
 local setmetatable = setmetatable
 local pairs = pairs
 local _G = _G
-local table = table
+local table = require 'table'
 
 local checktype = Coat.checktype
 local does = Coat.does

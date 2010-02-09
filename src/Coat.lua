@@ -14,9 +14,9 @@ local setmetatable = setmetatable
 local basic_type = type
 local _G = _G
 local debug = require 'debug'
-local package = package
-local string = string
-local table = table
+local package = require 'package'
+local string = require 'string'
+local table = require 'table'
 
 module 'Coat'
 
