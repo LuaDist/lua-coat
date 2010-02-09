@@ -20,7 +20,7 @@ has.log = { is = 'rw', isa = 'OpenedFile' }
 
 require 'Test.More'
 
-plan(7)
+plan(6)
 
 if os.getenv "GEN_PNG" and os.execute "dot -V" == 0 then
     local f = io.popen("dot -T png -o 141.png", 'w')
