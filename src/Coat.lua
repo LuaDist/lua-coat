@@ -88,7 +88,8 @@ function isa (obj, t)
         return false
     end -- walk
 
-    if basic_type(obj) == 'table' and obj._ISA then
+    local tobj = basic_type(obj)
+    if (tobj == 'table' or tobj == 'userdata') and obj._ISA then
         return walk(obj._ISA)
     else
         return basic_type(obj) == t
@@ -117,7 +118,8 @@ function does (obj, r)
         return false
     end -- walk
 
-    if basic_type(obj) == 'table' and obj._DOES then
+    local tobj = basic_type(obj)
+    if (tobj == 'table' or tobj == 'userdata') and obj._DOES then
         return walk(obj._DOES)
     else
         return false

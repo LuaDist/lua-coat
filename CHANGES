@@ -1,5 +1,8 @@
 Revision history for lua-Coat
 
+0.8.1
+	+ allows userdata in Coat type hierarchy (isa & does)
+
 0.8.0  Wed Jan 20 21:30:00 2010
 	+ refactor with a more luaesque syntax (access to attribute)
 		NOT COMPATIBLE with previous versions
