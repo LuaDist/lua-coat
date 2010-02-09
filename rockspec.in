@@ -30,6 +30,7 @@ build = {
         ['Coat.Role']           = 'src/Coat/Role.lua',
         ['Coat.Types']          = 'src/Coat/Types.lua',
         ['Coat.UML']            = 'src/Coat/UML.lua',
+        ['Coat.file']           = 'src/Coat/file.lua',
     },
     install = {
         bin = { 'src/coat2dot' }
