@@ -55,6 +55,7 @@ function methods (class)
         until not reserved[k]
           and basic_type(v) == 'function'
           and not k:match '^_get_' and not k:match '^_set_'
+          and not k:match '^_build_'
         return k, v
     end
     return getnext, class, nil
