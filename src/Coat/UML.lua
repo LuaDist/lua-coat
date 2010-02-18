@@ -51,14 +51,10 @@ function to_dot ()
                 first = false
             end
             out = out .. name
-            if attr.is then
-                out = out .. ', is ' .. attr.is
-            end
             if attr.isa then
-                out = out .. ', isa ' .. escape(attr.isa)
-            end
-            if attr.does then
-                out = out .. ', does ' .. attr.does
+                out = out .. ' : ' .. escape(attr.isa)
+            elseif attr.does then
+                out = out .. ' : ' .. attr.does
             end
             out = out .. '\\l'
         end
@@ -111,14 +107,10 @@ function to_dot ()
                 first = false
             end
             out = out .. name
-            if attr.is then
-                out = out .. ', is ' .. attr.is
-            end
             if attr.isa then
-                out = out .. ', isa ' .. escape(attr.isa)
-            end
-            if attr.does then
-                out = out .. ', does ' .. attr.does
+                out = out .. ' : ' .. escape(attr.isa)
+            elseif attr.does then
+                out = out .. ' : ' .. attr.does
             end
             out = out .. '\\l'
         end
