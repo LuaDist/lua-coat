@@ -656,6 +656,12 @@ function _G.singleton (modname)
     M.new = M.instance
 end
 
+function _G.abstract (modname)
+    checktype('abstract', 1, modname, 'string')
+    local M = _class(modname)
+    M.new = function () error("Cannot instanciate an abstract class " .. modname) end
+end
+
 _VERSION = "0.8.0"
 _DESCRIPTION = "lua-Coat : Yet Another Lua Object-Oriented Model"
 _COPYRIGHT = "Copyright (c) 2009-2010 Francois Perrad"
