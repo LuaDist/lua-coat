@@ -4,6 +4,7 @@ Revision history for lua-Coat
 	+ add abstract class
 	+ allows userdata in the Coat type hierarchy (isa & does)
 	+ add Coat.file : the standard userdata 'file' integrates the Coat type hierarchy
+	+ coat2dot : add options --no-attr, --no-meta & --no-meth
 
 0.8.0  Wed Jan 20 21:30:00 2010
 	+ refactor with a more luaesque syntax (access to attribute)
