@@ -268,6 +268,8 @@ function _INIT (class, obj, args)
             end
             val = validate(k, opts, val)
             obj._VALUES[k] = val
+        else
+            val = validate(k, opts, obj._VALUES[k])
         end
     end
 
@@ -301,6 +303,9 @@ function has (class, name, options)
             t[k] = v
         end
         for k, v in pairs(options) do
+            if k == 'is' and t[k] == 'ro' then
+                break
+            end
             t[k] = v
         end
         options = t
