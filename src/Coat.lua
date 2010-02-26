@@ -313,9 +313,13 @@ function has (class, name, options)
         error("Duplicate definition of attribute " .. name)
     end
 
+    if options.reset and options.required then
+        error "The reset option is incompatible with required option"
+    end
     if options.lazy_build then
         options.lazy = true
         options.builder = '_build_' .. name
+        options.reset = true
     end
     if options.trigger and basic_type(options.trigger) ~= 'function' then
         error "The trigger option requires a function"
@@ -333,12 +337,15 @@ function has (class, name, options)
 
     if options.is then
         class['_set_' .. name] = function (obj, val)
-            if options.is == 'ro' then
+            local t = rawget(obj, '_VALUES')
+            if options.is == 'ro'
+               and (options.lazy or t[name] ~= nil)
+               and (not options.reset or val ~= nil) then
                 error("Cannot set a read-only attribute ("
                       .. name .. ")")
             end
             val = validate(name, options, val)
-            rawget(obj, '_VALUES')[name] = val
+            t[name] = val
             local trigger = options.trigger
             if trigger then
                 trigger(obj, val)
