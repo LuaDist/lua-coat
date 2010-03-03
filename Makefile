@@ -59,6 +59,11 @@ dist: $(TARBALL)
 rockspec: $(TARBALL)
 	perl -e '$(rockspec_pl)' rockspec.in > rockspec/lua-coat-$(VERSION)-$(REV).rockspec
 
+install-rock: clean dist rockspec
+	perl -pe 's{http://cloud.github.com/downloads/fperrad/lua-Coat/}{};' \
+	    rockspec/lua-coat-$(VERSION)-$(REV).rockspec > lua-coat-$(VERSION)-$(REV).rockspec
+	luarocks install lua-coat-$(VERSION)-$(REV).rockspec
+
 export LUA_PATH=;;./src/?.lua;./test/?.lua
 #export GEN_PNG=1
 
@@ -69,7 +74,7 @@ html:
 	xmllint --noout --valid doc/*.html
 
 clean:
-	rm -f MANIFEST *.bak *.png test/*.png
+	rm -f MANIFEST *.bak *.png test/*.png *.rockspec
 
 .PHONY: test rockspec CHANGES
 
