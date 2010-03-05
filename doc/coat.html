@@ -229,6 +229,22 @@ local p1 = Point3D{ x = 1, y = 2, z = 3 }
 p1:draw()
 </pre>
 
+<h3>Tips</h3>
+
+The following code is usually an error because all instance of Foo share the same table
+as attribute bar.
+
+<pre class="example">
+class 'Foo'
+has.bar = { default = {} }
+</pre>
+
+The correct version is :
+
+<pre class="example">
+has.bar = { default = function () return {} end }
+</pre>
+
 </div> <!-- id="content" -->
 
 </div> <!-- id="main" -->
