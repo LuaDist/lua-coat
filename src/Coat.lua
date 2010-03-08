@@ -11,6 +11,7 @@ local pcall = pcall
 local rawget = rawget
 local require = require
 local setmetatable = setmetatable
+local tostring = tostring
 local basic_type = type
 local _G = _G
 local debug = require 'debug'
