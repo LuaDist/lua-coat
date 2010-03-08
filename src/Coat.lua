@@ -316,6 +316,9 @@ function has (class, name, options)
     if options.reset and options.required then
         error "The reset option is incompatible with required option"
     end
+    if options.inject then
+        options.lazy_build = true
+    end
     if options.lazy_build then
         options.lazy = true
         options.builder = '_build_' .. name
@@ -361,6 +364,19 @@ function has (class, name, options)
                 t[name] = val
             end
             return t[name]
+        end
+    end
+
+    if options.inject then
+        if not options.does then
+            error "The inject option requires a does option"
+        end
+        class[options.builder] = function (obj)
+            local impl = Meta.class(obj._CLASS)._BINDING[options.does]
+            if not impl then
+                error("No binding found for " .. options.does .. " in class " .. obj._CLASS)
+            end
+            return impl()
         end
     end
 
@@ -489,6 +505,23 @@ function after (class, name, func)
         super(...)
         func(...)
     end
+end
+
+function bind (class, name, impl)
+    checktype('bind', 1, name, 'string')
+    local t = basic_type(impl)
+    if t ~= 'function' then
+        if t == 'string' then
+            impl = require(impl)
+        end
+        if not impl._INIT then
+            argerror('bind', 2, "function or string or Class expected")
+        end
+    end
+    if class._BINDING[name] then
+        error("Duplicate binding of " .. name)
+    end
+    class._BINDING[name] = impl
 end
 
 function extends(class, ...)
@@ -635,6 +668,7 @@ local function _class (modname)
     M._ROLE = {}
     M._MT = { __index = M }
     M._ATTR = setmetatable({}, {})
+    M._BINDING = {}
     M.type = type
     M.can = can
     M.isa = isa
@@ -649,6 +683,7 @@ local function _class (modname)
     M.before = setmetatable({}, { __newindex = function (t, k, v) before(M, k, v) end })
     M.around = setmetatable({}, { __newindex = function (t, k, v) around(M, k, v) end })
     M.after = setmetatable({}, { __newindex = function (t, k, v) after(M, k, v) end })
+    M.bind = setmetatable({}, { __newindex = function (t, k, v) bind(M, k, v) end })
     M.extends = function (...) return extends(M, ...) end
     M.with = function (...) return with(M, ...) end
     local classes = Meta.classes()

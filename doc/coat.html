@@ -116,6 +116,10 @@
 
 <p>Method modifier.</p>
 
+<h4><code>bind.name = class</code> or <code>func</code></h4>
+
+<p>Create a binding for dependency injection.</p>
+
 <h4><code>can( obj, methname )</code> or <code>obj:can( methname )</code></h4>
 
 <p>Checks if a object has a method <code>methname</code>.</p>
@@ -140,6 +144,7 @@ An item <code>'+'</code> allows overriding.</p>
   <li><code>default</code> : value or function </li>
   <li><code>does</code> : role name</li>
   <li><code>handles</code> : table or role for method delegation</li>
+  <li><code>inject</code> : boolean for dependency injection</li>
   <li><code>is</code> : string <code>(ro|rw)</code></li>
   <li><code>isa</code> : type name</li>
   <li><code>lazy</code> : boolean </li>
@@ -148,6 +153,10 @@ An item <code>'+'</code> allows overriding.</p>
   <li><code>reset</code> : boolean </li>
   <li><code>trigger</code> : function </li>
 </ul>
+
+<h4><code>instance( args )</code></h4>
+
+<p>Alias of <code>new</code> for <code>singleton</code> class.</p>
 
 <h4><code>isa( obj, t )</code> or <code>obj:isa( t )</code></h4>
 
@@ -170,10 +179,6 @@ An item <code>'+'</code> allows overriding.</p>
 <p>Instanciates a object.</p>
 
 <p>If exist, the user method <code>BUILD</code> is called at the end.</p>
-
-<h4><code>instance( args )</code></h4>
-
-<p>Alias of <code>new</code> for <code>singleton</code> class.</p>
 
 <h4><code>type( obj )</code> or <code>obj:type()</code></h4>
 
