@@ -508,6 +508,29 @@ function after (class, name, func)
     end
 end
 
+function memoize (class, name)
+    checktype('memoize', 1, name, 'string')
+    local func = class[name]
+    if not func then
+        error("Cannot memoize non-existent method "
+              .. name .. " in class " .. class._NAME)
+    end
+
+    local cache = Meta._CACHE
+    class[name] = function (...)
+        local key = name
+        for _, v in ipairs{...} do
+            key = key .. '|' .. tostring(v)
+        end
+        local result = cache[key]
+        if result == nil then
+            result = func(...)
+            cache[key] =result
+        end
+        return result
+    end
+end
+
 function bind (class, name, impl)
     checktype('bind', 1, name, 'string')
     local t = basic_type(impl)
@@ -687,6 +710,7 @@ local function _class (modname)
     M.bind = setmetatable({}, { __newindex = function (t, k, v) bind(M, k, v) end })
     M.extends = function (...) return extends(M, ...) end
     M.with = function (...) return with(M, ...) end
+    M.memoize = function (name) return memoize(M, name) end
     local classes = Meta.classes()
     classes[modname] = M
     return M

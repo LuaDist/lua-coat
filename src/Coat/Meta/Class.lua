@@ -4,6 +4,7 @@
 --
 
 local basic_type = type
+local setmetatable = setmetatable
 local next = next
 
 module 'Coat.Meta.Class'
@@ -90,6 +91,9 @@ function roles (class)
                 return role and role._NAME, role
             end
 end
+
+_CACHE = {}
+setmetatable(_CACHE, { __mode = 'v' })
 
 --
 -- Copyright (c) 2009-2010 Francois Perrad
