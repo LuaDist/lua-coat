@@ -19,7 +19,7 @@ end
 
 require 'Test.More'
 
-plan(15)
+plan(17)
 
 if os.getenv "GEN_PNG" and os.execute "dot -V" == 0 then
     local f = io.popen("dot -T png -o 161.png", 'w')
@@ -50,4 +50,11 @@ for k, v in pairs(Coat.Meta.Class._CACHE) do
     n = n + 1
 end
 is( n, 2 )
+
+error_like([[Foo.memoize {}]],
+           "^[^:]+:%d+: bad argument #1 to memoize %(string expected, got table%)")
+
+error_like([[Foo.memoize 'add']],
+           "^[^:]+:%d+: Cannot memoize non%-existent method add in class Foo")
+
 

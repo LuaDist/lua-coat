@@ -4,6 +4,7 @@
 
 require 'Coat'
 
+local error = error
 local ipairs = ipairs
 local setmetatable = setmetatable
 local pairs = pairs
@@ -97,7 +98,7 @@ function enum (name, t)
     if _TC[name] then
         error("Duplicate definition of type " .. name)
     end
-    if #t < 1 then
+    if #t <= 1 then
         error "You must have at least two values to enumerate through"
     end
     local hash = {}

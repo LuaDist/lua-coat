@@ -33,7 +33,7 @@ has.col = { is = 'rw', isa = 'Colour' }
 
 require 'Test.More'
 
-plan(18)
+plan(21)
 
 if os.getenv "GEN_PNG" and os.execute "dot -V" == 0 then
     local f = io.popen("dot -T png -o 019.png", 'w')
@@ -82,4 +82,13 @@ error_like([[local factory = NumberFactory(); factory.col = 'Yellow']],
            "^[^:]+:%d+: Value for attribute 'col' does not validate type constraint 'Colour'")
 error_like([[local factory = NumberFactory(); factory.col = 'Blu']],
            "^[^:]+:%d+: Value for attribute 'col' does not validate type constraint 'Colour'")
+
+error_like([[enum.Alone = { 'One' }]],
+           "^[^:]+:%d+: You must have at least two values to enumerate through")
+
+error_like([[enum.Natural = { 'One', 'Two' }]],
+           "^[^:]+:%d+: Duplicate definition of type Natural")
+
+error_like([[subtype.Natural = { as = 'string', where = function (s) return s == 'natural' end }]],
+           "^[^:]+:%d+: Duplicate definition of type Natural")
 

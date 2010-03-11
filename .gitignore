@@ -2,7 +2,9 @@
 MANIFEST
 *.tar
 *.tar.gz
+*.patch
 *.bak
 
 *.png
 
+luacov.*

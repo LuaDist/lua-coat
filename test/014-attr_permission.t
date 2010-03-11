@@ -10,7 +10,7 @@ has.reset = { is = 'ro', reset = true }
 
 require 'Test.More'
 
-plan(21)
+plan(22)
 
 if os.getenv "GEN_PNG" and os.execute "dot -V" == 0 then
     local f = io.popen("dot -T png -o 014.png", 'w')
@@ -65,4 +65,7 @@ error_like([[local foo = Foo.new(); foo.bad = 5]],
            "^[^:]+:%d+: Cannot set 'bad' %(unknown%)")
 
 is( foo.bad, nil )
+
+error_like([[Foo.has.field = { is = 'ro', reset = true, required = true }]],
+           "^[^:]+:%d+: The reset option is incompatible with required option")
 

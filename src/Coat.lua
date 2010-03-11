@@ -188,7 +188,7 @@ local function attr_default (options, obj)
     if builder then
         local func = obj[builder]
         if not func then
-            error("method " .. builder .. " not found")
+            error("method " .. builder .. " not found in " .. obj._CLASS)
         end
         return func(obj)
     else
@@ -637,6 +637,9 @@ function with (class, ...)
                 local excludes = v.excludes
                 if basic_type(excludes) == 'string' then
                     excludes = { excludes }
+                end
+                if basic_type(excludes) ~= 'table' then
+                    argerror('with-excludes', i, "table or string expected")
                 end
                 for i, name in ipairs(excludes) do
                     if basic_type(name) ~= 'string' then
