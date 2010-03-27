@@ -3,6 +3,7 @@ Revision history for lua-Coat
 0.8.2
 	+ add bind & inject for Dependency Injection (request from O. Albiez)
 	+ add memoize
+	+ hierarchy in subtype naming
 
 0.8.1  Tue Mar  2 10:30:00 2010
 	+ add abstract class

@@ -90,7 +90,16 @@ function subtype (name, t)
         message = message,
     }
 end
-_G.subtype = setmetatable({}, { __newindex = function (t, k, v) subtype(k, v) end })
+local function _subtype(m)
+    if m ~= '' then
+        m = m .. '.'
+    end
+    return setmetatable({}, {
+        __index = function (t, k) return _subtype(m .. k) end,
+        __newindex = function (t, k, v) subtype(m .. k, v) end,
+    })
+end
+_G.subtype = _subtype ''
 
 function enum (name, t)
     checktype('enum', 1, name, 'string')
@@ -113,7 +122,16 @@ function enum (name, t)
                     end,
     }
 end
-_G.enum = setmetatable({}, { __newindex = function (t, k, v) enum(k, v) end })
+local function _enum(m)
+    if m ~= '' then
+        m = m .. '.'
+    end
+    return setmetatable({}, {
+        __index = function (t, k) return _enum(m .. k) end,
+        __newindex = function (t, k, v) enum(m .. k, v) end,
+    })
+end
+_G.enum = _enum ''
 
 function coerce (name, t)
     checktype('coerce', 1, name, 'string')
@@ -127,7 +145,16 @@ function coerce (name, t)
         _COERCE[name][from] = via
     end
 end
-_G.coerce = setmetatable({}, { __newindex = function (t, k, v) coerce(k, v) end })
+local function _coerce(m)
+    if m ~= '' then
+        m = m .. '.'
+    end
+    return setmetatable({}, {
+        __index = function (t, k) return _coerce(m .. k) end,
+        __newindex = function (t, k, v) coerce(m .. k, v) end,
+    })
+end
+_G.coerce = _coerce ''
 
 --
 -- Copyright (c) 2009-2010 Francois Perrad
