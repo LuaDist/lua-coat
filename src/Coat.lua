@@ -737,7 +737,7 @@ function _G.abstract (modname)
     M.new = function () error("Cannot instanciate an abstract class " .. modname) end
 end
 
-_VERSION = "0.8.1"
+_VERSION = "0.8.2"
 _DESCRIPTION = "lua-Coat : Yet Another Lua Object-Oriented Model"
 _COPYRIGHT = "Copyright (c) 2009-2010 Francois Perrad"
 --
