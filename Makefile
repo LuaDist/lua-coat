@@ -91,7 +91,11 @@ install-rock: clean dist rockspec
 	    rockspec/lua-coat-$(VERSION)-$(REV).rockspec > lua-coat-$(VERSION)-$(REV).rockspec
 	luarocks install lua-coat-$(VERSION)-$(REV).rockspec
 
-export LUA_PATH=;;../test/?.lua
+ifdef LUA_PATH
+  export LUA_PATH:=$(LUA_PATH);../test/?.lua
+else
+  export LUA_PATH=;;../test/?.lua
+endif
 #export GEN_PNG=1
 
 check: test
