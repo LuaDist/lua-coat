@@ -13,6 +13,7 @@ BINDIR  := $(DESTDIR)/bin
 LIBDIR  := $(DESTDIR)/share/lua/5.1
 
 install:
+	mkdir -p $(BINDIR)
 	cp src/coat2dot                 $(BINDIR)
 	mkdir -p $(LIBDIR)/Coat/Meta
 	cp src/Coat.lua                 $(LIBDIR)
