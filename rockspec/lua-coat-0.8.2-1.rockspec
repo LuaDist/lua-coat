@@ -2,7 +2,7 @@ package = 'lua-Coat'
 version = '0.8.2-1'
 source = {
     url = 'http://cloud.github.com/downloads/fperrad/lua-Coat/lua-coat-0.8.2.tar.gz',
-    md5 = 'f79b345d840a54ecb3dc6f6e9ee6caf1',
+    md5 = '7c4f010633fccc6d8f7d741fa64c348f',
     dir = 'lua-Coat-0.8.2',
 }
 description = {
