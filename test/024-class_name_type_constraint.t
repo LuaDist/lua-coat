@@ -35,8 +35,8 @@ a.b = a
 is( a.b.x, 3 ) -- coerced
 
 error_like([[local a = MyApp.A{ x = 1 }; a.c = MyApp.A.new()]],
-           "^[^:]+:%d+: Invalid type for attribute 'c' %(got MyApp.A, expected MyApp.C%)")
+           "Invalid type for attribute 'c' %(got MyApp.A, expected MyApp.C%)")
 
 error_like([[local a = MyApp.A{ x = 1 }; a.c = "text"]],
-           "^[^:]+:%d+: Invalid type for attribute 'c' %(got string, expected MyApp.C%)")
+           "Invalid type for attribute 'c' %(got string, expected MyApp.C%)")
 

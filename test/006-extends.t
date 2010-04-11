@@ -41,11 +41,11 @@ is( item.z, 3 )
 is( item.name, 'foo' )
 
 error_like([[MyItem3D.extends {}]],
-           "^[^:]+:%d+: bad argument #1 to extends %(string or Class expected%)")
+           "bad argument #1 to extends %(string or Class expected%)")
 
 error_like([[MyItem.extends 'MyItem3D']],
-           "^[^:]+:%d+: Circular class structure between 'MyItem' and 'MyItem3D'")
+           "Circular class structure between 'MyItem' and 'MyItem3D'")
 
 error_like([[class 'MyItem3D']],
-           "^[^:]+:%d+: name conflict for module 'MyItem3D'")
+           "name conflict for module 'MyItem3D'")
 
