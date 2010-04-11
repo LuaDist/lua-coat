@@ -1,5 +1,8 @@
 Revision history for lua-Coat
 
+0.8.3
+	+ customize error (now gives a caller position)
+
 0.8.2  Sun Mar 28 11:30:00 2010
 	+ add bind & inject for Dependency Injection (request from O. Albiez)
 	+ add memoize

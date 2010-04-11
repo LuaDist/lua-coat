@@ -3,7 +3,7 @@
 -- lua-Coat : <http://lua-coat.luaforge.net/>
 --
 
-local error = error
+local basic_error = error
 local getmetatable = getmetatable
 local ipairs = ipairs
 local pairs = pairs
@@ -31,6 +31,16 @@ function type (obj)
               end)
     end
     return t
+end
+
+function error (msg)
+    local lvl = 1
+    while true do
+        local t = debug.getinfo(lvl,'S')
+        if not t.short_src:find '/Coat' then break end
+        lvl = lvl + 1
+    end
+    basic_error(msg, lvl)
 end
 
 local function argerror (caller, narg, extramsg)

@@ -4,7 +4,6 @@
 
 require 'Coat'
 
-local error = error
 local ipairs = ipairs
 local setmetatable = setmetatable
 local pairs = pairs
@@ -13,6 +12,7 @@ local table = require 'table'
 
 local checktype = Coat.checktype
 local does = Coat.does
+local error = Coat.error
 local isa = Coat.isa
 
 module 'Coat.Types'
