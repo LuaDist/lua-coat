@@ -139,13 +139,14 @@ end
 
 function dump (obj, label)
     label = label or 'obj'
+    local seen = {}
 
     local function keys_sorted (t)
-        local s = {}
+        local sorted = {}
         for k in pairs(t) do
-            table.insert(s, k)
+            table.insert(sorted, k)
         end
-        table.sort(s, function (a, b)
+        table.sort(sorted, function (a, b)
                           local r, cmp = pcall(function () return a < b end)
                           if r == nil then
                               return tostring(a) < tostring(b)
@@ -153,32 +154,36 @@ function dump (obj, label)
                               return cmp
                           end
                       end)
-        return s
+        return sorted
     end -- keys_sorted
 
-    local function _dump (obj, indent)
-        indent = indent or ''
+    local function _dump (obj, indent, ref)
         local tobj = basic_type(obj)
         if tobj == 'string' then
             return string.format('%q', obj)
         elseif tobj == 'table' then
+            if seen[obj] then
+                return seen[obj]
+            end
+            seen[obj] = ref
             local indent2 = indent .. "  "
             local lines = {}
-            local str, comp
+            local str
             if obj._NAME then
                 str = obj._CLASS .. " {"
                 for _, k in ipairs(keys_sorted(obj._VALUES)) do
                     local v = rawget(obj._VALUES, k)
                     local line = indent2 .. k .. " = "
-                                         .. _dump(v, indent2) .. ",\n"
+                                         .. _dump(v, indent2, ref .. '.' .. k) .. ",\n"
                     table.insert(lines, line)
                 end
             else
                 str = "{"
                 for _, k in ipairs(keys_sorted(obj)) do
                     local v = rawget(obj, k)
-                    local line = indent2 .. "[" .. _dump(k, indent2) .. "] = "
-                                         .. _dump(v, indent2) .. ",\n"
+                    local kr = "[" .. _dump(k, indent2) .. "]"
+                    local line = indent2 .. kr .. " = "
+                                         .. _dump(v, indent2, ref .. kr) .. ",\n"
                     table.insert(lines, line)
                 end
             end
@@ -191,7 +196,7 @@ function dump (obj, label)
         end
     end -- _dump
 
-    return label .. " = " .. _dump(obj)
+    return label .. " = " .. _dump(obj, '', label)
 end
 
 function new (class, args)

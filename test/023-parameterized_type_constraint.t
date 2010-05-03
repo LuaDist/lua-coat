@@ -6,6 +6,7 @@ require 'Coat.Types'
 class 'A'
 
 has.array_of_str = { is = 'rw', isa = 'table<string>' }
+has.another_array_of_str = { is = 'rw', isa = 'table<string>' }
 has.hash_of_a = { is = 'rw', isa = 'table<string,A>' }
 has.hash_of_num = { is = 'rw', isa = 'table<string,number>' }
 has.many_a = { is = 'rw', isa = 'table<A>' }
@@ -16,7 +17,7 @@ has.x = { is = 'rw', isa = 'number' }
 
 require 'Test.More'
 
-plan(13)
+plan(14)
 
 if os.getenv "GEN_PNG" and os.execute "dot -V" == 0 then
     local f = io.popen("dot -T png -o 023.png", 'w')
@@ -38,7 +39,7 @@ error_like(function () a.many_a = many_b end,
            "Value for attribute 'many_a' does not validate type constraint 'table<A>'",
            "array of objects B refused")
 
-lives_ok( function () a.hash_of_a = { one = A(), two = A() } end, "hash of A accepted" )
+lives_ok( function () a.hash_of_a = { one = A(), two = a } end, "hash of A accepted" )
 
 error_like(function () a.hash_of_a = { one = A(), two = B() } end,
            "Value for attribute 'hash_of_a' does not validate type constraint 'table<string,A>'",
@@ -60,6 +61,8 @@ error_like(function () a.hash_of_num = { one = 1, two = 2, [true] = 3 } end,
 
 lives_ok( function () a.array_of_str = { 'Foo', 'Bar', 'Baz' } end, "array_of_str accepted" )
 
+lives_ok( function () a.another_array_of_str = a.array_of_str end, "copy of array_of_str accepted" )
+
 error_like(function () a.array_of_str = 23 end,
            "Invalid type for attribute 'array_of_str' %(got number, expected table%)",
            "array_of_str refused : not a table")
@@ -70,14 +73,15 @@ error_like(function () a.array_of_str = { 23, 'Foo' } end,
 
 is( a:dump(), [[
 obj = A {
-  array_of_str = {
+  another_array_of_str = {
     [1] = "Foo",
     [2] = "Bar",
     [3] = "Baz",
   },
+  array_of_str = obj.another_array_of_str,
   hash_of_a = {
     ["one"] = A {},
-    ["two"] = A {},
+    ["two"] = obj,
   },
   hash_of_num = {
     ["one"] = 1,
