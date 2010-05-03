@@ -11,6 +11,7 @@ local pcall = pcall
 local rawget = rawget
 local require = require
 local setmetatable = setmetatable
+local tonumber = tonumber
 local tostring = tostring
 local basic_type = type
 local _G = _G
@@ -135,6 +136,55 @@ function does (obj, r)
     else
         return false
     end
+end
+
+function dump (obj, label)
+    label = label or 'obj'
+
+    local function _dump (obj, indent)
+        indent = indent or ''
+        local tobj = basic_type(obj)
+        if tobj == 'string' then
+            return string.format('%q', obj)
+        elseif tobj == 'table' then
+            local indent2 = indent .. "  "
+            local lines = {}
+            local str, comp
+            if obj._NAME then
+                str = obj._CLASS .. " {"
+                for k, v in pairs(obj._VALUES)  do
+                    local line = indent2 .. k .. " = "
+                                         .. _dump(v, indent2) .. ",\n"
+                    table.insert(lines, line)
+                end
+            else
+                str = "{"
+                for k, v in pairs(obj)  do
+                    local line = indent2 .. "[" .. _dump(k, indent2) .. "] = "
+                                         .. _dump(v, indent2) .. ",\n"
+                    table.insert(lines, line)
+                end
+                comp = function (a, b)
+                    local ka = a:match'%s(%b[])':sub(2, -2)
+                    local kb = b:match'%s(%b[])':sub(2, -2)
+                    if ka:match'^%d' and kb:match'^%d' then
+                        return tonumber(ka) < tonumber(kb)
+                    else
+                        return ka < kb
+                    end
+                end
+            end
+            if #lines > 0 then
+                table.sort(lines, comp)
+                str = str .. "\n" .. table.concat(lines) .. indent
+            end
+            return str .. "}"
+        else
+            return tostring(obj)
+        end
+    end -- _dump
+
+    return label .. " = " .. _dump(obj)
 end
 
 function new (class, args)
@@ -710,6 +760,7 @@ local function _class (modname)
     M.can = can
     M.isa = isa
     M.does = does
+    M.dump = dump
     M.new = function (...) return new(M, ...) end
     M.__gc = function (...) return __gc(M, ...) end
     M._INIT = function (...) return _INIT(M, ...) end

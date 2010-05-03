@@ -12,7 +12,7 @@ extends( 'Point3D', MyItem )
 
 require 'Test.More'
 
-plan(17)
+plan(18)
 
 if os.getenv "GEN_PNG" and os.execute "dot -V" == 0 then
     local f = io.popen("dot -T png -o 006.png", 'w')
@@ -39,6 +39,13 @@ is( item.x, 4 )
 is( item.y, 0 )
 is( item.z, 3 )
 is( item.name, 'foo' )
+is( item:dump(), [[
+obj = MyItem3D {
+  name = "foo",
+  x = 4,
+  y = 0,
+  z = 3,
+}]], "dump" )
 
 error_like([[MyItem3D.extends {}]],
            "bad argument #1 to extends %(string or Class expected%)")

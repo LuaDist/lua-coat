@@ -16,7 +16,7 @@ has.x = { is = 'rw', isa = 'number' }
 
 require 'Test.More'
 
-plan(12)
+plan(13)
 
 if os.getenv "GEN_PNG" and os.execute "dot -V" == 0 then
     local f = io.popen("dot -T png -o 023.png", 'w')
@@ -67,4 +67,34 @@ error_like(function () a.array_of_str = 23 end,
 error_like(function () a.array_of_str = { 23, 'Foo' } end,
            "Value for attribute 'array_of_str' does not validate type constraint 'table<string>'",
            "mixed array refused")
+
+is( a:dump(), [[
+obj = A {
+  array_of_str = {
+    [1] = "Foo",
+    [2] = "Bar",
+    [3] = "Baz",
+  },
+  hash_of_a = {
+    ["one"] = A {},
+    ["two"] = A {},
+  },
+  hash_of_num = {
+    ["one"] = 1,
+    ["three"] = 3,
+    ["two"] = 2,
+  },
+  many_a = {
+    [1] = A {},
+    [2] = A {},
+    [3] = A {},
+    [4] = A {},
+    [5] = A {},
+    [6] = A {},
+    [7] = A {},
+    [8] = A {},
+    [9] = A {},
+    [10] = A {},
+  },
+}]], "dump" )
 
