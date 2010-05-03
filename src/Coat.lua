@@ -11,7 +11,6 @@ local pcall = pcall
 local rawget = rawget
 local require = require
 local setmetatable = setmetatable
-local tonumber = tonumber
 local tostring = tostring
 local basic_type = type
 local _G = _G
@@ -141,6 +140,22 @@ end
 function dump (obj, label)
     label = label or 'obj'
 
+    local function keys_sorted (t)
+        local s = {}
+        for k in pairs(t) do
+            table.insert(s, k)
+        end
+        table.sort(s, function (a, b)
+                          local r, cmp = pcall(function () return a < b end)
+                          if r == nil then
+                              return tostring(a) < tostring(b)
+                          else
+                              return cmp
+                          end
+                      end)
+        return s
+    end -- keys_sorted
+
     local function _dump (obj, indent)
         indent = indent or ''
         local tobj = basic_type(obj)
@@ -152,30 +167,22 @@ function dump (obj, label)
             local str, comp
             if obj._NAME then
                 str = obj._CLASS .. " {"
-                for k, v in pairs(obj._VALUES)  do
+                for _, k in ipairs(keys_sorted(obj._VALUES)) do
+                    local v = rawget(obj._VALUES, k)
                     local line = indent2 .. k .. " = "
                                          .. _dump(v, indent2) .. ",\n"
                     table.insert(lines, line)
                 end
             else
                 str = "{"
-                for k, v in pairs(obj)  do
+                for _, k in ipairs(keys_sorted(obj)) do
+                    local v = rawget(obj, k)
                     local line = indent2 .. "[" .. _dump(k, indent2) .. "] = "
                                          .. _dump(v, indent2) .. ",\n"
                     table.insert(lines, line)
                 end
-                comp = function (a, b)
-                    local ka = a:match'%s(%b[])':sub(2, -2)
-                    local kb = b:match'%s(%b[])':sub(2, -2)
-                    if ka:match'^%d' and kb:match'^%d' then
-                        return tonumber(ka) < tonumber(kb)
-                    else
-                        return ka < kb
-                    end
-                end
             end
             if #lines > 0 then
-                table.sort(lines, comp)
                 str = str .. "\n" .. table.concat(lines) .. indent
             end
             return str .. "}"
