@@ -5,7 +5,6 @@
 
 local basic_error = error
 local getmetatable = getmetatable
-local ipairs = ipairs
 local pairs = pairs
 local pcall = pcall
 local rawget = rawget
@@ -87,7 +86,8 @@ function isa (obj, t)
     end
 
     local function walk (types)
-        for _, v in ipairs(types) do
+        for i = 1, #types do
+            local v = types[i]
             if v == t then
                 return true
             elseif basic_type(v) == 'table' then
@@ -117,7 +117,7 @@ function does (obj, r)
     end
 
     local function walk (roles)
-        for _, v in ipairs(roles) do
+        for _, v in pairs(roles) do
             if v == r then
                 return true
             elseif basic_type(v) == 'table' then
@@ -172,7 +172,9 @@ function dump (obj, label)
             local str
             if obj._NAME then
                 str = obj._CLASS .. " {"
-                for _, k in ipairs(keys_sorted(obj._VALUES)) do
+                local sorted = keys_sorted(obj._VALUES)
+                for i = 1, #sorted do
+                    local k = sorted[i]
                     local v = rawget(obj._VALUES, k)
                     local line = indent2 .. k .. " = "
                                          .. _dump(v, indent2, ref .. '.' .. k) .. ",\n"
@@ -180,7 +182,9 @@ function dump (obj, label)
                 end
             else
                 str = "{"
-                for _, k in ipairs(keys_sorted(obj)) do
+                local sorted = keys_sorted(obj)
+                for i = 1, #sorted do
+                    local k = sorted[i]
                     local v = rawget(obj, k)
                     local kr = "[" .. _dump(k, indent2) .. "]"
                     local line = indent2 .. kr .. " = "
@@ -203,13 +207,13 @@ end
 function new (class, args)
     args = args or {}
 
-    for _, r in ipairs(class._ROLE) do -- check roles
-        for _, v in ipairs(r._EXCL) do
+    for _, r in pairs(class._ROLE) do -- check roles
+        for _, v in pairs(r._EXCL) do
             if class:does(v) then
                 error("Role " .. r._NAME .. " excludes role " .. v)
             end
         end
-        for _, v in ipairs(r._REQ) do
+        for _, v in pairs(r._REQ) do
             if not class[v] then
                 error("Role " .. r._NAME .. " requires method " .. v)
             end
@@ -354,7 +358,8 @@ function _INIT (class, obj, args)
         end
     end
 
-    for _, p in ipairs(class._PARENT) do
+    for i = 1, #class._PARENT do
+        local p = class._PARENT[i]
         p._INIT(obj, args)
     end
 end
@@ -487,7 +492,7 @@ function has (class, name, options)
             if options.does ~= role._NAME then
                 error "The handles option requires a does option with the same role"
             end
-            for _, v in ipairs(role._STORE) do
+            for _, v in pairs(role._STORE) do
                 if v[1] == 'method' then
                     local meth = v[2]
                     if class[meth] then
@@ -591,9 +596,10 @@ function memoize (class, name)
 
     local cache = Meta._CACHE
     class[name] = function (...)
+        local arg = {...}
         local key = name
-        for _, v in ipairs{...} do
-            key = key .. '|' .. tostring(v)
+        for i = 1, #arg do
+            key = key .. '|' .. tostring(arg[i])
         end
         local result = cache[key]
         if result == nil then
@@ -622,7 +628,9 @@ function bind (class, name, impl)
 end
 
 function extends(class, ...)
-    for i, v in ipairs{...} do
+    local arg = {...}
+    for i = 1, #arg do
+        local v = arg[i]
         local parent
         if basic_type(v) == 'string' then
             parent = require(v)
@@ -641,7 +649,7 @@ function extends(class, ...)
         table.insert(class._PARENT, parent)
         table.insert(class._ISA, parent._ISA)
         table.insert(class._DOES, parent._DOES)
-        for _, r in ipairs(parent._ROLE) do
+        for _, r in pairs(parent._ROLE) do
             table.insert(class._ROLE, r)
         end
     end
@@ -649,7 +657,8 @@ function extends(class, ...)
     local t = getmetatable(class)
     t.__index = function (t, k)
                     local function search (cl)
-                        for _, p in ipairs(cl._PARENT) do
+                        for i = 1, #cl._PARENT do
+                            local p = cl._PARENT[i]
                             local v = rawget(p, k) or search(p)
                             if v then
                                 return v
@@ -670,7 +679,8 @@ function extends(class, ...)
     local a = getmetatable(class._ATTR)
     a.__index = function (t, k)
                     local function search (cl)
-                        for _, p in ipairs(cl._PARENT) do
+                        for i = 1, #cl._PARENT do
+                            local p = cl._PARENT[i]
                             local v = rawget(p._ATTR, k) or search(p)
                             if v then
                                 return v
@@ -688,8 +698,10 @@ function extends(class, ...)
 end
 
 function with (class, ...)
+    local arg = {...}
     local role
-    for i, v in ipairs{...} do
+    for i = 1, #arg do
+        local v = arg[i]
         if role and basic_type(v) == 'table' then
             if v.alias then
                 local alias = v.alias
@@ -714,7 +726,7 @@ function with (class, ...)
                 if basic_type(excludes) ~= 'table' then
                     argerror('with-excludes', i, "table or string expected")
                 end
-                for i, name in ipairs(excludes) do
+                for i, name in pairs(excludes) do
                     if basic_type(name) ~= 'string' then
                         argerror('with-excludes', i, "string expected")
                     end
@@ -734,7 +746,7 @@ function with (class, ...)
 
             table.insert(class._DOES, role._NAME)
             table.insert(class._ROLE, role)
-            for _, v in ipairs(role._STORE) do
+            for _, v in pairs(role._STORE) do
                 _G.Coat[v[1]](class, v[2], v[3])
             end
         end

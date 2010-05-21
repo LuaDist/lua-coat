@@ -11,8 +11,9 @@ end
 
 function method:sum (...)
     self.cntCall = self.cntCall + 1
+    local arg = {...}
     local res = 0
-    for _, v in ipairs{...} do res = res + v end
+    for i = 1, #arg do res = res + arg[i] end
     return res
 end
 
