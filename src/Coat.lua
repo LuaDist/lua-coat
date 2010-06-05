@@ -666,11 +666,8 @@ function extends(class, ...)
                         end
                     end -- search
 
-                    local v = rawget(t, k)
-                    if v == nil then
-                        v = search(class)
-                        t[k] = v      -- save for next access
-                    end
+                    v = search(class)
+                    t[k] = v      -- save for next access
                     if v == nil then
                         v = _G[k]
                     end
@@ -688,11 +685,8 @@ function extends(class, ...)
                         end
                     end -- search
 
-                    local v = rawget(t, k)
-                    if v == nil then
-                        v = search(class)
-                        t[k] = v      -- save for next access
-                    end
+                    v = search(class)
+                    t[k] = v      -- save for next access
                     return v
                 end
 end
