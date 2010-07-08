@@ -760,7 +760,7 @@ function module (modname, level)
     return M
 end
 
-local function _class (modname)
+function _class (modname)
     local M = module(modname, 4)
     setmetatable(M, {
         __index = _G,
