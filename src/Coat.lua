@@ -43,7 +43,7 @@ function error (msg)
     basic_error(msg, lvl)
 end
 
-local function argerror (caller, narg, extramsg)
+function argerror (caller, narg, extramsg)
     error("bad argument #" .. tostring(narg) .. " to "
           .. caller .. " (" .. extramsg .. ")")
 end
