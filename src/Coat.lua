@@ -145,7 +145,7 @@ function dump (obj, label)
     local function keys_sorted (t)
         local sorted = {}
         for k in pairs(t) do
-            table.insert(sorted, k)
+            sorted[#sorted+1] = k
         end
         table.sort(sorted, function (a, b)
                           local r, cmp = pcall(function () return a < b end)
@@ -178,7 +178,7 @@ function dump (obj, label)
                     local v = rawget(obj._VALUES, k)
                     local line = indent2 .. k .. " = "
                                          .. _dump(v, indent2, ref .. '.' .. k) .. ",\n"
-                    table.insert(lines, line)
+                    lines[#lines+1] = line
                 end
             else
                 str = "{"
@@ -189,7 +189,7 @@ function dump (obj, label)
                     local kr = "[" .. _dump(k, indent2) .. "]"
                     local line = indent2 .. kr .. " = "
                                          .. _dump(v, indent2, ref .. kr) .. ",\n"
-                    table.insert(lines, line)
+                    lines[#lines+1] = line
                 end
             end
             if #lines > 0 then
@@ -509,7 +509,7 @@ function has (class, name, options)
                     end -- delegate
                 end
             end
-            table.insert(class._DOES, role._NAME)
+            local t = class._DOES; t[#t+1] = role._NAME
         end
     end -- options.handles
 end
@@ -646,11 +646,12 @@ function extends(class, ...)
                   .. class._NAME .."' and '" .. parent._NAME .. "'")
         end
 
-        table.insert(class._PARENT, parent)
-        table.insert(class._ISA, parent._ISA)
-        table.insert(class._DOES, parent._DOES)
+        local t = class._PARENT; t[#t+1] = parent
+        local t = class._ISA; t[#t+1] = parent._ISA
+        local t = class._DOES; t[#t+1] = parent._DOES
+        local t = class._ROLE
         for _, r in pairs(parent._ROLE) do
-            table.insert(class._ROLE, r)
+            t[#t+1] = r
         end
     end
 
@@ -738,8 +739,8 @@ function with (class, ...)
                 argerror('with', i, "string or Role expected")
             end
 
-            table.insert(class._DOES, role._NAME)
-            table.insert(class._ROLE, role)
+            local t = class._DOES; t[#t+1] = role._NAME
+            local t = class._ROLE; t[#t+1] = role
             for _, v in pairs(role._STORE) do
                 _G.Coat[v[1]](class, v[2], v[3])
             end
