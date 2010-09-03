@@ -30,6 +30,7 @@ local reserved = {
     extends = true,
     instance = true,
     isa = true,
+    memoize = true,
     new = true,
     type = true,
     with = true,
