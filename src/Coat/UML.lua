@@ -42,7 +42,9 @@ local function sort (...)
         k[#k+1] = name
         v[name] = val
     end
-    table.sort(k)
+    table.sort(k, function (a, b)
+                      return a:gsub('^_', '') < b:gsub('^_', '')
+                  end)
     local i = 0
     return  function ()
                 i = i + 1
