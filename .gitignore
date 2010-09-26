@@ -6,5 +6,6 @@ MANIFEST
 *.bak
 
 *.png
+*.html
 
 luacov.*
