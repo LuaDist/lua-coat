@@ -8,6 +8,7 @@ local getmetatable = getmetatable
 local pairs = pairs
 local pcall = pcall
 local rawget = rawget
+local rawset = rawset
 local require = require
 local setfenv = setfenv
 local setmetatable = setmetatable
@@ -542,6 +543,25 @@ function override (class, name, func)
     class[name] = func
 end
 
+function mock (obj, name, func)
+    checktype('mock', 1, name, 'string')
+    checktype('mock', 2, func, 'function')
+    if not obj[name] then
+        error("Cannot mock non-existent method "
+              .. name .. " in class " .. obj._NAME)
+    end
+    rawset(obj, name, func)
+end
+
+function unmock (obj, name)
+    checktype('unmock', 1, name, 'string')
+    if not obj[name] then
+        error("Cannot unmock non-existent method "
+              .. name .. " in class " .. obj._NAME)
+    end
+    rawset(obj, name, nil)
+end
+
 function before (class, name, func)
     checktype('before', 1, name, 'string')
     checktype('before', 2, func, 'function')
@@ -781,6 +801,8 @@ function _class (modname)
     M.isa = isa
     M.does = does
     M.dump = dump
+    M.mock = mock
+    M.unmock = unmock
     M.new = function (...) return new(M, ...) end
     M.__gc = function (...) return __gc(M, ...) end
     M._INIT = function (...) return _INIT(M, ...) end

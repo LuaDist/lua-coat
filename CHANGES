@@ -5,6 +5,7 @@ Revision history for lua-Coat
 	+ site by Github at http://fperrad.github.com/lua-Coat/
 	+ fix UML generation : filter memoize function
 	+ UML generation : sort attributes & methods
+	+ add mock & unmock
 
 0.8.3  Fri May 28 20:30:00 2010
 	+ customize error (now gives a caller position)
