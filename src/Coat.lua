@@ -359,8 +359,9 @@ function _INIT (class, obj, args)
         end
     end
 
-    for i = 1, #class._PARENT do
-        local p = class._PARENT[i]
+    local parents = class._PARENT
+    for i = 1, #parents do
+        local p = parents[i]
         p._INIT(obj, args)
     end
 end
@@ -678,8 +679,9 @@ function extends(class, ...)
     local t = getmetatable(class)
     t.__index = function (t, k)
                     local function search (cl)
-                        for i = 1, #cl._PARENT do
-                            local p = cl._PARENT[i]
+                        local parents = cl._PARENT
+                        for i = 1, #parents do
+                            local p = parents[i]
                             local v = rawget(p, k) or search(p)
                             if v then
                                 return v
@@ -697,8 +699,9 @@ function extends(class, ...)
     local a = getmetatable(class._ATTR)
     a.__index = function (t, k)
                     local function search (cl)
-                        for i = 1, #cl._PARENT do
-                            local p = cl._PARENT[i]
+                        local parents = cl._PARENT
+                        for i = 1, #parents do
+                            local p = parents[i]
                             local v = rawget(p._ATTR, k) or search(p)
                             if v then
                                 return v
