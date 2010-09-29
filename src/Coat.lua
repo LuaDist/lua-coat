@@ -118,7 +118,8 @@ function does (obj, r)
     end
 
     local function walk (roles)
-        for _, v in pairs(roles) do
+        for i = 1, #roles do
+            local v = roles[i]
             if v == r then
                 return true
             elseif basic_type(v) == 'table' then
@@ -208,13 +209,19 @@ end
 function new (class, args)
     args = args or {}
 
-    for _, r in pairs(class._ROLE) do -- check roles
-        for _, v in pairs(r._EXCL) do
+    local roles = class._ROLE
+    for i = 1, #roles do -- check roles
+        local r = roles[i]
+        local excl = r._EXCL
+        for j = 1, #excl do
+            local v = excl[j]
             if class:does(v) then
                 error("Role " .. r._NAME .. " excludes role " .. v)
             end
         end
-        for _, v in pairs(r._REQ) do
+        local req = r._REQ
+        for j = 1, #req do
+            local v = req[j]
             if not class[v] then
                 error("Role " .. r._NAME .. " requires method " .. v)
             end
@@ -494,7 +501,9 @@ function has (class, name, options)
             if options.does ~= role._NAME then
                 error "The handles option requires a does option with the same role"
             end
-            for _, v in pairs(role._STORE) do
+            local store = role._STORE
+            for i = 1, #store do
+                local v = store[i]
                 if v[1] == 'method' then
                     local meth = v[2]
                     if class[meth] then
@@ -671,8 +680,9 @@ function extends(class, ...)
         local t = class._ISA; t[#t+1] = parent._ISA
         local t = class._DOES; t[#t+1] = parent._DOES
         local t = class._ROLE
-        for _, r in pairs(parent._ROLE) do
-            t[#t+1] = r
+        local roles = parent._ROLE
+        for i = 1, #roles do
+            t[#t+1] = roles[i]
         end
     end
 
@@ -744,7 +754,8 @@ function with (class, ...)
                 if basic_type(excludes) ~= 'table' then
                     argerror('with-excludes', i, "table or string expected")
                 end
-                for i, name in pairs(excludes) do
+                for i = 1, #excludes do
+                    local name = excludes[i]
                     if basic_type(name) ~= 'string' then
                         argerror('with-excludes', i, "string expected")
                     end
@@ -764,7 +775,9 @@ function with (class, ...)
 
             local t = class._DOES; t[#t+1] = role._NAME
             local t = class._ROLE; t[#t+1] = role
-            for _, v in pairs(role._STORE) do
+            local store = role._STORE
+            for i = 1, #store do
+                local v = store[i]
                 _G.Coat[v[1]](class, v[2], v[3])
             end
         end

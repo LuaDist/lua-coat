@@ -5,7 +5,6 @@
 
 require 'Coat'
 
-local pairs = pairs
 local require = require
 local setmetatable = setmetatable
 local _G = _G
@@ -32,7 +31,9 @@ end
 
 function requires (role, ...)
     local t = role._REQ
-    for i, meth in pairs{...} do
+    local arg = {...}
+    for i = 1, #arg do
+        local meth = arg[i]
         checktype('requires', i, meth, 'string')
         t[#t+1] = meth
     end
@@ -40,7 +41,9 @@ end
 
 function excludes (role, ...)
     local t = role._EXCL
-    for i, r in pairs{...} do
+    local arg = {...}
+    for i = 1, #arg do
+        local r = arg[i]
         checktype('excludes', i, r, 'string')
         t[#t+1] = r
     end
