@@ -1,5 +1,8 @@
 Revision history for lua-Coat
 
+0.8.5
+	+ fix UML generation : filter mock & unmock
+
 0.8.4  Thu Sep 30 15:30:00 2010
 	+ export _class & argerror (needed by Coat.Persistent)
 	+ site by Github at http://fperrad.github.com/lua-Coat/
