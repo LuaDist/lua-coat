@@ -32,7 +32,7 @@ local function find_type (name)
         if idx then
             typev = typev:sub(idx+1)
         end
-        return find_type(typev)
+        return find_type(typev), true
     end
 end
 
@@ -104,15 +104,19 @@ function to_dot (opt)
         out = out .. '}"];\n'
         for name, attr in mc.attributes(class) do
             if attr.isa then
-                local isa = find_type(attr.isa)
+                local isa, agreg = find_type(attr.isa)
                 if isa then
                     out = out .. '    "' .. classname .. '" -> "' .. isa .. '" // attr isa ' .. attr.isa .. '\n'
-                    out = out .. '        [label = "' .. name .. '", arrowhead = none, arrowtail = odiamond];\n'
+                    if agreg then
+                        out = out .. '        [label = "' .. name .. '", dir = back, arrowtail = odiamond];\n'
+                    else
+                        out = out .. '        [label = "' .. name .. '", dir = back, arrowtail = diamond];\n'
+                    end
                 end
             end
             if attr.does and mr.role(attr.does) then
                 out = out .. '    "' .. classname .. '" -> "' .. attr.does .. '" // attr does\n'
-                out = out .. '        [label = "' .. name .. '", arrowhead = none, arrowtail = odiamond];\n'
+                out = out .. '        [label = "' .. name .. '", dir = back, arrowtail = diamond];\n'
             end
         end
         for parent in mc.parents(class) do
@@ -157,15 +161,19 @@ function to_dot (opt)
         out = out .. '}"];\n\n'
         for name, attr in mr.attributes(role) do
             if attr.isa then
-                local isa = find_type(attr.isa)
+                local isa, agreg = find_type(attr.isa)
                 if isa then
                     out = out .. '    "' .. rolename .. '" -> "' .. isa .. '" // attr isa ' .. attr.isa .. '\n'
-                    out = out .. '        [label = "' .. name .. '", arrowhead = none, arrowtail = odiamond];\n'
+                    if agreg then
+                        out = out .. '        [label = "' .. name .. '", dir = back, arrowtail = odiamond];\n'
+                    else
+                        out = out .. '        [label = "' .. name .. '", dir = back, arrowtail = diamond];\n'
+                    end
                 end
             end
             if attr.does and mr.role(attr.does) then
                 out = out .. '    "' .. rolename .. '" -> "' .. attr.does .. '" // attr does\n'
-                out = out .. '        [label = "' .. name .. '", arrowhead = none, arrowtail = odiamond];\n'
+                out = out .. '        [label = "' .. name .. '", dir = back, arrowtail = diamond];\n'
             end
         end
     end
