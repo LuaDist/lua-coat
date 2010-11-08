@@ -7,18 +7,19 @@ local basic_type = type
 local setmetatable = setmetatable
 local next = next
 
-module 'Coat.Meta.Class'
+_ENV = nil
+local _M = {}
 
 local _classes = {}
-function classes ()
+function _M.classes ()
     return _classes
 end
 
-function class (name)
+function _M.class (name)
     return _classes[name]
 end
 
-function has (class, name)
+function _M.has (class, name)
     return class._ATTR[name]
 end
 
@@ -40,11 +41,11 @@ local reserved = {
     __gc = true,
 }
 
-function attributes (class)
+function _M.attributes (class)
     return next, class._ATTR, nil
 end
 
-function methods (class)
+function _M.methods (class)
     local function getnext (t, k)
         local v
         repeat
@@ -59,7 +60,7 @@ function methods (class)
     return getnext, class, nil
 end
 
-function metamethods (class)
+function _M.metamethods (class)
     local function getnext (mt, k)
         local v
         repeat
@@ -71,7 +72,7 @@ function metamethods (class)
     return getnext, class._MT, nil
 end
 
-function parents (class)
+function _M.parents (class)
     local i = 0
     return  function ()
                 i = i + 1
@@ -80,7 +81,7 @@ function parents (class)
             end
 end
 
-function roles (class)
+function _M.roles (class)
     local i = 0
     return  function ()
                 i = i + 1
@@ -89,9 +90,9 @@ function roles (class)
             end
 end
 
-_CACHE = {}
-setmetatable(_CACHE, { __mode = 'v' })
+_M._CACHE = setmetatable({}, { __mode = 'v' })
 
+return _M
 --
 -- Copyright (c) 2009-2010 Francois Perrad
 --

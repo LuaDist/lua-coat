@@ -9,7 +9,8 @@ local table = require 'table'
 local mc = require 'Coat.Meta.Class'
 local mr = require 'Coat.Meta.Role'
 
-module 'Coat.UML'
+_ENV = nil
+local _M = {}
 
 local function escape (txt)
     txt = txt:gsub( '&', '&amp;' )
@@ -53,7 +54,7 @@ local function sort (...)
             end
 end
 
-function to_dot (opt)
+function _M.to_dot (opt)
     opt = opt or {}
     local with_attr = not opt.no_attr
     local with_meth = not opt.no_meth
@@ -181,6 +182,7 @@ function to_dot (opt)
     return out
 end
 
+return _M
 --
 -- Copyright (c) 2009-2010 Francois Perrad
 --

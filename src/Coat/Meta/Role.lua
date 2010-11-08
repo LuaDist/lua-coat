@@ -3,18 +3,19 @@
 -- lua-Coat : <http://fperrad.github.com/lua-Coat/>
 --
 
-module 'Coat.Meta.Role'
+_ENV = nil
+local _M = {}
 
 local _roles = {}
-function roles ()
+function _M.roles ()
     return _roles
 end
 
-function role (name)
+function _M.role (name)
     return _roles[name]
 end
 
-function attributes (role)
+function _M.attributes (role)
     local i = 0
     return  function ()
                 local v
@@ -27,7 +28,7 @@ function attributes (role)
             end
 end
 
-function methods (role)
+function _M.methods (role)
     local i = 0
     return  function ()
                 local v
@@ -40,6 +41,7 @@ function methods (role)
             end
 end
 
+return _M
 --
 -- Copyright (c) 2009-2010 Francois Perrad
 --
