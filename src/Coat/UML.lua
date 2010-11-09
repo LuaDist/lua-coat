@@ -59,7 +59,12 @@ function _M.to_dot (opt)
     local with_attr = not opt.no_attr
     local with_meth = not opt.no_meth
     local with_meta = not opt.no_meta
+    local note = opt.note
     local out = 'digraph {\n\n    node [shape=record];\n\n'
+    if note then
+        out = out .. '    "__note__"\n'
+        out = out .. '        [label="' .. note .. '" shape=note];\n\n'
+    end
     for classname, class in pairs(mc.classes()) do
         out = out .. '    "' .. classname .. '"\n'
         out = out .. '        [label="{'
