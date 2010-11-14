@@ -885,12 +885,12 @@ function _G.abstract (modname)
     M.new = function () error("Cannot instanciate an abstract class " .. modname) end
 end
 
-function _G.augment (modname)
+function _G.augment (class)
     local M
-    if basic_type(modname) == 'string' then
-        M = require(modname)
-    elseif modname._NAME then
-        M = modname
+    if basic_type(class) == 'string' then
+        M = require(class)
+    elseif class._NAME then
+        M = class
     end
     if not M or not M._INIT then
         argerror('augment', 1, "string or Class expected")
