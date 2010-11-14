@@ -1,8 +1,9 @@
 Revision history for lua-Coat
 
 0.8.5
-	+ fix UML generation : filter mock & unmock
+	+ fix & improve UML generation
 	+ coat2dot : add option --note
+	+ add augment (reopen class)
 
 0.8.4  Thu Sep 30 15:30:00 2010
 	+ export _class & argerror (needed by Coat.Persistent)

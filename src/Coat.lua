@@ -885,6 +885,19 @@ function _G.abstract (modname)
     M.new = function () error("Cannot instanciate an abstract class " .. modname) end
 end
 
+function _G.augment (modname)
+    local M
+    if basic_type(modname) == 'string' then
+        M = require(modname)
+    elseif modname._NAME then
+        M = modname
+    end
+    if not M or not M._INIT then
+        argerror('augment', 1, "string or Class expected")
+    end
+    setfenv(2, M)
+end
+
 _M._VERSION = "0.8.4"
 _M._DESCRIPTION = "lua-Coat : Yet Another Lua Object-Oriented Model"
 _M._COPYRIGHT = "Copyright (c) 2009-2010 Francois Perrad"
