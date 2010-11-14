@@ -36,7 +36,9 @@ function _M.methods (role)
                     i = i + 1
                     v = role._STORE[i]
                     if not v then return nil end
-                until v[1] == 'method'
+                    local name = v[2]
+                until v[1] == 'method' and not name:match '^_build_'
+                  and not name:match '^_get_' and not name:match '^_set_'
                 return v[2], v[3]
             end
 end
