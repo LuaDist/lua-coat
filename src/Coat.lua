@@ -25,6 +25,24 @@ local _M = {}
 
 local Meta = require 'Coat.Meta.Class'
 
+if _G._VERSION == 'Lua 5.2' then
+    setfenv = function (level, M)
+        local func = debug.getinfo(level + 1, 'f').func
+        local up = 1
+        while true do
+            local name = debug.getupvalue(func, up)
+            if name == '_ENV' then
+                debug.setupvalue(func, up, M)
+                return
+            end
+            if name == nil then
+                basic_error "_ENV not found"
+            end
+            up = up + 1
+        end
+    end
+end
+
 local function type (obj)
     local t = basic_type(obj)
     if t == 'table' then
