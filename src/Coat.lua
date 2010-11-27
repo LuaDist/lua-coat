@@ -5,6 +5,7 @@
 
 local basic_error = error
 local getmetatable = getmetatable
+local next = next
 local pairs = pairs
 local pcall = pcall
 local rawget = rawget
@@ -263,6 +264,9 @@ local function new (class, args)
         else
             error("Cannot set '" .. k .. "' (unknown)")
         end
+    end
+    mt.__pairs = function (o)
+        return next, o._VALUES
     end
     if class.BUILD then
         class.BUILD(obj, args)
