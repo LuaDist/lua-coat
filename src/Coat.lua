@@ -71,29 +71,16 @@ local function argerror (caller, narg, extramsg)
 end
 _M.argerror = argerror
 
-local function typerror (caller, narg, arg, tname)
+local function typeerror (caller, narg, arg, tname)
     argerror(caller, narg, tname .. " expected, got " .. type(arg))
 end
 
 local function checktype (caller, narg, arg, tname)
     if basic_type(arg) ~= tname then
-        typerror(caller, narg, arg, tname)
+        typeerror(caller, narg, arg, tname)
     end
 end
 _M.checktype = checktype
-
-local function findtable (fname)
-    local i = 1
-    local t = _G
-    for w in fname:gmatch "(%w+)%." do
-        i = i + w:len() + 1
-        t[w] = t[w] or {}
-        t = t[w]
-    end
-    local name = fname:sub(i)
-    t[name] = t[name] or {}
-    return t[name]
-end
 
 local function can (obj, name)
     checktype('can', 2, name, 'string')
@@ -833,6 +820,19 @@ local function module (modname, level)
     if basic_type(loaded[modname]) == 'table' then
         error("name conflict for module '" .. modname .. "'")
     end
+
+    local function findtable (fname)
+        local i = 1
+        local t = _G
+        for w in fname:gmatch "(%w+)%." do
+            i = i + w:len() + 1
+            t[w] = t[w] or {}
+            t = t[w]
+        end
+        local name = fname:sub(i)
+        t[name] = t[name] or {}
+        return t[name]
+    end  -- findtable
 
     local M = findtable(modname)
     loaded[modname] = M
