@@ -12,6 +12,9 @@ DPREFIX := $(DESTDIR)$(PREFIX)
 BINDIR  := $(DPREFIX)/bin
 LIBDIR  := $(DPREFIX)/share/lua/$(LUAVER)
 
+all:
+	@echo "Nothing to build here, you can just make install"
+
 install:
 	mkdir -p $(BINDIR)
 	cp src/coat2dot                 $(BINDIR)
