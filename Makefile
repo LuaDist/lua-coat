@@ -6,11 +6,11 @@ ifndef REV
   REV   := 1
 endif
 
-ifndef DESTDIR
-  DESTDIR := /usr/local
-endif
-BINDIR  := $(DESTDIR)/bin
-LIBDIR  := $(DESTDIR)/share/lua/5.1
+LUAVER  := 5.1
+PREFIX  := /usr/local
+DPREFIX := $(DESTDIR)$(PREFIX)
+BINDIR  := $(DPREFIX)/bin
+LIBDIR  := $(DPREFIX)/share/lua/$(LUAVER)
 
 install:
 	mkdir -p $(BINDIR)
