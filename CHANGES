@@ -1,5 +1,9 @@
 Revision history for lua-Coat
 
+0.8.6
+	+ work with Lua 5.2.0
+	+ add LuaDist support
+
 0.8.5  Fri Nov 26 10:30:00 2010
 	+ fix & improve UML generation
 	+ coat2dot : add option --note
