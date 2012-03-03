@@ -920,9 +920,9 @@ function _G.augment (class)
     setfenv(2, M)
 end
 
-_M._VERSION = "0.8.5"
+_M._VERSION = "0.8.6"
 _M._DESCRIPTION = "lua-Coat : Yet Another Lua Object-Oriented Model"
-_M._COPYRIGHT = "Copyright (c) 2009-2010 Francois Perrad"
+_M._COPYRIGHT = "Copyright (c) 2009-2012 Francois Perrad"
 return _M
 --
 -- This library is licensed under the terms of the MIT/X11 license,
