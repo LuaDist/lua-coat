@@ -1,0 +1,97 @@
+type = "x86_64"
+arch = "Ubuntu"
+author = "Francois Perrad"
+depends = {
+[[lua ~> 5.1]],
+}
+
+desc = "Yet Another Lua Object-Oriented Model"
+version = "0.8.6"
+maintainer = "Francois Perrad"
+files = {
+Runtime = {
+[[lib/lua/Coat.lua]],
+[[lib/lua/Coat/Meta/Class.lua]],
+[[lib/lua/Coat/Meta/Role.lua]],
+[[lib/lua/Coat/Role.lua]],
+[[lib/lua/Coat/Types.lua]],
+[[lib/lua/Coat/UML.lua]],
+[[lib/lua/Coat/file.lua]],
+[[bin/coat2dot]],
+}
+,
+Data = {
+[[share/lua-coat/CHANGES]],
+[[share/lua-coat/COPYRIGHT]],
+[[share/lua-coat/README.md]],
+}
+,
+Test = {
+[[share/lua-coat/test//123-augment.t]],
+[[share/lua-coat/test//026-attr_overloading.t]],
+[[share/lua-coat/test//201-role_requires_meth.t]],
+[[share/lua-coat/test//000-require.t]],
+[[share/lua-coat/test//015-build.t]],
+[[share/lua-coat/test//MyApp/Bar/Foo.lua]],
+[[share/lua-coat/test//MyApp/Bar.lua]],
+[[share/lua-coat/test//MyApp/Baz.lua]],
+[[share/lua-coat/test//MyApp/Baz/Foo.lua]],
+[[share/lua-coat/test//MyApp.lua]],
+[[share/lua-coat/test//206-role_attr_builder.t]],
+[[share/lua-coat/test//007-inheritance.t]],
+[[share/lua-coat/test//205-role_alias_meth.t]],
+[[share/lua-coat/test//010-hooks.t]],
+[[share/lua-coat/test//033-cascading_inheritance.t]],
+[[share/lua-coat/test//161-memoize.t]],
+[[share/lua-coat/test//202-role_meth_modifier.t]],
+[[share/lua-coat/test//028-build_demolish.t]],
+[[share/lua-coat/test//101-attr_value.t]],
+[[share/lua-coat/test//112-hierarchy.t]],
+[[share/lua-coat/test//132-handles-role.t]],
+[[share/lua-coat/test//122-abstract.t]],
+[[share/lua-coat/test//102-override.t]],
+[[share/lua-coat/test//106-attr_liskov.t]],
+[[share/lua-coat/test//TestPoint.t]],
+[[share/lua-coat/test//037-attr_and_constraints_overload.t]],
+[[share/lua-coat/test//Car.lua]],
+[[share/lua-coat/test//171-mock.t]],
+[[share/lua-coat/test//104-attr_lazy_build.t]],
+[[share/lua-coat/test//111-hierarchy.t]],
+[[share/lua-coat/test//011-attr_inheritance.t]],
+[[share/lua-coat/test//203-attr_does.t]],
+[[share/lua-coat/test//TestCheckingAccount.t]],
+[[share/lua-coat/test//014-attr_permission.t]],
+[[share/lua-coat/test//013-type_constraints.t]],
+[[share/lua-coat/test//036-type.t]],
+[[share/lua-coat/test//016-attr_required.t]],
+[[share/lua-coat/test//024-class_name_type_constraint.t]],
+[[share/lua-coat/test//113-create_hierarchy.t]],
+[[share/lua-coat/test//204-role_alias.t]],
+[[share/lua-coat/test//Point3D.lua]],
+[[share/lua-coat/test//141-file.t]],
+[[share/lua-coat/test//031-lazy_attr.t]],
+[[share/lua-coat/test//133-handles-rolename.t]],
+[[share/lua-coat/test//105-attr_writer.t]],
+[[share/lua-coat/test//151-inject.t]],
+[[share/lua-coat/test//019-type_constraints.t]],
+[[share/lua-coat/test//Point.lua]],
+[[share/lua-coat/test//TestCar.t]],
+[[share/lua-coat/test//023-parameterized_type_constraint.t]],
+[[share/lua-coat/test//CheckingAccount.lua]],
+[[share/lua-coat/test//006-extends.t]],
+[[share/lua-coat/test//103-attr_builder.t]],
+[[share/lua-coat/test//012-attr_default_function.t]],
+[[share/lua-coat/test//131-handles-meth.t]],
+[[share/lua-coat/test//017-triggers.t]],
+[[share/lua-coat/test//121-singleton.t]],
+[[share/lua-coat/test//027-handles.t]],
+[[share/lua-coat/test//008-multiple_around.t]],
+[[share/lua-coat/test//022-type_coercion.t]],
+[[share/lua-coat/test//TestPoint3D.t]],
+}
+,
+}
+
+license = "MIT/X11"
+name = "lua-coat"
+url = "http://fperrad.github.com/lua-Coat/"
